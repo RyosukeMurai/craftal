@@ -17,5 +17,6 @@ libraryDependencies += "com.h2database" % "h2" % "1.4.197"
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-slick" % "3.0.1",
   "com.typesafe.play" %% "play-slick-evolutions" % "3.0.1",
+  "com.typesafe.slick" %% "slick-codegen" % "3.2.1",
   "mysql" % "mysql-connector-java" % "5.1.34"
 )

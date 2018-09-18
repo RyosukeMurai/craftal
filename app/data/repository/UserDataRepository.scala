@@ -1,0 +1,25 @@
+package data.repository
+
+import data.entity.Tables
+import data.entity.mapper.UserEntityDataMapper
+import domain.user.{User, UserRepository}
+import javax.inject.{Inject, Singleton}
+import play.api.db.slick.DatabaseConfigProvider
+import slick.jdbc.JdbcProfile
+
+import scala.concurrent.{ExecutionContext, Future}
+
+
+@Singleton
+class UserDataRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext)
+  extends UserRepository {
+
+  import slick.jdbc.MySQLProfile.api._
+
+  val dbConfig = dbConfigProvider.get[JdbcProfile]
+
+  def find(id: Int): Future[User] =
+    dbConfig.db
+      .run(Tables.User.filter(_.id === id).result.head.map(UserEntityDataMapper.transform))
+}
+

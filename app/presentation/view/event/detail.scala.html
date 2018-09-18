@@ -1,0 +1,25 @@
+@*
+* This template takes a two arguments, a String containing a
+* message to display and an AssetsFinder to locate static assets.
+*@
+@(event: domain.event.Event)(implicit assetsFinder: AssetsFinder)
+
+@*
+* Call the `main` template with two arguments. The first
+* argument is a `String` with the title of the page, the second
+* argument is an `Html` object containing the body of the page.
+*@
+@presentation.view.html.main(event.title, "event", assetsFinder) {
+<div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
+    <img class="card-img-right flex-auto d-none d-lg-block" src="https://via.placeholder.com/600x450"
+         alt="Card image cap">
+    <div class="col-md-6 px-0">
+        <h1 class="display-4 font-italic">@event.title</h1>
+        <p class="lead my-3">@event.description</p>
+    </div>
+</div>
+
+<div class="row mb-2">
+
+</div>
+}
