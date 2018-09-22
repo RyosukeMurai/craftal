@@ -1,8 +1,10 @@
 package presentation.controller
 
 
+import java.util.Date
+
 import controllers.AssetsFinder
-import domain.event.interactor.{GetEvent, GetEvents}
+import domain.event.interactor.{GetEvent, GetEventsWithinPeriod}
 import javax.inject._
 import play.api.mvc._
 
@@ -14,7 +16,7 @@ import scala.concurrent.ExecutionContext
   */
 @Singleton
 class EventController @Inject()(cc: ControllerComponents,
-                                getEvents: GetEvents,
+                                getEvents: GetEventsWithinPeriod,
                                 getEvent: GetEvent)(implicit assetsFinder: AssetsFinder, ec: ExecutionContext)
   extends AbstractController(cc) {
 
@@ -25,7 +27,7 @@ class EventController @Inject()(cc: ControllerComponents,
     * a path of `/`.
     */
   def index: Action[AnyContent] = Action.async {
-    getEvents.execute().map {
+    getEvents.execute(new Date()).map {
       events => Ok(presentation.view.event.html.index(events))
     }
   }
