@@ -11,6 +11,6 @@ import scala.concurrent.Future
 @Singleton
 class GetEventsWithinPeriod @Inject()(repository: EventRepository) extends Interactor {
 
-  def execute(startDate: Date, endDate: Date = null): Future[List[Event]] =
-    this.repository.findByPeriod(startDate, endDate)
+  def execute(termStart: Date, termEnd: Option[Date]): Future[List[Event]] =
+    this.repository.findByTerm(termStart, termEnd)
 }

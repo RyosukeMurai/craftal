@@ -1,5 +1,8 @@
 package domain.shared
 
-trait Entity {
 
-}
+/**
+  * An entity, as explained in the DDD book.
+  *
+  */
+trait Entity[T] {}

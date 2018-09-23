@@ -26,19 +26,32 @@ class EventDataRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(im
       Tables.Event.filter(_.id === id).result.head.map(EventEntityDataMapper.transform)
     )
 
-  def findByPeriod(startDate: Date, endDate: Option[Date]): Future[List[Event]] = {
-    val monadicInnerJoin = for {
+  def findByTerm(termStart: Date, termEnd: Option[Date]): Future[List[Event]] = {
+    // Guard
+    termEnd match {
+      case Some(x) if x.before(termStart) =>
+        throw new IllegalArgumentException("termStart must be earlier than termEnd.")
+      case _ =>
+    }
+
+    var criteriaTerms = Tables.EventSchedule.filter(_.stateTime >= new Timestamp(termStart.getTime))
+
+    termEnd match {
+      case Some(x) =>
+        criteriaTerms = criteriaTerms.filter(_.endTime <= new Timestamp(x.getTime))
+      case _ =>
+    }
+
+    val query = for {
       e <- Tables.Event
-      s <- Tables.EventSchedule.filter(schedule =>
-        schedule.stateTime <= new Timestamp(startDate.getTime) &&
-          schedule.endTime <= new Timestamp(startDate.getTime)
-      ) if e.id === s.eventId
-    } yield (e.title, s.stateTime)
+      s <- criteriaTerms
+      if e.id === s.eventId
+    } yield (e, s)
 
     dbConfig
       .db
       .run(
-        monadicInnerJoin.to[List].result.map(_.map(EventEntityDataMapper.transform))
+        query.to[List].result.map(EventEntityDataMapper.transformCollection)
       )
   }
 
