@@ -2,7 +2,9 @@
 * This template takes a two arguments, a String containing a
 * message to display and an AssetsFinder to locate static assets.
 *@
-@(calendar: List[presentation.model.event.EventCalendarDate])(implicit assetsFinder: AssetsFinder)
+@(calendar: List[presentation.model.event.EventCalendarDate],
+form: Form[presentation.model.event.EventSearchCondition]
+)(implicit assetsFinder: AssetsFinder, messagesProvider: MessagesProvider)
 
 @*
 * Call the `main` template with two arguments. The first
@@ -17,11 +19,26 @@
         <p class="lead my-3">日本中のクラフトワークが集まっているただ一つのサイトです。クラフトワークのイベントを探すこともできます。</p>
     </div>
 </div>
+<div class="row mb-2">
+    <div class="col-md-12">
+        @helper.form(action = presentation.controller.routes.EventController.index, 'class -> "form-inline mt-2 mt-md-0 pb-3 mb-4", 'method -> "get") {
+            @helper.inputText(
+                form("keyword"),
+                'name -> "keyword",
+                'class -> "form-control mr-sm-2",
+                'placeholder -> "Search",
+            )
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        }
+    </div>
+</div>
 
 @for(day <- calendar) {
 <div class="row mb-2">
     <div class="col-md-12">
-        @day.date.format("MM月dd日")
+        <h3 class="pb-3 mb-4 font-italic border-bottom">
+            @day.date.format("MM月dd日")
+        </h3>
     </div>
 </div>
 <div class="row mb-2">
@@ -33,9 +50,16 @@
                 <h3 class="mb-0">
                     <a class="text-dark" href="#">@event.title</a>
                 </h3>
-                <div class="mb-1 text-muted">Nov 12</div>
+                @for(schedule <- event.getSchedule) {
+                <div class="mb-1 text-muted">
+                    @schedule.stateTime.format("hh:mm:ss")~ @schedule.endTime.format("hh:mm:ss")
+                </div>
+                <div class="mb-1 text-muted">
+                    @schedule.venue
+                </div>
+                }
                 <p class="card-text mb-auto">@event.description</p>
-                <a href="./@event.id">詳細を見る</a>
+                <a href="/events/@event.id">詳細を見る</a>
             </div>
             <img class="card-img-right flex-auto d-none d-lg-block" src="https://via.placeholder.com/200x250"
                  alt="Card image cap">

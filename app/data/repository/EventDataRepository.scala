@@ -1,7 +1,7 @@
 package data.repository
 
-import java.util.Date
 import java.sql.Timestamp
+import java.util.Date
 
 import data.entity.Tables
 import data.entity.mapper.EventEntityDataMapper
@@ -21,12 +21,12 @@ class EventDataRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(im
 
   val dbConfig = dbConfigProvider.get[JdbcProfile]
 
-  def find(id: Int): Future[Event] =
+  override def find(id: Int): Future[Event] =
     dbConfig.db.run(
       Tables.Event.filter(_.id === id).result.head.map(EventEntityDataMapper.transform)
     )
 
-  def findByTerm(termStart: Date, termEnd: Option[Date]): Future[List[Event]] = {
+  override def findByTerm(termStart: Date, termEnd: Option[Date], keyword: Option[String]): Future[List[Event]] = {
     // Guard
     termEnd match {
       case Some(x) if x.before(termStart) =>
@@ -34,17 +34,26 @@ class EventDataRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(im
       case _ =>
     }
 
-    var criteriaTerms = Tables.EventSchedule.filter(_.stateTime >= new Timestamp(termStart.getTime))
-
-    termEnd match {
-      case Some(x) =>
-        criteriaTerms = criteriaTerms.filter(_.endTime <= new Timestamp(x.getTime))
-      case _ =>
-    }
-
     val query = for {
-      e <- Tables.Event
-      s <- criteriaTerms
+      e <- this.keywordQuery(keyword)
+      s <- this.termsQuery(termStart, termEnd)
+      if e.id === s.eventId
+    } yield (e, s)
+
+    var res = query.to[List].result
+    res.statements.foreach(println)
+
+    dbConfig
+      .db
+      .run(
+        query.to[List].result.map(EventEntityDataMapper.transformCollection)
+      )
+  }
+
+  override def findByKeyword(keyword: String): Future[List[Event]] = {
+    val query = for {
+      e <- this.keywordQuery(Option(keyword))
+      s <- Tables.EventSchedule
       if e.id === s.eventId
     } yield (e, s)
 
@@ -55,10 +64,30 @@ class EventDataRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(im
       )
   }
 
-  def all(): Future[List[Event]] =
+  override def all(): Future[List[Event]] =
     dbConfig
       .db
       .run(
         Tables.Event.to[List].result.map(_.map(EventEntityDataMapper.transform))
       )
+
+  private def keywordQuery(keyword: Option[String])
+  : Query[Tables.Event, Tables.EventRow, Seq] = {
+    Tables.Event.filter(event =>
+      LiteralColumn(keyword).isEmpty
+        || (event.title like LiteralColumn(keyword.map(s => s"%$s%")))
+        || (event.description like LiteralColumn(keyword.map(s => s"%$s%")))
+    )
+  }
+
+  private def termsQuery(termStart: Date, termEnd: Option[Date])
+  : Query[Tables.EventSchedule, Tables.EventScheduleRow, Seq] = {
+    val formatted = termEnd.map(value => new Timestamp(value.getTime))
+    Tables.EventSchedule
+      .filter(schedule => schedule.stateTime >= new Timestamp(termStart.getTime))
+      .filter(schedule =>
+        LiteralColumn(formatted).isEmpty
+          || schedule.endTime <= LiteralColumn(formatted)
+      )
+  }
 }
