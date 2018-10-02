@@ -37,11 +37,9 @@ class EventDataRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(im
     val query = for {
       e <- this.keywordQuery(keyword)
       s <- this.termsQuery(termStart, termEnd)
+      p <- Tables.EventPhoto
       if e.id === s.eventId
-    } yield (e, s)
-
-    var res = query.to[List].result
-    res.statements.foreach(println)
+    } yield (e, s, p)
 
     dbConfig
       .db
@@ -54,8 +52,9 @@ class EventDataRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(im
     val query = for {
       e <- this.keywordQuery(Option(keyword))
       s <- Tables.EventSchedule
-      if e.id === s.eventId
-    } yield (e, s)
+      p <- Tables.EventPhoto
+      if e.id === s.eventId && e.id === p.eventId
+    } yield (e, s, p)
 
     dbConfig
       .db

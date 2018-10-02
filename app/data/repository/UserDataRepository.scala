@@ -18,7 +18,7 @@ class UserDataRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(imp
 
   val dbConfig = dbConfigProvider.get[JdbcProfile]
 
-  def find(id: Int): Future[User] =
+  override def find(id: Int): Future[User] =
     dbConfig.db
       .run(Tables.User.filter(_.id === id).result.head.map(UserEntityDataMapper.transform))
 }

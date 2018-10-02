@@ -1,8 +1,10 @@
 import com.google.inject.AbstractModule
 import java.time.Clock
 
-import data.repository.{EventDataRepository, UserDataRepository}
+import data.repository.{ArtistDataRepository, EventDataRepository, PhotoDataRepository, UserDataRepository}
+import domain.artist.ArtistRepository
 import domain.event.EventRepository
+import domain.photo.PhotoRepository
 import domain.user.UserRepository
 import services.{ApplicationTimer, AtomicCounter, Counter}
 
@@ -31,6 +33,10 @@ class Module extends AbstractModule {
     bind(classOf[UserRepository]).to(classOf[UserDataRepository])
 
     bind(classOf[EventRepository]).to(classOf[EventDataRepository])
+
+    bind(classOf[ArtistRepository]).to(classOf[ArtistDataRepository])
+
+    bind(classOf[PhotoRepository]).to(classOf[PhotoDataRepository])
   }
 
 }

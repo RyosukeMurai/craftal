@@ -7,7 +7,7 @@ object SlickModelGenerator {
   def main(args: Array[String]): Unit = {
     val slickDriver = "slick.jdbc.MySQLProfile"
     val jdbcDriver = "com.mysql.jdbc.Driver"
-    val url = "jdbc:mysql://192.168.1.4:3306/craftal?characterEncoding=UTF-8"
+    val url = "jdbc:mysql://127.0.0.1:3306/craftal?characterEncoding=UTF-8"
     val user = "craftal"
     val password = "craftal"
 

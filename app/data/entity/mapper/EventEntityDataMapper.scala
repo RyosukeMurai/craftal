@@ -1,7 +1,6 @@
 package data.entity.mapper
 
-import data.entity.Tables.EventRow
-import data.entity.Tables.EventScheduleRow
+import data.entity.Tables.{EventPhotoRow, EventRow, EventScheduleRow}
 import domain.event._
 
 object EventEntityDataMapper {
@@ -14,7 +13,9 @@ object EventEntityDataMapper {
       location = EventLocation.apply(eventEntity.locationId)
     )
 
-  def transform(eventEntity: EventRow, eventScheduleCollection: List[EventScheduleRow]): Event =
+  def transform(eventEntity: EventRow,
+                eventScheduleCollection: List[EventScheduleRow],
+                eventPhotoCollection: List[EventPhotoRow]): Event =
     new Event(
       id = eventEntity.id,
       title = eventEntity.title,
@@ -27,13 +28,18 @@ object EventEntityDataMapper {
         venue = schedule.venue,
         stateTime = schedule.stateTime,
         endTime = schedule.endTime
+      )),
+      eventPhotoCollection.map(photo => EventPhoto(
+        eventId = photo.eventId,
+        photoId = photo.photoId,
+        positionNo = photo.positionNo
       ))
     )
 
-  def transformCollection(eventRows: List[(EventRow, EventScheduleRow)]): List[Event] =
+  def transformCollection(eventRows: List[(EventRow, EventScheduleRow, EventPhotoRow)]): List[Event] =
     eventRows
       .groupBy(_._1.id)
-      .map(m => this.transform(m._2.head._1, m._2.map(_._2)))
+      .map(m => this.transform(m._2.head._1, m._2.map(_._2), m._2.map(_._3)))
       .toList
 
 }

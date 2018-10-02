@@ -2,7 +2,7 @@
 * This template takes a two arguments, a String containing a
 * message to display and an AssetsFinder to locate static assets.
 *@
-@(calendar: List[presentation.model.event.EventCalendarDate],
+@(calendar: presentation.model.event.EventCalendar,
 form: Form[presentation.model.event.EventSearchCondition]
 )(implicit assetsFinder: AssetsFinder, messagesProvider: MessagesProvider)
 
@@ -27,13 +27,14 @@ form: Form[presentation.model.event.EventSearchCondition]
                 'name -> "keyword",
                 'class -> "form-control mr-sm-2",
                 'placeholder -> "Search",
+                '_label -> "フリーワード検索"
             )
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         }
     </div>
 </div>
 
-@for(day <- calendar) {
+@for(day <- calendar.getDays) {
 <div class="row mb-2">
     <div class="col-md-12">
         <h3 class="pb-3 mb-4 font-italic border-bottom">
@@ -48,9 +49,9 @@ form: Form[presentation.model.event.EventSearchCondition]
             <div class="card-body d-flex flex-column align-items-start">
                 <strong class="d-inline-block mb-2 text-primary">屋内</strong>
                 <h3 class="mb-0">
-                    <a class="text-dark" href="#">@event.title</a>
+                    <a class="text-dark" href="#">@event.getEvent.title</a>
                 </h3>
-                @for(schedule <- event.getSchedule) {
+                @for(schedule <- event.getEvent.getSchedule) {
                 <div class="mb-1 text-muted">
                     @schedule.stateTime.format("hh:mm:ss")~ @schedule.endTime.format("hh:mm:ss")
                 </div>
@@ -58,10 +59,11 @@ form: Form[presentation.model.event.EventSearchCondition]
                     @schedule.venue
                 </div>
                 }
-                <p class="card-text mb-auto">@event.description</p>
-                <a href="/events/@event.id">詳細を見る</a>
+                <p class="card-text mb-auto">@event.getEvent.description</p>
+                <a href="/events/@event.getEvent.id">詳細を見る</a>
             </div>
-            <img class="card-img-right flex-auto d-none d-lg-block" src="https://via.placeholder.com/200x250"
+            <img class="card-img-right flex-auto d-none d-lg-block"
+                 src="@event.getMainPhotoUrl"
                  alt="Card image cap">
         </div>
     </div>
