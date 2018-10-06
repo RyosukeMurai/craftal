@@ -10,7 +10,6 @@ case class ArtistGenreSummaryContent(private val artist: Artist,
   def getArtist: Artist = this.artist
 
   def getIconPhotoUrl: String = {
-    println(artist.iconPhotoId)
     val photo = this.photos.find(_.id == this.artist.iconPhotoId)
     photo match {
       case Some(p) => URIService.resolveUrlByIdentifierAndResourceType(p.identifier, ResourceType.photo).toString

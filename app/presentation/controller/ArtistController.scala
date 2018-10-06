@@ -1,7 +1,7 @@
 package presentation.controller
 
 import controllers.AssetsFinder
-import domain.artist.interactor.{GetArtist, GetArtists}
+import domain.artist.interactor.{GetArtist, GetArtists, GetArtistsByGenre}
 import domain.photo.interactor.GetPhotosByIdList
 import javax.inject._
 import play.api.data.Forms._
@@ -20,6 +20,7 @@ import scala.concurrent.ExecutionContext
 class ArtistController @Inject()(controllerComponents: ControllerComponents,
                                  getArtist: GetArtist,
                                  getArtists: GetArtists,
+                                 getArtistsByGenre: GetArtistsByGenre,
                                  getPhotos: GetPhotosByIdList)
                                 (implicit executionContext: ExecutionContext, assetsFinder: AssetsFinder)
   extends AbstractController(controllerComponents) with play.api.i18n.I18nSupport {
@@ -31,8 +32,11 @@ class ArtistController @Inject()(controllerComponents: ControllerComponents,
     * a path of `/`.
     */
   def index: Action[AnyContent] = Action.async { implicit request =>
-    val searchForm = Form(mapping("keyword" -> text)(ArtistSearchCondition.apply)(ArtistSearchCondition.unapply))
+    val searchForm = Form(mapping(
+      "keyword" -> text
+    )(ArtistSearchCondition.apply)(ArtistSearchCondition.unapply))
     val condition = searchForm.bindFromRequest(request.queryString).value
+    print(condition)
     for {
       e <- getArtists.execute(condition)
       p <- getPhotos.execute(e.flatMap(_.getPhotos.map(_.photoId)))
@@ -53,6 +57,24 @@ class ArtistController @Inject()(controllerComponents: ControllerComponents,
       Ok(
         presentation.view.artist.html.detail(
           ArtistDetailDataMapper.transform(v, List())
+        )
+      )
+    }
+  }
+
+  def list(genreId: String): Action[AnyContent] = Action.async { implicit request =>
+    val searchForm = Form(mapping(
+      "keyword" -> text
+    )(ArtistSearchCondition.apply)(ArtistSearchCondition.unapply))
+    val condition = searchForm.bindFromRequest(request.queryString).value
+    for {
+      e <- getArtistsByGenre.execute(genreId.toInt, condition)
+      p <- getPhotos.execute(e.flatMap(_.getPhotos.map(_.photoId)))
+    } yield {
+      Ok(
+        presentation.view.artist.html.index(
+          ArtistSummaryDataMapper.transform(e, p),
+          searchForm
         )
       )
     }

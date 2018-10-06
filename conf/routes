@@ -23,3 +23,5 @@ GET     /events/:id                 presentation.controller.EventController.deta
 GET     /artists                    presentation.controller.ArtistController.index
 
 GET     /artists/:id                presentation.controller.ArtistController.detail(id)
+
+GET     /artists/genre/:genreId     presentation.controller.ArtistController.list(genreId)

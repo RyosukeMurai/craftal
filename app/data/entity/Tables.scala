@@ -14,9 +14,52 @@ trait Tables {
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
-  lazy val schema: profile.SchemaDescription = Array(Event.schema, EventArtist.schema, EventLocation.schema, EventPhoto.schema, EventSchedule.schema, EventStatus.schema, Genre.schema, Photo.schema, PlayEvolutions.schema, User.schema).reduceLeft(_ ++ _)
+  lazy val schema: profile.SchemaDescription = Array(ArtistPhoto.schema, Event.schema, EventArtist.schema, EventLocation.schema, EventPhoto.schema, EventSchedule.schema, EventStatus.schema, Genre.schema, Photo.schema, PlayEvolutions.schema, User.schema).reduceLeft(_ ++ _)
   @deprecated("Use .schema instead of .ddl", "3.0")
   def ddl = schema
+
+  /** Entity class storing rows of table ArtistPhoto
+   *  @param id Database column id SqlType(INT UNSIGNED), PrimaryKey
+   *  @param artistId Database column artist_id SqlType(INT UNSIGNED)
+   *  @param photoId Database column photo_id SqlType(INT UNSIGNED)
+   *  @param positionNo Database column position_no SqlType(INT UNSIGNED)
+   *  @param createdAt Database column created_at SqlType(DATETIME)
+   *  @param updatedAt Database column updated_at SqlType(DATETIME)
+   *  @param isDeleted Database column is_deleted SqlType(BIT), Default(false) */
+  case class ArtistPhotoRow(id: Int, artistId: Int, photoId: Int, positionNo: Int, createdAt: java.sql.Timestamp, updatedAt: java.sql.Timestamp, isDeleted: Boolean = false)
+  /** GetResult implicit for fetching ArtistPhotoRow objects using plain SQL queries */
+  implicit def GetResultArtistPhotoRow(implicit e0: GR[Int], e1: GR[java.sql.Timestamp], e2: GR[Boolean]): GR[ArtistPhotoRow] = GR{
+    prs => import prs._
+    ArtistPhotoRow.tupled((<<[Int], <<[Int], <<[Int], <<[Int], <<[java.sql.Timestamp], <<[java.sql.Timestamp], <<[Boolean]))
+  }
+  /** Table description of table artist_photo. Objects of this class serve as prototypes for rows in queries. */
+  class ArtistPhoto(_tableTag: Tag) extends profile.api.Table[ArtistPhotoRow](_tableTag, Some("craftal"), "artist_photo") {
+    def * = (id, artistId, photoId, positionNo, createdAt, updatedAt, isDeleted) <> (ArtistPhotoRow.tupled, ArtistPhotoRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = (Rep.Some(id), Rep.Some(artistId), Rep.Some(photoId), Rep.Some(positionNo), Rep.Some(createdAt), Rep.Some(updatedAt), Rep.Some(isDeleted)).shaped.<>({r=>import r._; _1.map(_=> ArtistPhotoRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column id SqlType(INT UNSIGNED), PrimaryKey */
+    val id: Rep[Int] = column[Int]("id", O.PrimaryKey)
+    /** Database column artist_id SqlType(INT UNSIGNED) */
+    val artistId: Rep[Int] = column[Int]("artist_id")
+    /** Database column photo_id SqlType(INT UNSIGNED) */
+    val photoId: Rep[Int] = column[Int]("photo_id")
+    /** Database column position_no SqlType(INT UNSIGNED) */
+    val positionNo: Rep[Int] = column[Int]("position_no")
+    /** Database column created_at SqlType(DATETIME) */
+    val createdAt: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("created_at")
+    /** Database column updated_at SqlType(DATETIME) */
+    val updatedAt: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("updated_at")
+    /** Database column is_deleted SqlType(BIT), Default(false) */
+    val isDeleted: Rep[Boolean] = column[Boolean]("is_deleted", O.Default(false))
+
+    /** Foreign key referencing Photo (database name artist_photo_ibfk_2) */
+    lazy val photoFk = foreignKey("artist_photo_ibfk_2", photoId, Photo)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing User (database name artist_photo_ibfk_1) */
+    lazy val userFk = foreignKey("artist_photo_ibfk_1", artistId, User)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+  }
+  /** Collection-like TableQuery object for table ArtistPhoto */
+  lazy val ArtistPhoto = new TableQuery(tag => new ArtistPhoto(tag))
 
   /** Entity class storing rows of table Event
    *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey

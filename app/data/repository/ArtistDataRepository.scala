@@ -36,12 +36,26 @@ class ArtistDataRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(i
       )
   }
 
+  override def findByGenreId(genreId: Int, keyword: Option[String]): Future[List[Artist]] = {
+    val query = for {
+      u <- Tables.User
+      p <- Tables.ArtistPhoto
+      if u.id === p.artistId
+    } yield (u, p)
+
+    dbConfig
+      .db
+      .run(
+        query.to[List].result.map(ArtistEntityDataMapper.transformCollection)
+      )
+  }
+
   override def findByKeyword(keyword: Option[String]): Future[List[Artist]] = {
     val query = for {
       u <- Tables.User
-      //p <- Tables.ArtistPhoto
-      //if u.id === p.artistId
-    } yield (u /*, p*/)
+      p <- Tables.ArtistPhoto
+      if u.id === p.artistId
+    } yield (u, p)
 
     dbConfig
       .db

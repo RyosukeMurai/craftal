@@ -8,6 +8,8 @@ trait ArtistRepository {
 
   def findArtistsByEventId(eventId: Int): Future[List[Artist]]
 
+  def findByGenreId(genreId: Int, keyword: Option[String]): Future[List[Artist]]
+
   def findByKeyword(keyword: Option[String]): Future[List[Artist]]
 
   def all(): Future[List[Artist]]
