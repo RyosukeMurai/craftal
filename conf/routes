@@ -13,6 +13,13 @@ GET     /message                    controllers.AsyncController.message
 GET     /assets/*file               controllers.Assets.versioned(file)
 
 
+# Map event resources
 GET     /events                     presentation.controller.EventController.index
 
 GET     /events/:id                 presentation.controller.EventController.detail(id)
+
+
+# Map artist resources
+GET     /artists                    presentation.controller.ArtistController.index
+
+GET     /artists/:id                presentation.controller.ArtistController.detail(id)

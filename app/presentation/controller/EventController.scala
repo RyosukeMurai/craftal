@@ -8,8 +8,8 @@ import domain.artist.interactor.GetArtistsParticipatingInEvent
 import domain.event.interactor.{GetEvent, GetEventsWithinPeriod}
 import domain.photo.interactor.GetPhotosByIdList
 import javax.inject._
-import play.api.data._
 import play.api.data.Forms._
+import play.api.data._
 import play.api.mvc._
 import presentation.mapper.{EventCalendarDataMapper, EventDetailDataMapper}
 import presentation.model.event.EventSearchCondition

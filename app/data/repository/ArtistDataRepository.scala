@@ -35,5 +35,26 @@ class ArtistDataRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(i
         query.to[List].result.map(_.map(ArtistEntityDataMapper.transform))
       )
   }
+
+  override def findByKeyword(keyword: Option[String]): Future[List[Artist]] = {
+    val query = for {
+      u <- Tables.User
+      //p <- Tables.ArtistPhoto
+      //if u.id === p.artistId
+    } yield (u /*, p*/)
+
+    dbConfig
+      .db
+      .run(
+        query.to[List].result.map(ArtistEntityDataMapper.transformCollection)
+      )
+  }
+
+  override def all(): Future[List[Artist]] =
+    dbConfig
+      .db
+      .run(
+        Tables.User.to[List].result.map(_.map(ArtistEntityDataMapper.transform))
+      )
 }
 
