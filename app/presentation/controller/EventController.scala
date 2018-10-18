@@ -6,6 +6,7 @@ import java.util.Date
 import controllers.AssetsFinder
 import domain.artist.interactor.GetArtistsParticipatingInEvent
 import domain.event.interactor.{GetEvent, GetEventsWithinPeriod}
+import domain.genre.interactor.GetGenres
 import domain.photo.interactor.GetPhotosByIdList
 import javax.inject._
 import play.api.data.Forms._
@@ -25,7 +26,8 @@ class EventController @Inject()(controllerComponents: ControllerComponents,
                                 getEvents: GetEventsWithinPeriod,
                                 getEvent: GetEvent,
                                 getArtists: GetArtistsParticipatingInEvent,
-                                getPhotos: GetPhotosByIdList)
+                                getPhotos: GetPhotosByIdList,
+                                getGenres: GetGenres)
                                (implicit executionContext: ExecutionContext, assetsFinder: AssetsFinder)
   extends AbstractController(controllerComponents) with play.api.i18n.I18nSupport {
 
@@ -39,12 +41,14 @@ class EventController @Inject()(controllerComponents: ControllerComponents,
     val searchForm = Form(mapping("keyword" -> text)(EventSearchCondition.apply)(EventSearchCondition.unapply))
     val condition = searchForm.bindFromRequest(request.queryString).value
     for {
+      g <- getGenres.execute()
       e <- getEvents.execute(new Date(), None, condition)
       p <- getPhotos.execute(e.flatMap(_.getPhotos.map(_.photoId)))
     } yield {
       Ok(
         presentation.view.event.html.index(
           EventCalendarDataMapper.transform(e, p),
+          g,
           searchForm
         )
       )

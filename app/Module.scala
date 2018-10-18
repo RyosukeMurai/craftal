@@ -1,9 +1,9 @@
-import com.google.inject.AbstractModule
-import java.time.Clock
 
-import data.repository.{ArtistDataRepository, EventDataRepository, PhotoDataRepository, UserDataRepository}
+import com.google.inject.AbstractModule
+import data.repository._
 import domain.artist.ArtistRepository
 import domain.event.EventRepository
+import domain.genre.GenreRepository
 import domain.photo.PhotoRepository
 import domain.user.UserRepository
 import services.{ApplicationTimer, AtomicCounter, Counter}
@@ -20,16 +20,15 @@ import services.{ApplicationTimer, AtomicCounter, Counter}
   */
 class Module extends AbstractModule {
 
-  override def configure() = {
+  override def configure(): Unit = {
     // Use the system clock as the default implementation of Clock
-    bind(classOf[Clock]).toInstance(Clock.systemDefaultZone)
+    bind(classOf[java.time.Clock]).toInstance(java.time.Clock.systemDefaultZone)
     // Ask Guice to create an instance of ApplicationTimer when the
     // application starts.
     bind(classOf[ApplicationTimer]).asEagerSingleton()
     // Set AtomicCounter as the implementation for Counter.
     bind(classOf[Counter]).to(classOf[AtomicCounter])
 
-    // Set UserDataRepository as the implementation for UserRepository
     bind(classOf[UserRepository]).to(classOf[UserDataRepository])
 
     bind(classOf[EventRepository]).to(classOf[EventDataRepository])
@@ -37,6 +36,8 @@ class Module extends AbstractModule {
     bind(classOf[ArtistRepository]).to(classOf[ArtistDataRepository])
 
     bind(classOf[PhotoRepository]).to(classOf[PhotoDataRepository])
+
+    bind(classOf[GenreRepository]).to(classOf[GenreDataRepository])
   }
 
 }

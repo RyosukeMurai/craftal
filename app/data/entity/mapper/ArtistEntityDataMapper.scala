@@ -10,7 +10,7 @@ object ArtistEntityDataMapper {
       id = userEntity.id,
       name = userEntity.name,
       email = userEntity.email,
-      genre = Genre("木工", None)
+      genre = Genre(1, "木工", None)
     )
 
   def transform(userEntity: Tables.UserRow,
@@ -19,7 +19,7 @@ object ArtistEntityDataMapper {
       id = userEntity.id,
       name = userEntity.name,
       email = userEntity.email,
-      genre = Genre("木工", None),
+      genre = Genre(1, "木工", None),
       photoCollection.map(photo => ArtistPhoto(
         artistId = photo.artistId,
         photoId = photo.photoId,

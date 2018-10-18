@@ -3,6 +3,7 @@
 * message to display and an AssetsFinder to locate static assets.
 *@
 @(summary: presentation.model.artist.ArtistSummary,
+genres: List[domain.genre.Genre],
 form: Form[presentation.model.artist.ArtistSearchCondition]
 )(implicit assetsFinder: AssetsFinder, messagesProvider: MessagesProvider)
 
@@ -12,6 +13,8 @@ form: Form[presentation.model.artist.ArtistSearchCondition]
 * argument is an `Html` object containing the body of the page.
 *@
 @presentation.view.html.main("Craftal", "artists", assetsFinder) {
+
+@presentation.view.helper.html.genreNav(genres)
 
 <div class="row mb-2">
     <div class="col-md-12">
