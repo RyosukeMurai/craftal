@@ -9,6 +9,7 @@ import domain.event.interactor.{GetEvent, GetEventsWithinPeriod}
 import domain.genre.interactor.GetGenres
 import domain.photo.interactor.GetPhotosByIdList
 import javax.inject._
+import org.webjars.play.WebJarsUtil
 import play.api.data.Forms._
 import play.api.data._
 import play.api.mvc._
@@ -28,7 +29,7 @@ class EventController @Inject()(controllerComponents: ControllerComponents,
                                 getArtists: GetArtistsParticipatingInEvent,
                                 getPhotos: GetPhotosByIdList,
                                 getGenres: GetGenres)
-                               (implicit executionContext: ExecutionContext, assetsFinder: AssetsFinder)
+                               (implicit executionContext: ExecutionContext, webJarsUtil: WebJarsUtil, assetsFinder: AssetsFinder)
   extends AbstractController(controllerComponents) with play.api.i18n.I18nSupport {
 
   /**
@@ -55,7 +56,7 @@ class EventController @Inject()(controllerComponents: ControllerComponents,
     }
   }
 
-  def detail(id: String): Action[AnyContent] = Action.async {
+  def detail(id: String): Action[AnyContent] = Action.async { implicit request =>
     for {
       v <- getEvent.execute(id.toInt) zip getArtists.execute(id.toInt)
     } yield {

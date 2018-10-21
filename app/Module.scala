@@ -1,4 +1,6 @@
 
+import java.time.Clock
+
 import com.google.inject.AbstractModule
 import data.repository._
 import domain.artist.ArtistRepository
@@ -22,7 +24,7 @@ class Module extends AbstractModule {
 
   override def configure(): Unit = {
     // Use the system clock as the default implementation of Clock
-    bind(classOf[java.time.Clock]).toInstance(java.time.Clock.systemDefaultZone)
+    bind(classOf[Clock]).toInstance(Clock.systemDefaultZone)
     // Ask Guice to create an instance of ApplicationTimer when the
     // application starts.
     bind(classOf[ApplicationTimer]).asEagerSingleton()

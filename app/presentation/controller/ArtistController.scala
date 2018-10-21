@@ -5,6 +5,7 @@ import domain.artist.interactor.{GetArtist, GetArtists, GetArtistsByGenre}
 import domain.genre.interactor.GetGenres
 import domain.photo.interactor.GetPhotosByIdList
 import javax.inject._
+import org.webjars.play.WebJarsUtil
 import play.api.data.Forms._
 import play.api.data._
 import play.api.mvc._
@@ -24,7 +25,7 @@ class ArtistController @Inject()(controllerComponents: ControllerComponents,
                                  getArtistsByGenre: GetArtistsByGenre,
                                  getPhotos: GetPhotosByIdList,
                                  getGenres: GetGenres)
-                                (implicit executionContext: ExecutionContext, assetsFinder: AssetsFinder)
+                                (implicit executionContext: ExecutionContext, webJarsUtil: WebJarsUtil, assetsFinder: AssetsFinder)
   extends AbstractController(controllerComponents) with play.api.i18n.I18nSupport {
 
   def index: Action[AnyContent] = Action.async { implicit request =>
@@ -48,7 +49,7 @@ class ArtistController @Inject()(controllerComponents: ControllerComponents,
     }
   }
 
-  def detail(id: String): Action[AnyContent] = Action.async {
+  def detail(id: String): Action[AnyContent] = Action.async { implicit request =>
     for {
       v <- getArtist.execute(id.toInt)
     } yield {

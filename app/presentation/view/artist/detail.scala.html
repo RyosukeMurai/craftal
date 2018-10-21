@@ -1,15 +1,11 @@
-@*
-* This template takes a two arguments, a String containing a
-* message to display and an AssetsFinder to locate static assets.
-*@
-@(artist: presentation.model.artist.ArtistDetail)(implicit assetsFinder: AssetsFinder)
+@import play.api.i18n.Messages
+@import play.api.mvc.RequestHeader
+@import org.webjars.play.WebJarsUtil
+@import controllers.AssetsFinder
 
-@*
-* Call the `main` template with two arguments. The first
-* argument is a `String` with the title of the page, the second
-* argument is an `Html` object containing the body of the page.
-*@
-@presentation.view.html.main(artist.name, "artist", assetsFinder) {
+@(artist: presentation.model.artist.ArtistDetail)(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+
+@presentation.view.html.main(artist.name) {
 <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
     <div class="col-md-6 px-0">
         <h1 class="display-4 font-italic">@artist.name</h1>
