@@ -1,0 +1,5 @@
+package useCase
+
+trait Interactor {
+
+}

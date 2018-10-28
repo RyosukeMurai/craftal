@@ -3,9 +3,9 @@ package data.repository
 import java.sql.Timestamp
 import java.util.Date
 
-import data.entity.Tables
-import data.entity.mapper.EventEntityDataMapper
-import domain.event.{Event, EventRepository}
+import data.Tables
+import domain.model.event.{Event, EventRepository}
+import data.mapper.EventEntityDataMapper
 import javax.inject.{Inject, Singleton}
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile

@@ -1,8 +1,8 @@
 package data.repository
 
-import data.entity.Tables
-import data.entity.mapper.UserEntityDataMapper
-import domain.user.{User, UserRepository}
+import data.Tables
+import domain.model.user.{User, UserRepository}
+import data.mapper.UserEntityDataMapper
 import javax.inject.{Inject, Singleton}
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile

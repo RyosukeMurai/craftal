@@ -3,12 +3,11 @@ import java.time.Clock
 
 import com.google.inject.AbstractModule
 import data.repository._
-import domain.artist.ArtistRepository
-import domain.event.EventRepository
-import domain.genre.GenreRepository
-import domain.photo.PhotoRepository
-import domain.user.UserRepository
-import services.{ApplicationTimer, AtomicCounter, Counter}
+import domain.model.artist.ArtistRepository
+import domain.model.event.EventRepository
+import domain.model.genre.GenreRepository
+import domain.model.photo.PhotoRepository
+import domain.model.user.UserRepository
 
 /**
   * This class is a Guice module that tells Guice how to bind several
@@ -27,9 +26,6 @@ class Module extends AbstractModule {
     bind(classOf[Clock]).toInstance(Clock.systemDefaultZone)
     // Ask Guice to create an instance of ApplicationTimer when the
     // application starts.
-    bind(classOf[ApplicationTimer]).asEagerSingleton()
-    // Set AtomicCounter as the implementation for Counter.
-    bind(classOf[Counter]).to(classOf[AtomicCounter])
 
     bind(classOf[UserRepository]).to(classOf[UserDataRepository])
 

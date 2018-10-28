@@ -1,5 +1,4 @@
 import application.auth._
-import application.dao.{AuthTokenDAO, AuthTokenDAOImpl, UserDAO, UserDAOImpl}
 import com.google.inject.name.Named
 import com.google.inject.{AbstractModule, Provides}
 import com.mohiva.play.silhouette.api.actions.{SecuredErrorHandler, UnsecuredErrorHandler}

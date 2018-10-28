@@ -2,53 +2,53 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# An example controller showing a sample home page
-#GET     /                           controllers.HomeController.index
-# An example controller showing how to use dependency injection
-GET     /count                      controllers.CountController.count
-# An example controller showing how to write asynchronous code
-GET     /message                    controllers.AsyncController.message
+# Map event resources
+GET     /events                     web.controller.EventController.index
+
+GET     /events/:id                 web.controller.EventController.detail(id)
+
+
+# Map artist resources
+GET     /artists                    web.controller.ArtistController.index
+
+GET     /artists/:id                web.controller.ArtistController.detail(id)
+
+GET     /artists/genre/:genreId     web.controller.ArtistController.list(genreId)
+
+
+# Home page
+GET     /                           web.controller.ApplicationController.index
+
+GET     /signOut                    web.controller.ApplicationController.signOut
+
+GET     /authenticate/:provider     web.controller.SocialAuthController.authenticate(provider)
+
+GET     /signUp                     web.controller.SignUpController.view
+
+POST    /signUp                     web.controller.SignUpController.submit
+
+GET     /signIn                     web.controller.SignInController.view
+
+POST    /signIn                     web.controller.SignInController.submit
+
+GET     /password/forgot            web.controller.ForgotPasswordController.view
+
+POST    /password/forgot            web.controller.ForgotPasswordController.submit
+
+GET     /password/reset/:token      web.controller.ResetPasswordController.view(token: java.util.UUID)
+
+POST    /password/reset/:token      web.controller.ResetPasswordController.submit(token: java.util.UUID)
+
+GET     /password/change            web.controller.ChangePasswordController.view
+
+POST    /password/change            web.controller.ChangePasswordController.submit
+
+GET     /account/email/:email       web.controller.ActivateAccountController.send(email: String)
+
+GET     /account/activate/:token    web.controller.ActivateAccountController.activate(token: java.util.UUID)
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(file)
 
-
-# Map event resources
-GET     /events                     presentation.controller.EventController.index
-
-GET     /events/:id                 presentation.controller.EventController.detail(id)
-
-
-# Map artist resources
-GET     /artists                    presentation.controller.ArtistController.index
-
-GET     /artists/:id                presentation.controller.ArtistController.detail(id)
-
-GET     /artists/genre/:genreId     presentation.controller.ArtistController.list(genreId)
-
-
-# Home page
-GET     /                           presentation.controller.ApplicationController.index
-GET     /signOut                    presentation.controller.ApplicationController.signOut
-GET     /authenticate/:provider     presentation.controller.SocialAuthController.authenticate(provider)
-
-GET     /signUp                     presentation.controller.SignUpController.view
-POST    /signUp                     presentation.controller.SignUpController.submit
-
-GET     /signIn                     presentation.controller.SignInController.view
-POST    /signIn                     presentation.controller.SignInController.submit
-
-GET     /password/forgot            presentation.controller.ForgotPasswordController.view
-POST    /password/forgot            presentation.controller.ForgotPasswordController.submit
-GET     /password/reset/:token      presentation.controller.ResetPasswordController.view(token: java.util.UUID)
-POST    /password/reset/:token      presentation.controller.ResetPasswordController.submit(token: java.util.UUID)
-GET     /password/change            presentation.controller.ChangePasswordController.view
-POST    /password/change            presentation.controller.ChangePasswordController.submit
-
-GET     /account/email/:email       presentation.controller.ActivateAccountController.send(email: String)
-GET     /account/activate/:token    presentation.controller.ActivateAccountController.activate(token: java.util.UUID)
-
-
-# Map static resources from the /public folder to the /assets URL path
 ->      /webjars                    webjars.Routes
-

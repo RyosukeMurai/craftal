@@ -1,8 +1,8 @@
 package data.repository
 
-import data.entity.Tables
-import data.entity.mapper.PhotoEntityDataMapper
-import domain.photo.{Photo, PhotoRepository}
+import data.Tables
+import domain.model.photo.{Photo, PhotoRepository}
+import data.mapper.PhotoEntityDataMapper
 import javax.inject.{Inject, Singleton}
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile

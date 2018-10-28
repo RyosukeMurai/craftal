@@ -1,8 +1,8 @@
 package data.repository
 
-import data.entity.Tables
-import data.entity.mapper.GenreEntityDataMapper
-import domain.genre.{Genre, GenreRepository}
+import data.Tables
+import domain.model.genre.{Genre, GenreRepository}
+import data.mapper.GenreEntityDataMapper
 import javax.inject.{Inject, Singleton}
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile

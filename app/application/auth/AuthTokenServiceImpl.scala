@@ -2,7 +2,6 @@ package application.auth
 
 import java.util.UUID
 
-import application.dao.AuthTokenDAO
 import com.mohiva.play.silhouette.api.util.Clock
 import javax.inject.Inject
 import org.joda.time.DateTimeZone
