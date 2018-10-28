@@ -2,7 +2,6 @@ package web.controller
 
 import java.util.UUID
 
-import application.auth.{DefaultEnv, UserService}
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.api.repositories.AuthInfoRepository
 import com.mohiva.play.silhouette.api.util.{PasswordHasherRegistry, PasswordInfo}
@@ -12,8 +11,9 @@ import javax.inject.Inject
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
+import web.DefaultEnv
 import web.model.form.ResetPasswordForm
-import web.service.AuthTokenService
+import web.service.{AuthTokenService, UserIdentityService}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -33,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class ResetPasswordController @Inject()(
                                          components: ControllerComponents,
                                          silhouette: Silhouette[DefaultEnv],
-                                         userService: UserService,
+                                         userService: UserIdentityService,
                                          authInfoRepository: AuthInfoRepository,
                                          passwordHasherRegistry: PasswordHasherRegistry,
                                          authTokenService: AuthTokenService

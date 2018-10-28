@@ -3,14 +3,14 @@ package web.controller
 import java.net.URLDecoder
 import java.util.UUID
 
-import application.auth.{DefaultEnv, UserService}
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.impl.providers.CredentialsProvider
 import javax.inject.Inject
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.libs.mailer.{Email, MailerClient}
 import play.api.mvc._
-import web.service.AuthTokenService
+import web.DefaultEnv
+import web.service.{AuthTokenService, UserIdentityService}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -27,7 +27,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class ActivateAccountController @Inject()(
                                            components: ControllerComponents,
                                            silhouette: Silhouette[DefaultEnv],
-                                           userService: UserService,
+                                           userService: UserIdentityService,
                                            authTokenService: AuthTokenService,
                                            mailerClient: MailerClient
                                          )(
@@ -48,7 +48,7 @@ class ActivateAccountController @Inject()(
 
     userService.retrieve(loginInfo).flatMap {
       case Some(user) if !user.activated =>
-        authTokenService.create(user.userID).map { authToken =>
+        authTokenService.create(user.id).map { authToken =>
           val url = routes.ActivateAccountController.activate(authToken.id).absoluteURL()
 
           mailerClient.send(Email(

@@ -1,6 +1,5 @@
 package web.controller
 
-import application.auth.{DefaultEnv, UserService}
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.api.exceptions.ProviderException
 import com.mohiva.play.silhouette.api.repositories.AuthInfoRepository
@@ -8,6 +7,8 @@ import com.mohiva.play.silhouette.impl.providers._
 import javax.inject.Inject
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
+import web.DefaultEnv
+import web.service.UserIdentityService
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -24,7 +25,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class SocialAuthController @Inject()(
                                       components: ControllerComponents,
                                       silhouette: Silhouette[DefaultEnv],
-                                      userService: UserService,
+                                      userService: UserIdentityService,
                                       authInfoRepository: AuthInfoRepository,
                                       socialProviderRegistry: SocialProviderRegistry
                                     )(

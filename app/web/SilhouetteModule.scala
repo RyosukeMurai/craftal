@@ -34,6 +34,7 @@ import play.api.libs.openid.OpenIdClient
 import play.api.libs.ws.WSClient
 import play.api.mvc.{Cookie, CookieHeaderEncoding}
 import web.controller.handler.{CustomSecuredErrorHandler, CustomUnsecuredErrorHandler}
+import web.service.UserIdentityService
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -100,7 +101,7 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
     */
   @Provides
   def provideEnvironment(
-                          userService: UserService,
+                          userService: UserIdentityService,
                           authenticatorService: AuthenticatorService[CookieAuthenticator],
                           eventBus: EventBus): Environment[DefaultEnv] = {
 

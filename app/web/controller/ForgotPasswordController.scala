@@ -1,6 +1,5 @@
 package web.controller
 
-import application.auth.{DefaultEnv, UserService}
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.impl.providers.CredentialsProvider
 import controllers.AssetsFinder
@@ -9,8 +8,9 @@ import org.webjars.play.WebJarsUtil
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.libs.mailer.{Email, MailerClient}
 import play.api.mvc._
+import web.DefaultEnv
 import web.model.form.ForgotPasswordForm
-import web.service.AuthTokenService
+import web.service.{AuthTokenService, UserIdentityService}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -29,7 +29,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class ForgotPasswordController @Inject()(
                                           components: ControllerComponents,
                                           silhouette: Silhouette[DefaultEnv],
-                                          userService: UserService,
+                                          userService: UserIdentityService,
                                           authTokenService: AuthTokenService,
                                           mailerClient: MailerClient
                                         )(
@@ -64,7 +64,7 @@ class ForgotPasswordController @Inject()(
         val result = Redirect(routes.SignInController.view()).flashing("info" -> Messages("reset.email.sent"))
         userService.retrieve(loginInfo).flatMap {
           case Some(user) if user.email.isDefined =>
-            authTokenService.create(user.userID).map { authToken =>
+            authTokenService.create(user.id).map { authToken =>
               val url = routes.ResetPasswordController.view(authToken.id).absoluteURL()
 
               mailerClient.send(Email(

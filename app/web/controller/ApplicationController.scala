@@ -1,6 +1,5 @@
 package web.controller
 
-import application.auth.DefaultEnv
 import com.mohiva.play.silhouette.api.actions.SecuredRequest
 import com.mohiva.play.silhouette.api.{LogoutEvent, Silhouette}
 import controllers.AssetsFinder
@@ -8,6 +7,7 @@ import javax.inject.Inject
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.I18nSupport
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
+import web.DefaultEnv
 
 import scala.concurrent.Future
 
