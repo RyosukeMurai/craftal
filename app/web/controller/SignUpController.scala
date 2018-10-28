@@ -2,7 +2,7 @@ package web.controller
 
 import java.util.UUID
 
-import application.auth.{AuthTokenService, DefaultEnv, User, UserService}
+import application.auth.{DefaultEnv, User, UserService}
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.api.repositories.AuthInfoRepository
 import com.mohiva.play.silhouette.api.services.AvatarService
@@ -15,6 +15,7 @@ import play.api.i18n.{I18nSupport, Messages}
 import play.api.libs.mailer.{Email, MailerClient}
 import play.api.mvc._
 import web.model.form.SignUpForm
+import web.service.AuthTokenService
 
 import scala.concurrent.{ExecutionContext, Future}
 

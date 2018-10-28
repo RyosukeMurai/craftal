@@ -1,6 +1,6 @@
 package web.controller
 
-import application.auth.{AuthTokenService, DefaultEnv, UserService}
+import application.auth.{DefaultEnv, UserService}
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.impl.providers.CredentialsProvider
 import controllers.AssetsFinder
@@ -10,6 +10,7 @@ import play.api.i18n.{I18nSupport, Messages}
 import play.api.libs.mailer.{Email, MailerClient}
 import play.api.mvc._
 import web.model.form.ForgotPasswordForm
+import web.service.AuthTokenService
 
 import scala.concurrent.{ExecutionContext, Future}
 

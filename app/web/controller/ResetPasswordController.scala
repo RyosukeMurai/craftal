@@ -2,7 +2,7 @@ package web.controller
 
 import java.util.UUID
 
-import application.auth.{AuthTokenService, DefaultEnv, UserService}
+import application.auth.{DefaultEnv, UserService}
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.api.repositories.AuthInfoRepository
 import com.mohiva.play.silhouette.api.util.{PasswordHasherRegistry, PasswordInfo}
@@ -13,6 +13,7 @@ import org.webjars.play.WebJarsUtil
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
 import web.model.form.ResetPasswordForm
+import web.service.AuthTokenService
 
 import scala.concurrent.{ExecutionContext, Future}
 

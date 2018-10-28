@@ -1,4 +1,4 @@
-package application.auth
+package web.controller.handler
 
 import com.mohiva.play.silhouette.api.actions.SecuredErrorHandler
 import javax.inject.Inject

@@ -1,10 +1,12 @@
-package application.auth
+package web.service
 
 import java.util.UUID
 
+import application.auth.AuthTokenDAO
 import com.mohiva.play.silhouette.api.util.Clock
 import javax.inject.Inject
 import org.joda.time.DateTimeZone
+import web.model.auth.AuthToken
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
@@ -17,13 +19,13 @@ import scala.language.postfixOps
   * @param clock        The clock instance.
   * @param ex           The execution context.
   */
-class AuthTokenServiceImpl @Inject()(
-                                      authTokenDAO: AuthTokenDAO,
-                                      clock: Clock
-                                    )(
-                                      implicit
-                                      ex: ExecutionContext
-                                    ) extends AuthTokenService {
+class AuthTokenService @Inject()(
+                                  authTokenDAO: AuthTokenDAO,
+                                  clock: Clock
+                                )(
+                                  implicit
+                                  ex: ExecutionContext
+                                ) {
 
   /**
     * Creates a new auth token and saves it in the backing store.

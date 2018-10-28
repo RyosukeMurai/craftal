@@ -1,4 +1,4 @@
-package application.auth
+package web.controller.handler
 
 import com.mohiva.play.silhouette.api.actions.UnsecuredErrorHandler
 import play.api.mvc.Results._

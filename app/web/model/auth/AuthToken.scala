@@ -1,4 +1,4 @@
-package application.auth
+package web.model.auth
 
 import java.util.UUID
 
@@ -11,7 +11,6 @@ import org.joda.time.DateTime
   * @param userID The unique ID of the user the token is associated with.
   * @param expiry The date-time the token expires.
   */
-case class AuthToken(
-                      id: UUID,
-                      userID: UUID,
-                      expiry: DateTime)
+case class AuthToken(id: UUID,
+                     userID: UUID,
+                     expiry: DateTime)

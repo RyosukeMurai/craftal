@@ -2,14 +2,16 @@ package application.auth
 
 import java.util.UUID
 
+import application.auth.UserDAO._
 import com.mohiva.play.silhouette.api.LoginInfo
 
+import scala.collection.mutable
 import scala.concurrent.Future
 
 /**
   * Give access to the user object.
   */
-trait UserDAO {
+class UserDAO {
 
   /**
     * Finds a user by its login info.
@@ -17,7 +19,9 @@ trait UserDAO {
     * @param loginInfo The login info of the user to find.
     * @return The found user or None if no user for the given login info could be found.
     */
-  def find(loginInfo: LoginInfo): Future[Option[User]]
+  def find(loginInfo: LoginInfo): Future[Option[User]] = Future.successful(
+    users.find { case (_, user) => user.loginInfo == loginInfo }.map(_._2)
+  )
 
   /**
     * Finds a user by its user ID.
@@ -25,7 +29,7 @@ trait UserDAO {
     * @param userID The ID of the user to find.
     * @return The found user or None if no user for the given ID could be found.
     */
-  def find(userID: UUID): Future[Option[User]]
+  def find(userID: UUID): Future[Option[User]] = Future.successful(users.get(userID))
 
   /**
     * Saves a user.
@@ -33,5 +37,19 @@ trait UserDAO {
     * @param user The user to save.
     * @return The saved user.
     */
-  def save(user: User): Future[User]
+  def save(user: User): Future[User] = {
+    users += (user.userID -> user)
+    Future.successful(user)
+  }
+}
+
+/**
+  * The companion object.
+  */
+object UserDAO {
+
+  /**
+    * The list of users.
+    */
+  val users: mutable.HashMap[UUID, User] = mutable.HashMap()
 }

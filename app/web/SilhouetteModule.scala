@@ -1,3 +1,5 @@
+package web
+
 import application.auth._
 import com.google.inject.name.Named
 import com.google.inject.{AbstractModule, Provides}
@@ -31,6 +33,7 @@ import play.api.Configuration
 import play.api.libs.openid.OpenIdClient
 import play.api.libs.ws.WSClient
 import play.api.mvc.{Cookie, CookieHeaderEncoding}
+import web.controller.handler.{CustomSecuredErrorHandler, CustomUnsecuredErrorHandler}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -65,10 +68,6 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
     bind[Silhouette[DefaultEnv]].to[SilhouetteProvider[DefaultEnv]]
     bind[UnsecuredErrorHandler].to[CustomUnsecuredErrorHandler]
     bind[SecuredErrorHandler].to[CustomSecuredErrorHandler]
-    bind[UserService].to[UserServiceImpl]
-    bind[UserDAO].to[UserDAOImpl]
-    bind[AuthTokenDAO].to[AuthTokenDAOImpl]
-    bind[AuthTokenService].to[AuthTokenServiceImpl]
     bind[CacheLayer].to[PlayCacheLayer]
     bind[IDGenerator].toInstance(new SecureRandomIDGenerator())
     bind[FingerprintGenerator].toInstance(new DefaultFingerprintGenerator(false))
