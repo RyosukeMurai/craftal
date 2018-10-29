@@ -1,5 +1,4 @@
 package data
-
 // AUTO-GENERATED Slick data model
 /** Stand-alone Slick data model for immediate use */
 object Tables extends {
@@ -15,9 +14,47 @@ trait Tables {
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
-  lazy val schema: profile.SchemaDescription = Array(ArtistPhoto.schema, Event.schema, EventArtist.schema, EventLocation.schema, EventPhoto.schema, EventSchedule.schema, EventStatus.schema, Genre.schema, Photo.schema, PlayEvolutions.schema, User.schema).reduceLeft(_ ++ _)
+  lazy val schema: profile.SchemaDescription = Array(Account.schema, ArtistPhoto.schema, Event.schema, EventArtist.schema, EventLocation.schema, EventPhoto.schema, EventSchedule.schema, EventStatus.schema, Genre.schema, Photo.schema, PlayEvolutions.schema, User.schema).reduceLeft(_ ++ _)
   @deprecated("Use .schema instead of .ddl", "3.0")
   def ddl = schema
+
+  /** Entity class storing rows of table Account
+   *  @param userId Database column user_id SqlType(INT UNSIGNED), PrimaryKey
+   *  @param password Database column password SqlType(VARCHAR), Length(255,true)
+   *  @param createdAt Database column created_at SqlType(DATETIME)
+   *  @param updatedAt Database column updated_at SqlType(DATETIME)
+   *  @param isActivated Database column is_activated SqlType(BIT), Default(false)
+   *  @param isDeleted Database column is_deleted SqlType(BIT), Default(false) */
+  case class AccountRow(userId: Int, password: String, createdAt: java.sql.Timestamp, updatedAt: java.sql.Timestamp, isActivated: Boolean = false, isDeleted: Boolean = false)
+  /** GetResult implicit for fetching AccountRow objects using plain SQL queries */
+  implicit def GetResultAccountRow(implicit e0: GR[Int], e1: GR[String], e2: GR[java.sql.Timestamp], e3: GR[Boolean]): GR[AccountRow] = GR{
+    prs => import prs._
+    AccountRow.tupled((<<[Int], <<[String], <<[java.sql.Timestamp], <<[java.sql.Timestamp], <<[Boolean], <<[Boolean]))
+  }
+  /** Table description of table account. Objects of this class serve as prototypes for rows in queries. */
+  class Account(_tableTag: Tag) extends profile.api.Table[AccountRow](_tableTag, Some("craftal"), "account") {
+    def * = (userId, password, createdAt, updatedAt, isActivated, isDeleted) <> (AccountRow.tupled, AccountRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = (Rep.Some(userId), Rep.Some(password), Rep.Some(createdAt), Rep.Some(updatedAt), Rep.Some(isActivated), Rep.Some(isDeleted)).shaped.<>({r=>import r._; _1.map(_=> AccountRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column user_id SqlType(INT UNSIGNED), PrimaryKey */
+    val userId: Rep[Int] = column[Int]("user_id", O.PrimaryKey)
+    /** Database column password SqlType(VARCHAR), Length(255,true) */
+    val password: Rep[String] = column[String]("password", O.Length(255,varying=true))
+    /** Database column created_at SqlType(DATETIME) */
+    val createdAt: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("created_at")
+    /** Database column updated_at SqlType(DATETIME) */
+    val updatedAt: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("updated_at")
+    /** Database column is_activated SqlType(BIT), Default(false) */
+    val isActivated: Rep[Boolean] = column[Boolean]("is_activated", O.Default(false))
+    /** Database column is_deleted SqlType(BIT), Default(false) */
+    val isDeleted: Rep[Boolean] = column[Boolean]("is_deleted", O.Default(false))
+
+    /** Foreign key referencing User (database name account_ibfk_1) */
+    lazy val userFk = foreignKey("account_ibfk_1", userId, User)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+  }
+  /** Collection-like TableQuery object for table Account */
+  lazy val Account = new TableQuery(tag => new Account(tag))
 
   /** Entity class storing rows of table ArtistPhoto
    *  @param id Database column id SqlType(INT UNSIGNED), PrimaryKey
@@ -426,6 +463,9 @@ trait Tables {
     val updatedAt: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("updated_at")
     /** Database column is_deleted SqlType(BIT), Default(false) */
     val isDeleted: Rep[Boolean] = column[Boolean]("is_deleted", O.Default(false))
+
+    /** Uniqueness Index over (email) (database name email) */
+    val index1 = index("email", email, unique=true)
   }
   /** Collection-like TableQuery object for table User */
   lazy val User = new TableQuery(tag => new User(tag))

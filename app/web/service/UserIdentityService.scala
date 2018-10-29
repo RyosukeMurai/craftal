@@ -1,31 +1,24 @@
 package web.service
 
-import java.util.UUID
-
 import application.auth.UserDAO
 import com.mohiva.play.silhouette.api.LoginInfo
 import com.mohiva.play.silhouette.api.services.IdentityService
 import com.mohiva.play.silhouette.impl.providers.CommonSocialProfile
 import javax.inject.Inject
+import useCase.account.{GetAccount, GetAccountByEmail, GetAccountByEmailAndPassword}
 import web.model.auth.UserIdentity
+import web.model.mapper.UserIdentityDataMapper
 
 import scala.concurrent.{ExecutionContext, Future}
 
-/**
-  * Handles actions to users.
-  *
-  * @param userDAO The user DAO implementation.
-  * @param ex      The execution context.
-  */
-class UserIdentityService @Inject()(userDAO: UserDAO)(implicit ex: ExecutionContext) extends IdentityService[UserIdentity] {
+class UserIdentityService @Inject()(getAccount: GetAccount,
+                                    getAccountByEmail: GetAccountByEmail,
+                                    getAccountByEmailAndPassword: GetAccountByEmailAndPassword,
+                                    userDAO: UserDAO)(implicit ex: ExecutionContext) extends IdentityService[UserIdentity] {
 
-  /**
-    * Retrieves a user that matches the specified ID.
-    *
-    * @param id The ID to retrieve a user.
-    * @return The retrieved user or None if no user could be retrieved for the given ID.
-    */
-  def retrieve(id: Int): Future[Option[UserIdentity]] = userDAO.find(id)
+  def retrieve(id: Int): Future[Option[UserIdentity]] = {
+    this.getAccount.execute(id).map(x => Option(x).map(UserIdentityDataMapper.transform))
+  }
 
   /**
     * Retrieves a user that matches the specified login info.
@@ -33,7 +26,10 @@ class UserIdentityService @Inject()(userDAO: UserDAO)(implicit ex: ExecutionCont
     * @param loginInfo The login info to retrieve a user.
     * @return The retrieved user or None if no user could be retrieved for the given login info.
     */
-  def retrieve(loginInfo: LoginInfo): Future[Option[UserIdentity]] = userDAO.find(loginInfo)
+  def retrieve(loginInfo: LoginInfo): Future[Option[UserIdentity]] = {
+    println(loginInfo)
+    getAccountByEmail.execute(loginInfo.providerID).map(_.map(UserIdentityDataMapper.transform))
+  }
 
   /**
     * Saves a user.
@@ -73,6 +69,6 @@ class UserIdentityService @Inject()(userDAO: UserDAO)(implicit ex: ExecutionCont
         ))
     }
     */
-    Future.successful(UserIdentity(1, Option(""), Option(""), null, activated = false))
+    Future.successful(UserIdentity(1, Option(""), Option(""), activated = false))
   }
 }

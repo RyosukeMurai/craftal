@@ -2,6 +2,7 @@ package data
 
 import com.google.inject.AbstractModule
 import data.repository._
+import domain.model.account.AccountRepository
 import domain.model.artist.ArtistRepository
 import domain.model.event.EventRepository
 import domain.model.genre.GenreRepository
@@ -13,6 +14,8 @@ class DataModule extends AbstractModule {
   override def configure(): Unit = {
 
     bind(classOf[UserRepository]).to(classOf[UserDataRepository])
+
+    bind(classOf[AccountRepository]).to(classOf[AccountDataRepository])
 
     bind(classOf[EventRepository]).to(classOf[EventDataRepository])
 

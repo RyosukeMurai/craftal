@@ -12,7 +12,7 @@ object SlickModelGenerator {
     val password = "craftal"
 
     val outputFolder = "app"
-    val pkg = "data.entity"
+    val pkg = "data"
 
     SourceCodeGenerator.main(
       Array(
