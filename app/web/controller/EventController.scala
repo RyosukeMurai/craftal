@@ -12,12 +12,9 @@ import play.api.mvc._
 import useCase.artist.GetArtistsParticipatingInEvent
 import useCase.event.{GetEvent, GetEventsWithinPeriod}
 import useCase.genre.GetGenres
-import web.model.mapper.{EventCalendarDataMapper, EventDetailDataMapper}
+import useCase.photo.GetPhotosByIdList
 import web.model.event.EventSearchCondition
-import useCase.event.{GetEvent, GetEventsWithinPeriod}
-import useCase.genre.GetGenres
-import useCase.photo.GetPhotosByIdList
-import useCase.photo.GetPhotosByIdList
+import web.model.mapper.{EventCalendarDataMapper, EventDetailDataMapper}
 
 import scala.concurrent.ExecutionContext
 

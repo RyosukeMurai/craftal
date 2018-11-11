@@ -12,7 +12,7 @@ case class ArtistGenreSummaryContent(private val artist: Artist,
   def getIconPhotoUrl: String = {
     val photo = this.photos.find(_.id == this.artist.iconPhotoId)
     photo match {
-      case Some(p) => URIService.resolveUrlByIdentifierAndResourceType(p.identifier, ResourceType.photo).toString
+      case Some(p) => URIService.resolveUrlByIdentifierAndResourceType(p.identifier, ResourceType.photo).toString // remove service call from data model
       case _ => throw new IllegalArgumentException("photoId is not included in holding list")
     }
   }

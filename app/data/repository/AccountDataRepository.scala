@@ -1,9 +1,12 @@
 package data.repository
 
+import java.util.UUID
+
 import data.Tables
 import data.mapper.AccountEntityDataMapper
 import domain.model.account.{Account, AccountRepository}
 import javax.inject.{Inject, Singleton}
+import org.joda.time.DateTime
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 
@@ -62,6 +65,25 @@ class AccountDataRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(
       .run(
         query.to[List].result.headOption.map(_.map(AccountEntityDataMapper.transform))
       )
+  }
+
+  override def createAccount(userId: Int, password: String): Future[Int] = {
+    dbConfig
+      .db
+      .run(
+        Tables.Account.map(a => (a.userId, a.password)) returning Tables.Account.map(_.userId) += (userId, password)
+      )
+  }
+
+  override def createAuthToken(token: UUID, userId: Int, expiry: DateTime): Future[String] = {
+    /*
+    dbConfig
+      .db
+      .run(
+        Tables.Account.map(a => (a.userId, a.password)) returning Tables.Account.map(_.userId) += (userId, password)
+      )
+      */
+    Future.successful("")
   }
 }
 

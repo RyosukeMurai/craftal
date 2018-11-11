@@ -21,5 +21,15 @@ class UserDataRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(imp
   override def find(id: Int): Future[User] =
     dbConfig.db
       .run(Tables.User.filter(_.id === id).result.head.map(UserEntityDataMapper.transform))
+
+  override def createUser(name: String, email: String): Future[Int] = {
+    println("create user")
+    dbConfig
+      .db
+      .run(
+        Tables.User.map(a => (a.name, a.email)) returning Tables.User.map(_.id) += (name, email)
+      )
+  }
+
 }
 

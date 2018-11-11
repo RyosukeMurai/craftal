@@ -69,6 +69,6 @@ class UserIdentityService @Inject()(getAccount: GetAccount,
         ))
     }
     */
-    Future.successful(UserIdentity(1, Option(""), Option(""), activated = false))
+    Future.successful(UserIdentity(1, Option(""), Option(""), null, activated = false))
   }
 }
