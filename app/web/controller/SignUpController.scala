@@ -1,5 +1,6 @@
 package web.controller
 
+import auth.service.UserIdentityService
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.impl.providers._
 import controllers.AssetsFinder
@@ -7,18 +8,17 @@ import javax.inject.Inject
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
-import useCase.account.{NotifyAlreadySignedUp, NotifySignUp, RegisterAccount}
+import useCase.auth.{NotifyAlreadySignedUp, NotifySignUp, RegisterUser}
 import web.DefaultEnv
 import web.model.assembler.EmailNotificationRequestAssembler
 import web.model.form.SignUpForm
-import web.service.UserIdentityService
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class SignUpController @Inject()(components: ControllerComponents,
                                  silhouette: Silhouette[DefaultEnv],
                                  userService: UserIdentityService,
-                                 registerAccount: RegisterAccount,
+                                 registerAccount: RegisterUser,
                                  emailAssembler: EmailNotificationRequestAssembler,
                                  notifyAlreadySignedUp: NotifyAlreadySignedUp,
                                  notifySignUp: NotifySignUp

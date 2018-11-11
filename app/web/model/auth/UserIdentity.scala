@@ -1,11 +1,10 @@
 package web.model.auth
 
-import com.mohiva.play.silhouette.api.{Identity, LoginInfo}
+import com.mohiva.play.silhouette.api.Identity
 
 case class UserIdentity(id: Int,
                         email: Option[String],
                         name: Option[String],
-                        loginInfo: LoginInfo,
                         activated: Boolean) extends Identity {
 
 }

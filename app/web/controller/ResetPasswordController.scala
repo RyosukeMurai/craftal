@@ -2,18 +2,17 @@ package web.controller
 
 import java.util.UUID
 
+import auth.service.UserIdentityService
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.api.repositories.AuthInfoRepository
-import com.mohiva.play.silhouette.api.util.{PasswordHasherRegistry, PasswordInfo}
-import com.mohiva.play.silhouette.impl.providers.CredentialsProvider
+import com.mohiva.play.silhouette.api.util.PasswordHasherRegistry
 import controllers.AssetsFinder
 import javax.inject.Inject
 import org.webjars.play.WebJarsUtil
-import play.api.i18n.{I18nSupport, Messages}
+import play.api.i18n.I18nSupport
 import play.api.mvc._
 import web.DefaultEnv
 import web.model.form.ResetPasswordForm
-import web.service.{AuthTokenService, UserIdentityService}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -36,7 +35,6 @@ class ResetPasswordController @Inject()(
                                          userService: UserIdentityService,
                                          authInfoRepository: AuthInfoRepository,
                                          passwordHasherRegistry: PasswordHasherRegistry,
-                                         authTokenService: AuthTokenService
                                        )(
                                          implicit
                                          webJarsUtil: WebJarsUtil,
@@ -51,10 +49,15 @@ class ResetPasswordController @Inject()(
     * @return The result to display.
     */
   def view(token: UUID): Action[AnyContent] = silhouette.UnsecuredAction.async { implicit request: Request[AnyContent] =>
+    /*
     authTokenService.validate(token).map {
       case Some(_) => Ok(web.view.auth.html.resetPassword(ResetPasswordForm.form, token))
       case None => Redirect(routes.SignInController.view()).flashing("error" -> Messages("invalid.reset.link"))
     }
+    */
+    Future.successful(
+      Ok(web.view.auth.html.resetPassword(ResetPasswordForm.form, token))
+    )
   }
 
   /**
@@ -64,6 +67,7 @@ class ResetPasswordController @Inject()(
     * @return The result to display.
     */
   def submit(token: UUID): Action[AnyContent] = silhouette.UnsecuredAction.async { implicit request: Request[AnyContent] =>
+    /*
     authTokenService.validate(token).flatMap {
       case Some(authToken) =>
         ResetPasswordForm.form.bindFromRequest.fold(
@@ -79,5 +83,9 @@ class ResetPasswordController @Inject()(
         )
       case None => Future.successful(Redirect(routes.SignInController.view()).flashing("error" -> Messages("invalid.reset.link")))
     }
+    */
+    Future.successful(
+      Ok(web.view.auth.html.resetPassword(ResetPasswordForm.form, token))
+    )
   }
 }

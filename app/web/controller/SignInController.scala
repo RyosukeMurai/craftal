@@ -1,5 +1,6 @@
 package web.controller
 
+import auth.service.UserIdentityService
 import com.mohiva.play.silhouette.api.Authenticator.Implicits._
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.api.exceptions.ProviderException
@@ -15,7 +16,6 @@ import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
 import web.DefaultEnv
 import web.model.form.SignInForm
-import web.service.UserIdentityService
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}

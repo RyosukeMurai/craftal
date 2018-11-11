@@ -1,36 +1,23 @@
 package web.controller
 
+import auth.service.UserIdentityService
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.impl.providers.CredentialsProvider
 import controllers.AssetsFinder
 import javax.inject.Inject
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.{I18nSupport, Messages}
-import play.api.libs.mailer.{Email, MailerClient}
+import play.api.libs.mailer.MailerClient
 import play.api.mvc._
 import web.DefaultEnv
 import web.model.form.ForgotPasswordForm
-import web.service.{AuthTokenService, UserIdentityService}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-/**
-  * The `Forgot Password` controller.
-  *
-  * @param components       The Play controller components.
-  * @param silhouette       The Silhouette stack.
-  * @param userService      The user service implementation.
-  * @param authTokenService The auth token service implementation.
-  * @param mailerClient     The mailer client.
-  * @param webJarsUtil      The webjar util.
-  * @param assets           The Play assets finder.
-  * @param ex               The execution context.
-  */
 class ForgotPasswordController @Inject()(
                                           components: ControllerComponents,
                                           silhouette: Silhouette[DefaultEnv],
                                           userService: UserIdentityService,
-                                          authTokenService: AuthTokenService,
                                           mailerClient: MailerClient
                                         )(
                                           implicit
@@ -62,6 +49,7 @@ class ForgotPasswordController @Inject()(
       email => {
         val loginInfo = LoginInfo(CredentialsProvider.ID, email)
         val result = Redirect(routes.SignInController.view()).flashing("info" -> Messages("reset.email.sent"))
+        /*
         userService.retrieve(loginInfo).flatMap {
           case Some(user) if user.email.isDefined =>
             authTokenService.create(user.id).map { authToken =>
@@ -78,6 +66,8 @@ class ForgotPasswordController @Inject()(
             }
           case None => Future.successful(result)
         }
+        */
+        Future.successful(result)
       }
     )
   }
