@@ -16,8 +16,8 @@ class CreateAuthToken @Inject()(authRepository: AuthRepository)
                                (implicit ex: ExecutionContext) extends Interactor {
   def execute(userId: Int, verificationExpiration: FiniteDuration = 5 minutes): Future[UUID] =
     this.authRepository.createAuthToken(
-      UUID.randomUUID(),
       userId,
+      UUID.randomUUID(),
       DateTime.now.withZone(DateTimeZone.UTC).plusSeconds(verificationExpiration.toSeconds.toInt)
     ).map(t => UUID.fromString(t))
 }

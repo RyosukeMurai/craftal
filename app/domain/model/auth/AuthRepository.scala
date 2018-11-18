@@ -12,7 +12,11 @@ trait AuthRepository {
 
   def findPasswordAuthInfoByEmail(email: String): Future[Option[PasswordAuthInfo]]
 
-  def createAuthByPassword(userId: Int, hasher: String, hashedPassword: String, salt: String): Future[Int]
+  def createAuthByPassword(userId: Int, hasher: String, hashedPassword: String): Future[Int]
 
-  def createAuthToken(token: UUID, userId: Int, expiry: DateTime): Future[String]
+  def createAuthToken(userId: Int, token: UUID, expiry: DateTime): Future[String]
+
+  def findAuthToken(token: UUID): Future[Option[AuthToken]]
+
+  def removeAuthToken(token: UUID): Future[Boolean]
 }

@@ -4,12 +4,11 @@ import data.Tables
 import domain.model.auth.PasswordAuthInfo
 
 object PasswordAuthInfoEntityDataMapper {
-  def transform(accountRow: (Tables.AccountRow, Tables.UserRow)): PasswordAuthInfo =
-    new PasswordAuthInfo(
-      userId = accountRow._1.userId,
-      hasher = accountRow._2.name,
-      password = accountRow._2.email,
-      salt = accountRow._2.email,
-      activated = accountRow._1.isActivated
+  def transform(authRow: (Tables.UserRow, Tables.UserAuthRow, Tables.UserAuthPasswordRow)): PasswordAuthInfo =
+    PasswordAuthInfo(
+      userId = authRow._1.id,
+      hasher = authRow._3.hasher,
+      password = authRow._3.password,
+      activated = authRow._2.isActivated
     )
 }

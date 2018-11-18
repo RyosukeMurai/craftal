@@ -1,12 +1,12 @@
 package web.model.mapper
 
+import auth.model.UserAuthInfo
 import domain.model.user.User
-import web.model.auth.UserIdentity
 
 
 object UserIdentityDataMapper {
-  def transform(user: User): UserIdentity =
-    UserIdentity(
+  def transform(user: User): UserAuthInfo =
+    UserAuthInfo(
       user.id,
       Option(user.email),
       Option(user.name),

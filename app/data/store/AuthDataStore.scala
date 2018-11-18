@@ -1,10 +1,11 @@
 package data.store
 
+import java.sql.Timestamp
 import java.util.UUID
 
 import data.Tables
-import data.mapper.PasswordAuthInfoEntityDataMapper
-import domain.model.auth.{AuthRepository, PasswordAuthInfo}
+import data.mapper.{AuthTokenEntityDataMapper, PasswordAuthInfoEntityDataMapper}
+import domain.model.auth.{AuthRepository, AuthToken, PasswordAuthInfo}
 import javax.inject.{Inject, Singleton}
 import org.joda.time.DateTime
 import play.api.db.slick.DatabaseConfigProvider
@@ -23,11 +24,13 @@ class AuthDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit
 
   override def findPasswordAuthInfo(id: Int): Future[PasswordAuthInfo] = {
     val query = for {
-      a <- Tables.Account
       u <- Tables.User
+      a <- Tables.UserAuth
+      p <- Tables.UserAuthPassword
+      if u.id === id
       if a.userId === u.id
-      if a.userId === id
-    } yield (a, u)
+      if p.userId === u.id
+    } yield (u, a, p)
 
     dbConfig
       .db
@@ -38,11 +41,13 @@ class AuthDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit
 
   override def findPasswordAuthInfoByEmail(email: String): Future[Option[PasswordAuthInfo]] = {
     val query = for {
-      a <- Tables.Account
       u <- Tables.User
-      if a.userId === u.id
+      a <- Tables.UserAuth
+      p <- Tables.UserAuthPassword
       if u.email === email
-    } yield (a, u)
+      if a.userId === u.id
+      if p.userId === u.id
+    } yield (u, a, p)
 
     dbConfig
       .db
@@ -51,23 +56,32 @@ class AuthDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit
       )
   }
 
-  override def createAuthByPassword(userId: Int, hasher: String, hashedPassword: String, salt: String): Future[Int] = {
+  override def createAuthByPassword(userId: Int, hasher: String, hashedPassword: String): Future[Int] = {
+    val query = for {
+      _ <- Tables.UserAuth.map(a => (a.userId, a.isActivated)) returning Tables.UserAuth.map(_.userId) += (userId, false)
+      userId <- Tables.UserAuthPassword.map(a => (a.userId, a.hasher, a.password)) returning Tables.UserAuthPassword.map(_.userId) += (userId, hasher, hashedPassword)
+    } yield userId
+    dbConfig.db.run(query)
+  }
+
+  override def createAuthToken(userId: Int, token: UUID, expiry: DateTime): Future[String] = {
     dbConfig
       .db
       .run(
-        Tables.Account.map(a => (a.userId, a.password)) returning Tables.Account.map(_.userId) += (userId, hashedPassword)
+        Tables.UserAuthToken.map(a => (a.userId, a.token, a.expiredAt)) returning Tables.UserAuthToken.map(_.token) += (userId, token.toString, new Timestamp(expiry.getMillis))
       )
   }
 
-  override def createAuthToken(token: UUID, userId: Int, expiry: DateTime): Future[String] = {
-    /*
+  override def findAuthToken(token: UUID): Future[Option[AuthToken]] = {
     dbConfig
       .db
       .run(
-        Tables.Account.map(a => (a.userId, a.password)) returning Tables.Account.map(_.userId) += (userId, password)
+        Tables.UserAuthToken.to[List].result.headOption.map(_.map(AuthTokenEntityDataMapper.transform))
       )
-      */
-    Future.successful("")
+  }
+
+  override def removeAuthToken(token: UUID): Future[Boolean] = {
+    Future.successful(true)
   }
 }
 

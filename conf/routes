@@ -16,9 +16,9 @@ GET     /artists/:id                web.controller.ArtistController.detail(id)
 GET     /artists/genre/:genreId     web.controller.ArtistController.list(genreId)
 
 # Map common resources
-GET     /faq                        web.controller.FAQController.index
+GET     /faq                        web.controller.FAQController.view
 
-GET     /about                      web.controller.AboutController.index
+GET     /about                      web.controller.AboutController.view
 
 
 # Home page

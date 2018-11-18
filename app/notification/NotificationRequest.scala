@@ -1,4 +1,4 @@
-package useCase.shared
+package notification
 
 case class NotificationRequest(destinationIdentifier: Seq[String],
                                senderIdentifier: String,

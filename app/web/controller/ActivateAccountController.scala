@@ -3,7 +3,7 @@ package web.controller
 import java.net.URLDecoder
 import java.util.UUID
 
-import auth.service.UserIdentityService
+import auth.UserIdentityService
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.impl.providers.CredentialsProvider
 import javax.inject.Inject
@@ -44,8 +44,8 @@ class ActivateAccountController @Inject()(
             subject = Messages("email.activate.account.subject"),
             from = Messages("email.from"),
             to = Seq(decodedEmail),
-            bodyText = Some(web.view.auth.emails.txt.activateAccount(user, url).body),
-            bodyHtml = Some(web.view.auth.emails.html.activateAccount(user, url).body)
+            bodyText = Some(activateAccount(user, url).body),
+            bodyHtml = Some(activateAccount(user, url).body)
           ))
           result
         }

@@ -1,4 +1,4 @@
-package web.service
+package notification
 
 import javax.inject.Inject
 import play.api.libs.mailer.{Email, MailerClient}

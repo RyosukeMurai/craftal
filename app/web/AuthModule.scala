@@ -1,6 +1,6 @@
 package web
 
-import auth.service.{PasswordInfoService, UserIdentityService}
+import auth.{PasswordInfoService, UserIdentityService}
 import com.google.inject.name.Named
 import com.google.inject.{AbstractModule, Provides}
 import com.mohiva.play.silhouette.api.actions.{SecuredErrorHandler, UnsecuredErrorHandler}

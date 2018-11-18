@@ -1,6 +1,6 @@
 package web.controller
 
-import auth.service.UserIdentityService
+import auth.UserIdentityService
 import com.mohiva.play.silhouette.api.Authenticator.Implicits._
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.api.exceptions.ProviderException
@@ -20,19 +20,6 @@ import web.model.form.SignInForm
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 
-/**
-  * The `Sign In` controller.
-  *
-  * @param components             The Play controller components.
-  * @param silhouette             The Silhouette stack.
-  * @param userService            The user service implementation.
-  * @param credentialsProvider    The credentials provider.
-  * @param socialProviderRegistry The social provider registry.
-  * @param configuration          The Play configuration.
-  * @param clock                  The clock instance.
-  * @param webJarsUtil            The webjar util.
-  * @param assets                 The Play assets finder.
-  */
 class SignInController @Inject()(
                                   components: ControllerComponents,
                                   silhouette: Silhouette[DefaultEnv],
@@ -48,20 +35,10 @@ class SignInController @Inject()(
                                   ex: ExecutionContext
                                 ) extends AbstractController(components) with I18nSupport {
 
-  /**
-    * Views the `Sign In` page.
-    *
-    * @return The result to display.
-    */
   def view: Action[AnyContent] = silhouette.UnsecuredAction.async { implicit request: Request[AnyContent] =>
     Future.successful(Ok(web.view.auth.html.signIn(SignInForm.form, socialProviderRegistry)))
   }
 
-  /**
-    * Handles the submitted form.
-    *
-    * @return The result to display.
-    */
   def submit: Action[AnyContent] = silhouette.UnsecuredAction.async { implicit request: Request[AnyContent] =>
     SignInForm.form.bindFromRequest.fold(
       form => Future.successful(BadRequest(web.view.auth.html.signIn(form, socialProviderRegistry))),

@@ -1,27 +1,20 @@
 package web.controller
 
-import auth.service.UserIdentityService
 import com.mohiva.play.silhouette.api._
-import com.mohiva.play.silhouette.impl.providers._
 import controllers.AssetsFinder
 import javax.inject.Inject
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
-import useCase.auth.{NotifyAlreadySignedUp, NotifySignUp, RegisterUser}
+import useCase.auth.RegisterUser
 import web.DefaultEnv
-import web.model.assembler.EmailNotificationRequestAssembler
 import web.model.form.SignUpForm
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class SignUpController @Inject()(components: ControllerComponents,
                                  silhouette: Silhouette[DefaultEnv],
-                                 userService: UserIdentityService,
-                                 registerAccount: RegisterUser,
-                                 emailAssembler: EmailNotificationRequestAssembler,
-                                 notifyAlreadySignedUp: NotifyAlreadySignedUp,
-                                 notifySignUp: NotifySignUp
+                                 registerUser: RegisterUser,
                                 )(implicit
                                   webJarsUtil: WebJarsUtil,
                                   assets: AssetsFinder,
@@ -35,31 +28,10 @@ class SignUpController @Inject()(components: ControllerComponents,
   def submit: Action[AnyContent] = silhouette.UnsecuredAction.async { implicit request: Request[AnyContent] =>
     SignUpForm.form.bindFromRequest.fold(
       form => Future.successful(BadRequest(web.view.auth.html.signUp(form))),
-      data => {
-        val result = Redirect(routes.SignUpController.view()).flashing("info" -> Messages("sign.up.email.sent", data.email))
-        val loginInfo = LoginInfo(CredentialsProvider.ID, data.email)
-        userService.retrieve(loginInfo).flatMap {
-          case Some(user) =>
-            this.notifyAlreadySignedUp.execute(this.emailAssembler.assembleForAlreadySignedUpEmail(
-              data.email,
-              user,
-              routes.SignInController.view().absoluteURL()
-            ))
-            Future.successful(result)
-          case None =>
-            for {
-              r <- this.registerAccount.execute(data.name, loginInfo, data.password)
-              _ <- this.notifySignUp.execute(this.emailAssembler.assembleForSignUpEmail(
-                r.user,
-                routes.ActivateAccountController.activate(java.util.UUID.fromString(r.token)).absoluteURL()
-              ))
-            } yield {
-              silhouette.env.eventBus.publish(SignUpEvent(r.user, request)) //TODO(RyosukeMurai): merge to notify sign up
-              result
-            }
-            Future.successful(result)
-        }
-      }
+      data => this.registerUser.execute(data.email, data.email, data.password).map(_ =>
+        Redirect(web.controller.routes.SignUpController.view())
+          .flashing("info" -> Messages("sign.up.email.sent", data.email))
+      )
     )
   }
 }

@@ -4,7 +4,7 @@
 @import org.webjars.play.WebJarsUtil
 @import controllers.AssetsFinder
 
-@(title: String, user: Option[web.model.auth.UserIdentity] = None)(content: Html)(implicit request: RequestHeader, messages: Messages, assets: AssetsFinder, webJarsUtil: WebJarsUtil)
+@(title: String, user: Option[auth.model.UserAuthInfo] = None)(content: Html)(implicit request: RequestHeader, messages: Messages, assets: AssetsFinder, webJarsUtil: WebJarsUtil)
 
 <!DOCTYPE html>
 <html lang="en">

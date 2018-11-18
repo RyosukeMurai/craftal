@@ -1,0 +1,6 @@
+@import play.api.i18n.Messages
+
+@(userName: Option[String], url: String)(implicit messages: Messages)
+@messages("email.sign.up.hello", userName.getOrElse("user"))
+
+@messages("email.sign.up.txt.text", url)
