@@ -10,7 +10,7 @@ import useCase.artist.{GetArtist, GetArtists, GetArtistsByGenre}
 import useCase.genre.GetGenres
 import useCase.photo.GetPhotosByIdList
 import web.model.artist.ArtistSearchCondition
-import web.model.mapper.{ArtistDetailDataMapper, ArtistSummaryDataMapper}
+import web.mapper.{ArtistDetailDataMapper, ArtistSummaryDataMapper}
 
 import scala.concurrent.ExecutionContext
 

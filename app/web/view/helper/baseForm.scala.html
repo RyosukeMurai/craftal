@@ -1,0 +1,22 @@
+@import play.api.i18n.Messages
+
+@(formDefinition: web.model.FormDefinition[_])(implicit messages: Messages)
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(baseInput.f) }
+
+@form(formDefinition.submitAction) {
+
+    <fieldset>
+    @for(field <- formDefinition.fields) {
+      @inputText(formDefinition.form(field.name), '_label -> field.label)
+    }
+    </fieldset>
+
+    <div class="actions">
+        <input type="submit" value="Create this computer" class="btn primary"> or
+        <a href="@formDefinition.cancelAction" class="btn">Cancel</a>
+    </div>
+
+}

@@ -1,0 +1,10 @@
+@(elements: helper.FieldElements)
+
+<div class="form-group row">
+    <label for="@elements.id" class="col-2 col-form-label">@elements.label</label>
+    <div class="col-10">
+        @elements.input
+        <span class="errors">@elements.errors.mkString(", ")</span>
+        <span class="help">@elements.infos.mkString(", ")</span>
+    </div>
+</div>

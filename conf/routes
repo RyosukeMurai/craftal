@@ -53,6 +53,11 @@ GET     /account/email/:email       web.controller.ActivateAccountController.sen
 GET     /account/activate/:token    web.controller.ActivateAccountController.activate(token: java.util.UUID)
 
 
+# Management page
+GET     /manage/events              web.controller.manage.EventListController.view(page: Int ?= 1)
+
+GET     /manage/events/create       web.controller.manage.CreateEventController.view
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(file)
 

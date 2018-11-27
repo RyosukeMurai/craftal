@@ -1,4 +1,4 @@
-package web.model.mapper
+package web.mapper
 
 import domain.model.event._
 import domain.model.photo.Photo

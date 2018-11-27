@@ -12,5 +12,7 @@ trait EventRepository {
 
   def findByKeyword(keyword: String): Future[List[Event]]
 
+  def countNumberOfEvents: Future[Int]
+
   def all(): Future[List[Event]]
 }

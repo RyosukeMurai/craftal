@@ -101,3 +101,26 @@ email.activate.account.subject = Activate account
 email.activate.account.hello = Hello {0},
 email.activate.account.html.text = Please follow <a href="{0}">this link</a> to confirm and activate your new account.
 email.activate.account.txt.text = Please follow the link to confirm and activate your new account: {0}
+
+
+####################
+# Craftal Management
+####################
+
+# Manage Common
+craftal.management.common.site.name = My Craftal
+craftal.management.common.nav.events = イベント
+craftal.management.common.nav.mypage = マイページ
+craftal.management.common.nav.top = サイトトップへ
+craftal.management.common.pagenation.prev = 前へ
+craftal.management.common.pagenation.next = 次へ
+craftal.management.common.operation.create = 新規作成
+
+# Manage Event
+craftal.management.event.filed.id = ID
+craftal.management.event.filed.title = タイトル
+craftal.management.event.filed.description = 概要
+
+craftal.management.event.list.title = イベント一覧
+craftal.management.event.create.title = イベント作成
+

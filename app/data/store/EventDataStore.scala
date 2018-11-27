@@ -4,8 +4,8 @@ import java.sql.Timestamp
 import java.util.Date
 
 import data.Tables
-import domain.model.event.{Event, EventRepository}
 import data.mapper.EventEntityDataMapper
+import domain.model.event.{Event, EventRepository}
 import javax.inject.{Inject, Singleton}
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
@@ -89,4 +89,9 @@ class EventDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
           || schedule.endTime <= LiteralColumn(formatted)
       )
   }
+
+  override def countNumberOfEvents: Future[Int] =
+    dbConfig.db.run(
+      Tables.Event.length.result
+    )
 }

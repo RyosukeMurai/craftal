@@ -1,4 +1,4 @@
-package web.model.mapper
+package web.mapper
 
 import auth.model.UserAuthInfo
 import domain.model.user.User

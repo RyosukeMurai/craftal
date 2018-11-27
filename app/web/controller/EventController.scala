@@ -14,7 +14,7 @@ import useCase.event.{GetEvent, GetEventsWithinPeriod}
 import useCase.genre.GetGenres
 import useCase.photo.GetPhotosByIdList
 import web.model.event.EventSearchCondition
-import web.model.mapper.{EventCalendarDataMapper, EventDetailDataMapper}
+import web.mapper.{EventCalendarDataMapper, EventDetailDataMapper}
 
 import scala.concurrent.ExecutionContext
 

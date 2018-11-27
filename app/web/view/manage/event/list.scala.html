@@ -1,0 +1,23 @@
+@import play.api.i18n.Messages
+@import play.api.mvc.RequestHeader
+@import org.webjars.play.WebJarsUtil
+@import controllers.AssetsFinder
+
+@(
+table: web.model.Table[domain.model.event.Event],
+page:  web.model.Page
+)(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+
+@web.view.html.manage(messages("craftal.management.event.list.title")) {
+
+    <div class="btn-toolbar mb-3">
+        <a class="btn btn-sm btn-outline-primary" href="events/create">
+            @messages("craftal.management.common.operation.create")
+        </a>
+    </div>
+
+    @web.view.helper.html.table(table)
+
+    @web.view.helper.html.pagenation(page)
+}
+

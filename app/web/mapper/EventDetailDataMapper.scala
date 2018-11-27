@@ -1,4 +1,4 @@
-package web.model.mapper
+package web.mapper
 
 import domain.model.artist.Artist
 import domain.model.event._
