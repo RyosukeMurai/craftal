@@ -1,16 +1,18 @@
-@import play.api.i18n.Messages
+@import web.model.common.table.FormDefinition
 
-@(formDefinition: web.model.FormDefinition[_])(implicit messages: Messages)
+@(formDefinition: FormDefinition[_])(implicit messages: Messages)
 
 @import helper._
 
-@implicitFieldConstructor = @{ FieldConstructor(baseInput.f) }
+@implicitFieldConstructor: FieldConstructor = @{
+    FieldConstructor(baseInput.f)
+}
 
 @form(formDefinition.submitAction) {
 
     <fieldset>
     @for(field <- formDefinition.fields) {
-      @inputText(formDefinition.form(field.name), '_label -> field.label)
+        @inputText(formDefinition.form(field.name), '_label -> field.label)
     }
     </fieldset>
 

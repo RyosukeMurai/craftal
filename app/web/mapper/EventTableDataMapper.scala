@@ -2,7 +2,7 @@ package web.mapper
 
 import domain.model.event._
 import play.api.i18n.Messages
-import web.model.{ColumnDefinition, Table}
+import web.model.common.table.{ColumnDefinition, Table}
 
 
 object EventTableDataMapper {

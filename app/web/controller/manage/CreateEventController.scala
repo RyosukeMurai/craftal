@@ -4,7 +4,7 @@ import controllers.AssetsFinder
 import javax.inject._
 import org.webjars.play.WebJarsUtil
 import play.api.mvc._
-import web.model.form.CreateEventFormDefinition
+import web.model.form.auth.CreateEventFormDefinition
 
 import scala.concurrent.{ExecutionContext, Future}
 

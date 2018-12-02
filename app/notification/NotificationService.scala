@@ -18,8 +18,7 @@ class NotificationService @Inject()(mailService: MailService,
     this.sendNotificationByEmail(
       this.emailAssembler.assembleForAlreadySignedUpEmail(
         email,
-        name,
-        web.controller.routes.SignInController.view().absoluteURL()
+        name
       ))
   }
 
@@ -29,7 +28,7 @@ class NotificationService @Inject()(mailService: MailService,
       this.emailAssembler.assembleForSignUpEmail(
         email,
         name,
-        web.controller.routes.ActivateAccountController.activate(token).absoluteURL()
+        token
       ))
     //TODO(RyosukeMurai): Don't use it now
     //silhouette.env.eventBus.publish(SignUpEvent(r.user, request))
@@ -41,7 +40,7 @@ class NotificationService @Inject()(mailService: MailService,
       this.emailAssembler.assembleForResetPasswordEmail(
         email,
         name,
-        web.controller.routes.ResetPasswordController.view(token).absoluteURL()
+        token
       ))
   }
 

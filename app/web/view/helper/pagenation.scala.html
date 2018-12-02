@@ -1,6 +1,7 @@
 @import play.api.i18n.Messages
 
-@(page: web.model.Page)(implicit messages: Messages)
+@import web.model.common.Page
+@(page: Page)(implicit messages: Messages)
 <nav>
     <ul class="pagination">
         @page.prev.map { page =>

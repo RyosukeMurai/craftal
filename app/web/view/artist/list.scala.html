@@ -1,0 +1,70 @@
+@import play.api.i18n.Messages
+@import play.api.mvc.RequestHeader
+@import org.webjars.play.WebJarsUtil
+@import controllers.AssetsFinder
+
+@(form: Form[web.model.form.artist.ListArtistForm.Data],
+        summary: Option[web.model.artist.ArtistSummary]
+)(implicit request: RequestHeader,
+        messages: Messages,
+        webJarsUtil: WebJarsUtil,
+        assets: AssetsFinder
+)
+
+@web.view.html.main("artists") {
+
+    <div class="row mb-2">
+        <div class="col-md-12">
+        @helper.form(
+            action = web.controller.artist.routes.ListArtistController.view,
+            'class -> "form-inline mt-2 mt-md-0 pb-3 mb-4",
+            'method -> "get"
+        ) {
+            @helper.inputText(
+                form("keyword"),
+                'name -> "keyword",
+                'class -> "form-control mr-sm-2",
+                'placeholder -> "Search",
+                '_label -> "フリーワード検索"
+            )
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        }
+        </div>
+    </div>
+    @summary.map { s =>
+        @for(genre <- s.getGenres) {
+            <div class="row mb-2">
+                <div class="col-md-12">
+                    <h3 class="pb-3 mb-4 font-italic border-bottom">
+                    @genre.genre.name
+                    </h3>
+                </div>
+            </div>
+            <div class="row mb-2">
+            @for(artist <- genre.getArtists) {
+                <div class="col-md-6">
+                    <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+                        <img class="card-img-right flex-auto d-none d-lg-block"
+                        src="@artist.getIconPhotoUrl"
+                        alt="Card image cap">
+                        <div class="card-body d-flex flex-column align-items-start">
+                            <h3 class="mb-0">
+                                <a class="text-dark" href="#">@artist.getArtist.name</a>
+                            </h3>
+                            <p class="card-text mb-auto">@artist.getArtist.email</p>
+                            <a href="/artists/@artist.getArtist.id">詳細を見る</a>
+                        </div>
+                    </div>
+                </div>
+            }
+            </div>
+        }
+    }.getOrElse {
+        <div class="row mb-2">
+            <div class="col-md-12">>
+                <h3>No data</h3>
+            </div>
+        </div>
+    }
+
+}

@@ -1,42 +1,45 @@
 package notification
 
+import java.util.UUID
+
 import play.api.i18n._
+import play.api.mvc.{AnyContent, Request}
 
 class EmailNotificationRequestAssembler {
   def assembleForAlreadySignedUpEmail(toEmailAddress: String,
-                                      recipientName: Option[String],
-                                      signInUrl: String)(implicit messages: Messages): NotificationRequest =
+                                      recipientName: Option[String]
+                                     )(implicit messages: Messages, request: Request[AnyContent]): NotificationRequest =
     this.assemble(
       toEmailAddress = toEmailAddress,
       subject = messages("email.already.signed.up.subject"),
-      bodyPlain = notification.template.email.txt.alreadySignedUp(recipientName, signInUrl).body,
-      bodyHtml = notification.template.email.html.alreadySignedUp(recipientName, signInUrl).body
+      bodyPlain = notification.template.email.txt.alreadySignedUp(recipientName).body,
+      bodyHtml = notification.template.email.html.alreadySignedUp(recipientName).body
     )
 
   def assembleForSignUpEmail(toEmailAddress: String,
                              recipientName: Option[String],
-                             verificationUrl: String)(implicit messages: Messages): NotificationRequest =
+                             token: UUID)(implicit messages: Messages, request: Request[AnyContent]): NotificationRequest =
     this.assemble(
       toEmailAddress = toEmailAddress,
       subject = messages("email.sign.up.subject"),
-      bodyPlain = notification.template.email.txt.signUp(recipientName, verificationUrl).body,
-      bodyHtml = notification.template.email.html.signUp(recipientName, verificationUrl).body
+      bodyPlain = notification.template.email.txt.signUp(recipientName, token).body,
+      bodyHtml = notification.template.email.html.signUp(recipientName, token).body
     )
 
   def assembleForResetPasswordEmail(toEmailAddress: String,
                                     recipientName: Option[String],
-                                    verificationUrl: String)(implicit messages: Messages): NotificationRequest =
+                                    token: UUID)(implicit messages: Messages, request: Request[AnyContent]): NotificationRequest =
     this.assemble(
       toEmailAddress = toEmailAddress,
       subject = Messages("email.reset.password.subject"),
-      bodyPlain = notification.template.email.txt.resetPassword(recipientName, verificationUrl).body,
-      bodyHtml = notification.template.email.html.resetPassword(recipientName, verificationUrl).body
+      bodyPlain = notification.template.email.txt.resetPassword(recipientName, token).body,
+      bodyHtml = notification.template.email.html.resetPassword(recipientName, token).body
     )
 
   private def assemble(toEmailAddress: String,
                        subject: String,
                        bodyPlain: String,
-                       bodyHtml: String)(implicit messages: Messages): NotificationRequest = {
+                       bodyHtml: String)(implicit messages: Messages, request: Request[AnyContent]): NotificationRequest = {
     NotificationRequest(
       destinationIdentifier = Seq(toEmailAddress),
       senderIdentifier = Messages("email.from"),

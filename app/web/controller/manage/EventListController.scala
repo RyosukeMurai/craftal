@@ -2,11 +2,12 @@ package web.controller.manage
 
 import controllers.AssetsFinder
 import javax.inject._
+
 import org.webjars.play.WebJarsUtil
 import play.api.mvc._
 import useCase.event.{CountNumberOfEvents, GetEvents}
 import web.mapper.EventTableDataMapper
-import web.model.Page
+import web.model.common.Page
 
 import scala.concurrent.ExecutionContext
 

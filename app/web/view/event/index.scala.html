@@ -20,7 +20,7 @@ form: Form[web.model.event.EventSearchCondition]
 </div>
 <div class="row mb-2">
     <div class="col-md-12">
-        @helper.form(action = web.controller.routes.EventController.index, 'class -> "form-inline mt-2 mt-md-0 pb-3 mb-4", 'method -> "get") {
+        @helper.form(action = web.controller.event.routes.ListEventController.view, 'class -> "form-inline mt-2 mt-md-0 pb-3 mb-4", 'method -> "get") {
             @helper.inputText(
                 form("keyword"),
                 'name -> "keyword",

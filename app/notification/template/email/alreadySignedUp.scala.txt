@@ -1,6 +1,7 @@
 @import play.api.i18n.Messages
+@import play.api.mvc.RequestHeader
 
-@(userName: Option[String], url: String)(implicit messages: Messages)
+@(userName: Option[String])(implicit messages: Messages, request: RequestHeader)
 @messages("email.already.signed.up.hello", userName.getOrElse("user"))
 
-@messages("email.already.signed.up.txt.text", url)
+@messages("email.already.signed.up.txt.text", web.controller.auth.routes.SignInController.view().absoluteURL())
