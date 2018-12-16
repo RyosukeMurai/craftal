@@ -2,25 +2,26 @@ package web.model.event
 
 import domain.model.artist.Artist
 import domain.model.event.EventLocation.EventLocation
+import domain.model.event.EventSchedule
 import domain.model.event.EventStatus.EventStatus
-import domain.model.event.{Event, EventSchedule}
+import domain.model.photo.Photo
 
 class EventDetail(id: Int,
                   title: String,
                   description: String,
                   status: EventStatus,
                   location: EventLocation,
-                  schedule: List[EventSchedule] = List(),
-                  private val artists: List[Artist] = List()
+                  schedule: Seq[EventSchedule] = List(),
+                  photos: Seq[Photo] = List(),
+                  val artists: Seq[Artist] = List()
                  )
-  extends Event(
+  extends EventDescriptor(
     id,
     title,
     description,
     status,
     location,
-    schedule
+    schedule,
+    photos
   ) {
-
-  def getArtists: List[Artist] = this.artists
 }

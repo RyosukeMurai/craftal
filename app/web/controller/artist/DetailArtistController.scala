@@ -1,29 +1,32 @@
 package web.controller.artist
 
-import controllers.AssetsFinder
 import javax.inject._
+
+import controllers.AssetsFinder
 import org.webjars.play.WebJarsUtil
 import play.api.mvc._
 import useCase.artist.GetArtist
+import web.action.{ActionWithNavigation, NavigationContext}
 import web.mapper.ArtistDetailDataMapper
 
 import scala.concurrent.ExecutionContext
 
 @Singleton
 class DetailArtistController @Inject()(controllerComponents: ControllerComponents,
+                                       actionWithNavigation: ActionWithNavigation,
                                        getArtist: GetArtist)
                                       (implicit executionContext: ExecutionContext,
                                        webJarsUtil: WebJarsUtil,
                                        assetsFinder: AssetsFinder)
   extends AbstractController(controllerComponents) with play.api.i18n.I18nSupport {
 
-  def view(id: String): Action[AnyContent] = Action.async { implicit request =>
+  def view(id: String): Action[AnyContent] = actionWithNavigation.async { implicit request: NavigationContext[_] =>
     for {
       v <- getArtist.execute(id.toInt)
     } yield {
       Ok(
         web.view.artist.html.detail(
-          ArtistDetailDataMapper.transform(v, List())
+          ArtistDetailDataMapper.transform(v, List(), List())
         )
       )
     }

@@ -1,4 +1,4 @@
-package web.model.form.auth
+package web.form.auth
 
 import play.api.i18n.Messages
 import web.model.common.table.{FieldDefinition, FormDefinition}

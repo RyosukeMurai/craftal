@@ -9,7 +9,7 @@ import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
 import useCase.auth.ForgotPassword
 import web.DefaultEnv
-import web.model.form.auth.ForgotPasswordForm
+import web.form.auth.ForgotPasswordForm
 
 import scala.concurrent.{ExecutionContext, Future}
 

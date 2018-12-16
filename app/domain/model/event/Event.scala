@@ -9,8 +9,8 @@ class Event(val id: Int,
             var description: String,
             var status: EventStatus,
             var location: EventLocation,
-            protected var schedule: List[EventSchedule] = List(),
-            protected var photos: List[EventPhoto] = List()) extends Entity[Event] {
+            protected var schedule: Seq[EventSchedule] = List(),
+            protected var photos: Seq[EventPhoto] = List()) extends Entity[Event] {
 
   def getSchedule: List[EventSchedule] = schedule.toList //immutable
 

@@ -1,9 +1,9 @@
-@import play.api.i18n.Messages
-@import play.api.mvc.RequestHeader
-@import play.twirl.api.Html
-@import org.webjars.play.WebJarsUtil
 @import controllers.AssetsFinder
-
+@import org.webjars.play.WebJarsUtil
+@import play.api.i18n.Messages
+@import play.twirl.api.Html
+@import play.api.mvc.RequestHeader
+@import web.action.NavigationContext
 @(title: String,
         user: Option[auth.model.UserAuthInfo] = None
 )(content: Html
@@ -11,7 +11,6 @@
         messages: Messages,
         assets: AssetsFinder,
         webJarsUtil: WebJarsUtil,
-        context: web.action.NavigationContext[_]
 )
 
 <!DOCTYPE html>
@@ -53,7 +52,6 @@
                         <strong>@messages("success")</strong> @msg
                     </div>
                 }
-                @web.view.helper.html.navigation(context.navigationCollection)
                 @content
             </div>
         </main>

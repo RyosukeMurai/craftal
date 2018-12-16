@@ -10,7 +10,7 @@ import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
 import useCase.auth.{ResetPasswordByToken, ValidateAuthToken}
 import web.DefaultEnv
-import web.model.form.auth.ResetPasswordForm
+import web.form.auth.ResetPasswordForm
 
 import scala.concurrent.{ExecutionContext, Future}
 

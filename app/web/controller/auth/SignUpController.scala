@@ -9,7 +9,7 @@ import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
 import useCase.auth.RegisterUser
 import web.DefaultEnv
-import web.model.form.auth.SignUpForm
+import web.form.auth.SignUpForm
 
 import scala.concurrent.{ExecutionContext, Future}
 

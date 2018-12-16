@@ -2,7 +2,7 @@ package web.mapper
 
 import domain.model.event._
 import domain.model.photo.Photo
-import web.model.event.{EventCalendar, EventCalendarDate, EventCalendarDateContent}
+import web.model.event.EventCalendar
 
 
 object EventCalendarDataMapper {
@@ -11,11 +11,8 @@ object EventCalendarDataMapper {
     EventCalendar(eventCollection
       .flatMap(_.getSchedule)
       .map(_.stateTime)
-      .map(st => EventCalendarDate(
-        st,
-        eventCollection
-          .filter(_.getSchedule.exists(_.stateTime.equals(st)))
-          .map(EventCalendarDateContent(_, photoCollection))
-      ))
+      .distinct
+      .map(st => st -> eventCollection.filter(_.getSchedule.exists(_.stateTime.equals(st))))
+      .toMap
     )
 }

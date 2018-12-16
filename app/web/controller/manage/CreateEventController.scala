@@ -4,7 +4,7 @@ import controllers.AssetsFinder
 import javax.inject._
 import org.webjars.play.WebJarsUtil
 import play.api.mvc._
-import web.model.form.auth.CreateEventFormDefinition
+import web.form.auth.CreateEventFormDefinition
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -14,7 +14,7 @@ class CreateEventController @Inject()(controllerComponents: ControllerComponents
                                       assetsFinder: AssetsFinder)
   extends AbstractController(controllerComponents) with play.api.i18n.I18nSupport {
 
-  def view(): Action[AnyContent] = Action.async { implicit request =>
+  def view(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     Future.successful(
       Ok(
         web.view.manage.event.html.create(

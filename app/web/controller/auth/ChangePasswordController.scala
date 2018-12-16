@@ -12,7 +12,7 @@ import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 import useCase.auth.ChangePassword
 import web.DefaultEnv
-import web.model.form.auth.ChangePasswordForm
+import web.form.auth.ChangePasswordForm
 
 import scala.concurrent.{ExecutionContext, Future}
 

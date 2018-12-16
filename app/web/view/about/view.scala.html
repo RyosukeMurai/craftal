@@ -1,12 +1,14 @@
 @import play.api.i18n.Messages
-@import play.api.mvc.RequestHeader
 @import org.webjars.play.WebJarsUtil
 @import controllers.AssetsFinder
+@import web.action.NavigationContext
 
-@()(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+@()(implicit request: NavigationContext[AnyContent], messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+
+@request.navigationCollection.last.name
 
 @web.view.html.main("about") {
 
-<div>ABOUTページです</div>
+    <div>ABOUTページです</div>
 
 }

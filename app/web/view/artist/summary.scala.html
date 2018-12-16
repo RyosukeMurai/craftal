@@ -1,0 +1,76 @@
+@import controllers.AssetsFinder
+@import org.webjars.play.WebJarsUtil
+@import play.api.data.Form
+@import play.api.i18n.Messages
+@import web.action.NavigationContext
+@import web.form.artist.SearchArtistForm.Data
+@import web.model.artist.ArtistSummary
+
+
+@(form: Form[Data],
+        summary: Option[ArtistSummary]
+)(implicit request: NavigationContext[_],
+        messages: Messages,
+        webJarsUtil: WebJarsUtil,
+        assets: AssetsFinder
+)
+
+@web.view.html.main("artists") {
+
+    <div class="row mb-2">
+        <div class="col-md-12">
+        @helper.form(
+            action = web.controller.artist.routes.SummaryArtistController.view,
+            'class -> "form-inline mt-2 mt-md-0 pb-3 mb-4",
+            'method -> "get"
+        ) {
+            @helper.inputText(
+                form("keyword"),
+                'name -> "keyword",
+                'class -> "form-control mr-sm-2",
+                'placeholder -> "Search",
+                '_label -> "フリーワード検索"
+            )
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        }
+        </div>
+    </div>
+
+    @summary.map { s =>
+        @s.artists.keys.map { genre =>
+            <div class="row mb-2">
+                <div class="col-md-12">
+                    <h3 class="pb-3 mb-4 font-italic border-bottom">
+                        @genre.name
+                    </h3>
+                </div>
+            </div>
+            <div class="row mb-2">
+            @for(a <- s.artists.get(genre)) {
+                @a.map { artist =>
+                    <div class="col-md-6">
+                        <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+                            <img class="card-img-right flex-auto d-none d-lg-block"
+                            alt="Card image cap">
+                            <div class="card-body d-flex flex-column align-items-start">
+                                <h3 class="mb-0">
+                                    <a class="text-dark" href="#">@artist.name</a>
+                                </h3>
+                                <p class="card-text mb-auto">@artist.email</p>
+                                <a href="/artists/@artist.id">詳細を見る</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            </div>
+        }
+    }.getOrElse {
+        <div class="row mb-2">
+            <div class="col-md-12">>
+                <h3>No data</h3>
+            </div>
+        </div>
+    }
+
+}

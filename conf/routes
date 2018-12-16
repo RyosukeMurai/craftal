@@ -3,13 +3,13 @@
 # ~~~~
 
 # Map event resources
-GET         /events                         web.controller.event.ListEventController.view
+GET         /events                         web.controller.event.ListEventCalendarController.view
 
 GET         /events/:id                     web.controller.event.DetailEventController.view(id)
 
 
 # Map artist resources
-GET         /artists                        web.controller.artist.ListArtistController.view
+GET         /artists                        web.controller.artist.SummaryArtistController.view
 
 GET         /artists/genre/:genreId         web.controller.artist.ListArtistByGenreController.view(genreId: Int)
 

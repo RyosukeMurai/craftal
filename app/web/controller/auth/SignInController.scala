@@ -16,7 +16,7 @@ import play.api.Configuration
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
 import web.DefaultEnv
-import web.model.form.auth.SignInForm
+import web.form.auth.SignInForm
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}

@@ -1,6 +1,18 @@
 package web.model.event
 
-case class EventCalendar(private val days: List[EventCalendarDate]) {
+import java.util.Date
 
-  def getDays: List[EventCalendarDate] = this.days.toList
+import domain.model.event.Event
+
+case class EventCalendar(events: Map[Date, Seq[Event]]) {
+
+  /*
+  def getMainPhotoUrl: String = {
+    val photo = this.photos.find(_.id == this.event.mainPhotoId)
+    photo match {
+      case Some(p) => URIService.resolveUrlByIdentifierAndResourceType(p.identifier, ResourceType.photo).toString
+      case _ => throw new IllegalArgumentException("photoId is not included in holding list")
+    }
+  }
+  */
 }

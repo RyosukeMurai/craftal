@@ -1,9 +1,9 @@
-package web.model.form.artist
+package web.form.artist
 
 import play.api.data.Form
 import play.api.data.Forms._
 
-object ListArtistForm {
+object SearchArtistForm {
 
   val form = Form(
     mapping(

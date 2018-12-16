@@ -1,20 +1,24 @@
 package web.model.artist
 
-import domain.model.artist.Artist
 import domain.model.event.Event
 import domain.model.genre.Genre
+import domain.model.photo.Photo
 
 class ArtistDetail(id: Int,
                    name: String,
                    email: String,
                    genre: Genre,
-                   private val events: List[Event] = List())
-  extends Artist(
+                   photos: Seq[Photo],
+                   events: Seq[Event])
+  extends ArtistDescriptor(
     id,
     name,
     email,
-    genre
+    genre,
+    photos
   ) {
 
-  def getArtists: List[Event] = this.events
+  def getEventsParticipateInThePresent: Seq[Event] = this.events
+
+  def getEventsParticipatedInThePast: Seq[Event] = this.events
 }

@@ -3,7 +3,7 @@
 @import play.api.mvc.RequestHeader
 @import org.webjars.play.WebJarsUtil
 @import controllers.AssetsFinder
-@import web.model.form.SignUpForm.Data
+@import web.form.auth.SignUpForm.Data
 
 @(signUpForm: Form[Data])(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
 
@@ -12,7 +12,7 @@
 @web.view.html.main(messages("sign.up.title")) {
     <fieldset class="col-md-6 col-md-offset-3">
         <legend>@messages("sign.up.account")</legend>
-        @helper.form(action = web.controller.routes.SignUpController.submit()) {
+        @helper.form(action = web.controller.auth.routes.SignUpController.submit()) {
             @helper.CSRF.formField
             @b3.text(signUpForm("name"), '_hiddenLabel -> messages("full.name"), 'placeholder -> messages("full.name"), 'class -> "form-control input-lg")
             @b3.text(signUpForm("email"), '_hiddenLabel -> messages("email"), 'placeholder -> messages("email"), 'class -> "form-control input-lg")
@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="sign-in-now">
-                <p>@messages("already.a.member") <a href="@web.controller.routes.SignInController.view">@messages("sign.in.now")</a></p>
+                <p>@messages("already.a.member") <a href="@web.controller.auth.routes.SignInController.view">@messages("sign.in.now")</a></p>
             </div>
         }
     </fieldset>
