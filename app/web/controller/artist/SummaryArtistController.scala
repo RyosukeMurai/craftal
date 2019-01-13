@@ -8,8 +8,8 @@ import play.api.mvc._
 import useCase.artist.GetArtists
 import useCase.photo.GetPhotosByIdList
 import web.action.{ActionWithNavigation, NavigationContext}
-import web.mapper.ArtistSummaryDataMapper
 import web.form.artist.SearchArtistForm
+import web.mapper.ArtistSummaryDataMapper
 
 import scala.concurrent.{ExecutionContext, Future}
 

@@ -11,7 +11,7 @@ import web.model.common.Page
 
 import scala.concurrent.ExecutionContext
 
-class EventListController @Inject()(controllerComponents: ControllerComponents,
+class ListEventController @Inject()(controllerComponents: ControllerComponents,
                                     getEvents: GetEvents,
                                     countNumberOfEvents: CountNumberOfEvents)
                                    (implicit executionContext: ExecutionContext,

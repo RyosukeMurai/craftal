@@ -25,7 +25,7 @@ class ListArtistByGenreController @Inject()(controllerComponents: ControllerComp
 
   def view(genreId: Int): Action[AnyContent] = actionWithNavigation.async { implicit request: NavigationContext[_] =>
     SearchArtistForm.form.bindFromRequest(request.queryString).fold(
-      form => Future.successful(BadRequest(web.view.artist.html.list(None))),
+      _ => Future.successful(BadRequest(web.view.artist.html.list(None))),
       data => for {
         e <- getArtists.execute(genreId, Option(data.keyword))
         p <- getPhotos.execute(e.flatMap(_.getPhotos.map(_.photoId)))

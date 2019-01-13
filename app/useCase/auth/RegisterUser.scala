@@ -1,8 +1,9 @@
 package useCase.auth
 
-import auth.AuthService
 import javax.inject.{Inject, _}
-import notification.{EmailNotificationRequestAssembler, NotificationService}
+
+import auth.AuthService
+import notification.NotificationService
 import play.api.i18n.Messages
 import play.api.mvc.{AnyContent, Request}
 import useCase.Interactor
@@ -13,8 +14,7 @@ import scala.language.postfixOps
 
 @Singleton
 class RegisterUser @Inject()(authService: AuthService,
-                             notificationService: NotificationService,
-                             emailAssembler: EmailNotificationRequestAssembler)
+                             notificationService: NotificationService)
                             (implicit ex: ExecutionContext) extends Interactor {
   def execute(email: String,
               name: String,

@@ -57,19 +57,18 @@ class AuthDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit
   }
 
   override def createAuthByPassword(userId: Int, hasher: String, hashedPassword: String): Future[Int] = {
-    val query = for {
-      _ <- Tables.UserAuth.map(a => (a.userId, a.isActivated)) returning Tables.UserAuth.map(_.userId) += (userId, false)
-      userId <- Tables.UserAuthPassword.map(a => (a.userId, a.hasher, a.password)) returning Tables.UserAuthPassword.map(_.userId) += (userId, hasher, hashedPassword)
+    val command = for {
+      _ <- Tables.UserAuth.map(a => (a.userId, a.isActivated)) += (userId, false)
+      _ <- Tables.UserAuthPassword.map(a => (a.userId, a.hasher, a.password)) += (userId, hasher, hashedPassword)
     } yield userId
-    dbConfig.db.run(query)
+    dbConfig.db.run(command)
   }
 
   override def createAuthToken(userId: Int, token: UUID, expiry: DateTime): Future[String] = {
-    dbConfig
-      .db
-      .run(
-        Tables.UserAuthToken.map(a => (a.userId, a.token, a.expiredAt)) returning Tables.UserAuthToken.map(_.token) += (userId, token.toString, new Timestamp(expiry.getMillis))
-      )
+    val command = for {
+      _ <- Tables.UserAuthToken.map(a => (a.userId, a.token, a.expiredAt)) += (userId, token.toString, new Timestamp(expiry.getMillis))
+    } yield token.toString
+    dbConfig.db.run(command)
   }
 
   override def findAuthToken(token: UUID): Future[Option[AuthToken]] = {
@@ -82,6 +81,17 @@ class AuthDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit
 
   override def removeAuthToken(token: UUID): Future[Boolean] = {
     Future.successful(true)
+  }
+
+  override def updateUserAuth(userId: Int, isActivated: Boolean): Future[Boolean] = {
+    val query = for {u <- Tables.UserAuth if u.userId === userId} yield u.isActivated
+    val command = for {_ <- query.update(isActivated)} yield true
+
+    dbConfig
+      .db
+      .run(
+        command
+      )
   }
 }
 

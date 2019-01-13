@@ -72,9 +72,9 @@ vk = VK
 xing = Xing
 yahoo = Yahoo
 
-##########
+##############################
 # Emails
-##########
+##############################
 
 email.from = Silhouette <noreply@mohiva.com>
 
@@ -103,9 +103,21 @@ email.activate.account.html.text = Please follow <a href="{0}">this link</a> to 
 email.activate.account.txt.text = Please follow the link to confirm and activate your new account: {0}
 
 
-####################
+##############################
+# Craftal Public
+##############################
+
+# Public Common
+craftal.public.common.form.button.search = 検索
+craftal.public.common.form.search-keyword = フリーワード検索
+craftal.public.common.nav.auth.sign-in = ログイン
+craftal.public.common.nav.event.list-event-calendar = イベント
+craftal.public.common.nav.artist.summary-artist = 作家
+
+
+##############################
 # Craftal Management
-####################
+##############################
 
 # Manage Common
 craftal.management.common.site.name = My Craftal

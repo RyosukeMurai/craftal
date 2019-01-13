@@ -29,7 +29,7 @@ class SignUpController @Inject()(components: ControllerComponents,
   def submit: Action[AnyContent] = silhouette.UnsecuredAction.async { implicit request: Request[AnyContent] =>
     SignUpForm.form.bindFromRequest.fold(
       form => Future.successful(BadRequest(web.view.auth.html.signUp(form))),
-      data => this.registerUser.execute(data.email, data.email, data.password).map(_ =>
+      data => this.registerUser.execute(data.email, data.name, data.password).map(_ =>
         Redirect(web.controller.auth.routes.SignUpController.view())
           .flashing("info" -> Messages("sign.up.email.sent", data.email))
       )

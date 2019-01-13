@@ -1,6 +1,7 @@
 package auth
 
 import java.util.UUID
+import javax.inject.Inject
 
 import auth.model.UserAuthInfo
 import auth.model.response.AccountRegistrationResponse
@@ -9,10 +10,9 @@ import com.mohiva.play.silhouette.api.repositories.AuthInfoRepository
 import com.mohiva.play.silhouette.api.util.{Credentials, PasswordHasherRegistry, PasswordInfo}
 import com.mohiva.play.silhouette.impl.providers.CredentialsProvider
 import domain.model.auth.AuthToken
-import javax.inject.Inject
 import org.joda.time.DateTime
 import useCase.auth.{CreateAuthToken, GetAuthToken}
-import useCase.user.{CreateUser, GetUser, GetUserByEmail}
+import useCase.user._
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -22,8 +22,10 @@ class AuthService @Inject()(createUser: CreateUser,
                             getAuthToken: GetAuthToken,
                             getUser: GetUser,
                             getUserByEmail: GetUserByEmail,
+                            getUserByToken: GetUserByToken,
+                            updateUserAuth: UpdateUserAuth,
                             userIdentityService: UserIdentityService,
-                            passwordHasherRegistry: PasswordHasherRegistry, //TODO(RyosukeMurai): move to infra layer
+                            passwordHasherRegistry: PasswordHasherRegistry,
                             credentialsProvider: CredentialsProvider,
                             authInfoRepository: AuthInfoRepository)(implicit ex: ExecutionContext) {
 
@@ -77,5 +79,12 @@ class AuthService @Inject()(createUser: CreateUser,
         this.passwordHasherRegistry.current.hash(newPassword)
       )
     } yield true
+  }
+
+  def activateUser(token: UUID): Future[Boolean] = {
+    for {
+      user <- this.getUserByToken.execute(token)
+      result <- this.updateUserAuth.execute(user.get.id, isActivated = true) //TODO(RyosukeMurai): should i handle exception when can't get user by email?
+    } yield result
   }
 }

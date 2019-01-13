@@ -19,4 +19,6 @@ trait AuthRepository {
   def findAuthToken(token: UUID): Future[Option[AuthToken]]
 
   def removeAuthToken(token: UUID): Future[Boolean]
+
+  def updateUserAuth(userId: Int, isActivated: Boolean): Future[Boolean]
 }

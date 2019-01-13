@@ -8,7 +8,6 @@ import play.api.mvc.{AnyContent, Request}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-//"auth" is an abbreviation containing authorization and authentication
 class NotificationService @Inject()(mailService: MailService,
                                     emailAssembler: EmailNotificationRequestAssembler)
                                    (implicit ex: ExecutionContext) {

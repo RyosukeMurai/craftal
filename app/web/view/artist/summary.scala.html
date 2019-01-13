@@ -15,7 +15,7 @@
         assets: AssetsFinder
 )
 
-@web.view.html.main("artists") {
+@web.view.layout.html.public("artists") {
 
     <div class="row mb-2">
         <div class="col-md-12">
@@ -29,9 +29,11 @@
                 'name -> "keyword",
                 'class -> "form-control mr-sm-2",
                 'placeholder -> "Search",
-                '_label -> "フリーワード検索"
+                '_label -> messages("craftal.public.common.form.search-keyword")
             )
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+            @messages("craftal.public.common.form.button.search")
+            </button>
         }
         </div>
     </div>
@@ -67,7 +69,7 @@
         }
     }.getOrElse {
         <div class="row mb-2">
-            <div class="col-md-12">>
+            <div class="col-md-12">
                 <h3>No data</h3>
             </div>
         </div>

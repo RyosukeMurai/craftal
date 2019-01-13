@@ -55,7 +55,7 @@ GET         /account/activate/:token        web.controller.auth.ActivateAccountC
 
 
 # Management page
-GET         /manage/events                  web.controller.manage.EventListController.view(page: Int ?= 1)
+GET         /manage/events                  web.controller.manage.ListEventController.view(page: Int ?= 1)
 
 GET         /manage/events/create           web.controller.manage.CreateEventController.view
 

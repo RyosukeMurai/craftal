@@ -8,7 +8,7 @@
 definition: FormDefinition[_]
 )(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
 
-@web.view.html.manage(messages("craftal.management.event.create.title")) {
+@web.view.layout.html.manage(messages("craftal.management.event.create.title")) {
 
     @web.view.helper.html.baseForm(definition)
 }
