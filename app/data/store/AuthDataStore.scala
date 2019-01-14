@@ -75,7 +75,7 @@ class AuthDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit
     dbConfig
       .db
       .run(
-        Tables.UserAuthToken.to[List].result.headOption.map(_.map(AuthTokenEntityDataMapper.transform))
+        Tables.UserAuthToken.filter(_.token === token.toString).result.headOption.map(_.map(AuthTokenEntityDataMapper.transform))
       )
   }
 

@@ -1,11 +1,14 @@
+@import java.util.UUID
+
 @import play.api.i18n.Messages
+@import play.api.mvc.RequestHeader
 @import play.twirl.api.Html
 
-@(userName: Option[String], url: String)(implicit messages: Messages)
+@(userName: Option[String], token: UUID)(implicit messages: Messages, request: RequestHeader)
 
 <html>
     <body>
         <p>@messages("email.activate.account.hello", userName.getOrElse("user"))</p>
-        <p>@Html(messages("email.activate.account.html.text", url))</p>
+        <p>@Html(messages("email.activate.account.html.text", web.controller.auth.routes.ActivateAccountController.activate(token).absoluteURL()))</p>
     </body>
 </html>

@@ -12,9 +12,9 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.language.postfixOps
 
 @Singleton
-class ForgotPassword @Inject()(authService: AuthService,
-                               notificationService: NotificationService)
-                              (implicit ex: ExecutionContext) extends Interactor {
+class RetryUserActivation @Inject()(authService: AuthService,
+                                    notificationService: NotificationService)
+                                   (implicit ex: ExecutionContext) extends Interactor {
   def execute(email: String)
              (implicit request: Request[AnyContent], messages: Messages): Future[Boolean] = {
     this.authService.retrieveAlreadyRegisteredAuthInfo(email).flatMap {

@@ -33,6 +33,17 @@ class NotificationService @Inject()(mailService: MailService,
     //silhouette.env.eventBus.publish(SignUpEvent(r.user, request))
   }
 
+  def notifyRetryUserActivation(email: String, name: Option[String], token: UUID)
+                               (implicit request: Request[AnyContent], messages: Messages): Future[Boolean] = {
+
+    this.sendNotificationByEmail(
+      this.emailAssembler.assembleForUserActivationEmail(
+        email,
+        name,
+        token
+      ))
+  }
+
   def notifyForgotPassword(email: String, name: Option[String], token: UUID)
                           (implicit request: Request[AnyContent], messages: Messages): Future[Boolean] = {
     this.sendNotificationByEmail(
