@@ -2,11 +2,13 @@ package data.store
 
 import java.sql.Timestamp
 import java.util.Date
+import javax.inject.{Inject, Singleton}
 
 import data.Tables
 import data.mapper.EventEntityDataMapper
+import domain.model.event.EventLocation.EventLocation
+import domain.model.event.EventStatus.EventStatus
 import domain.model.event.{Event, EventRepository}
-import javax.inject.{Inject, Singleton}
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 
@@ -94,4 +96,17 @@ class EventDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
     dbConfig.db.run(
       Tables.Event.length.result
     )
+
+  override def createEvent(title: String,
+                           description: String,
+                           status: EventStatus,
+                           location: EventLocation): Future[Event] = {
+    val command = for {
+      id <- Tables.Event.map(
+        e => (e.title, e.description, e.statusId, e.locationId)
+      ) returning Tables.Event.map(_.id) += (title, description, status.id.toByte, location.id.toByte)
+      event <- Tables.Event.filter(_.id === id).result.head.map(EventEntityDataMapper.transform)
+    } yield event
+    dbConfig.db.run(command)
+  }
 }

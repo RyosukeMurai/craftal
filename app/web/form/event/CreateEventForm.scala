@@ -1,4 +1,4 @@
-package web.form.auth
+package web.form.event
 
 import play.api.data.Form
 import play.api.data.Forms._

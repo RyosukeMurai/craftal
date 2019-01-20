@@ -1,11 +1,13 @@
 package web.controller.manage
 
-import controllers.AssetsFinder
 import javax.inject._
 
+import com.mohiva.play.silhouette.api.Silhouette
+import controllers.AssetsFinder
 import org.webjars.play.WebJarsUtil
 import play.api.mvc._
 import useCase.event.{CountNumberOfEvents, GetEvents}
+import web.DefaultEnv
 import web.mapper.EventTableDataMapper
 import web.model.common.Page
 
@@ -13,7 +15,8 @@ import scala.concurrent.ExecutionContext
 
 class ListEventController @Inject()(controllerComponents: ControllerComponents,
                                     getEvents: GetEvents,
-                                    countNumberOfEvents: CountNumberOfEvents)
+                                    countNumberOfEvents: CountNumberOfEvents,
+                                    silhouette: Silhouette[DefaultEnv])
                                    (implicit executionContext: ExecutionContext,
                                     webJarsUtil: WebJarsUtil,
                                     assetsFinder: AssetsFinder)
@@ -22,7 +25,7 @@ class ListEventController @Inject()(controllerComponents: ControllerComponents,
   //TODO(RyosukeMurai): move parameter to env
   val size: Int = 20
 
-  def view(page: Int): Action[AnyContent] = Action.async { implicit request =>
+  def view(page: Int): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     for {
       e <- getEvents.execute()
       c <- countNumberOfEvents.execute()

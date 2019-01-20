@@ -1,13 +1,14 @@
-@import play.api.data.Form
+@import play.api.i18n.Messages
+@import play.api.mvc.RequestHeader
 @import web.model.common.table.FormDefinition
 
 
-@(formDefinition: FormDefinition[_])(implicit messages: Messages)
+@(formDefinition: FormDefinition[_])(implicit request: RequestHeader, messages: Messages)
 
 @import helper._
 
 @form(formDefinition.submitAction) {
-
+    @helper.CSRF.formField
     <fieldset>
     @for(field <- formDefinition.fields) {
         @inputText(formDefinition.form(field.name), '_label -> field.label)

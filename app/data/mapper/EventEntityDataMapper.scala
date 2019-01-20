@@ -4,6 +4,19 @@ import data.Tables
 import domain.model.event._
 
 object EventEntityDataMapper {
+
+  /*
+  def transform(event: Event): Tables.EventRow =
+    new Tables.EventRow(
+      id = event.id,
+      title = event.title,
+      description = event.description,
+      statusId = event.status.id.toByte,
+      locationId = event.location.id.toByte,
+      createdAt = event.
+    )
+  */
+
   def transform(eventEntity: Tables.EventRow): Event =
     new Event(
       id = eventEntity.id,
