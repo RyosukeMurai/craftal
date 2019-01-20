@@ -21,7 +21,7 @@ class ForgotPassword @Inject()(authService: AuthService,
       case Some(x) =>
         for {
           token <- this.authService.createNewAuthToken(email)
-          result <- this.notificationService.notifyRetryUserActivation(email, x.name, token)
+          result <- this.notificationService.notifyForgotPassword(email, x.name, token)
         } yield result
       case _ => Future.successful(false)
     }

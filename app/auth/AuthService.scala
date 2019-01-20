@@ -3,11 +3,13 @@ package auth
 import java.util.UUID
 import javax.inject.Inject
 
+import auth.exception.NotActivatedException
 import auth.model.UserAuthInfo
 import auth.model.response.AccountRegistrationResponse
 import com.mohiva.play.silhouette.api.LoginInfo
 import com.mohiva.play.silhouette.api.repositories.AuthInfoRepository
 import com.mohiva.play.silhouette.api.util.{Credentials, PasswordHasherRegistry, PasswordInfo}
+import com.mohiva.play.silhouette.impl.exceptions.IdentityNotFoundException
 import com.mohiva.play.silhouette.impl.providers.CredentialsProvider
 import domain.model.auth.AuthToken
 import org.joda.time.DateTime
@@ -86,5 +88,16 @@ class AuthService @Inject()(createUser: CreateUser,
       user <- this.getUserByToken.execute(token)
       result <- this.updateUserAuth.execute(user.get.id, isActivated = true) //TODO(RyosukeMurai): should i handle exception when can't get user by email?
     } yield result
+  }
+
+  def authenticate(email: String, password: String): Future[LoginInfo] = {
+    for {
+      l <- this.credentialsProvider.authenticate(Credentials(email, password))
+      _ <- this.userIdentityService.retrieve(l).map {
+        case Some(x) if !x.activated => throw new NotActivatedException("specified user has not been activated")
+        case Some(x) => x
+        case None => throw new IdentityNotFoundException("there is no user with the specified email address") //TODO (RyosukeMurai): remove dependency to silhouette exception class
+      }
+    } yield l
   }
 }

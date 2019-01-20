@@ -93,5 +93,18 @@ class AuthDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit
         command
       )
   }
+
+
+  override def updatePassword(userId: Int, hasher: String, hashedPassword: String): Future[Boolean] = {
+    val query = for {u <- Tables.UserAuthPassword if u.userId === userId} yield (u.hasher, u.password)
+    val command = for {_ <- query.update(hasher, hashedPassword)} yield true
+
+    dbConfig
+      .db
+      .run(
+        command
+      )
+
+  }
 }
 

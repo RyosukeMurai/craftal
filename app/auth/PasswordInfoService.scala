@@ -4,12 +4,14 @@ import com.mohiva.play.silhouette.api.LoginInfo
 import com.mohiva.play.silhouette.api.util.PasswordInfo
 import com.mohiva.play.silhouette.persistence.daos.DelegableAuthInfoDAO
 import javax.inject.Inject
-import useCase.auth.{CreateAuthInfoByPassword, GetPasswordAuthInfo, GetPasswordAuthInfoByEmail}
+
+import useCase.auth.{CreateAuthInfoByPassword, GetPasswordAuthInfo, GetPasswordAuthInfoByEmail, UpdatePassword}
 import useCase.user.GetUserByEmail
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class PasswordInfoService @Inject()(createAuthInfoByPassword: CreateAuthInfoByPassword,
+                                    updatePassword: UpdatePassword,
                                     getPasswordAuthInfo: GetPasswordAuthInfo,
                                     getPasswordAuthInfoByEmail: GetPasswordAuthInfoByEmail,
                                     getUserByEmail: GetUserByEmail)
@@ -32,14 +34,17 @@ class PasswordInfoService @Inject()(createAuthInfoByPassword: CreateAuthInfoByPa
   }
 
   override def update(loginInfo: LoginInfo, authInfo: PasswordInfo): Future[PasswordInfo] =
-    throw new NotImplementedError()
+    for {
+      u <- this.getUserByEmail.execute(loginInfo.providerKey).map {
+        case Some(u) => u
+        case _ => throw new IllegalArgumentException("there is no user with the specified email address")
+      }
+      _ <- this.updatePassword.execute(u.id, authInfo.hasher, authInfo.password)
+      p <- this.getPasswordAuthInfo.execute(u.id)
+    } yield PasswordInfo(hasher = p.hasher, password = p.password)
 
-  override def save(loginInfo: LoginInfo, authInfo: PasswordInfo): Future[PasswordInfo] = {
-    println("pInfo-save")
-    println(loginInfo)
-    println(authInfo)
-    Future.successful(null)
-  }
+  override def save(loginInfo: LoginInfo, authInfo: PasswordInfo): Future[PasswordInfo] =
+    throw new NotImplementedError()
 
   override def remove(loginInfo: LoginInfo): Future[Unit] =
     throw new NotImplementedError()

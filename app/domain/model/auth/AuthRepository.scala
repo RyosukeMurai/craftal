@@ -21,4 +21,6 @@ trait AuthRepository {
   def removeAuthToken(token: UUID): Future[Boolean]
 
   def updateUserAuth(userId: Int, isActivated: Boolean): Future[Boolean]
+
+  def updatePassword(userId: Int, hasher: String, hashedPassword: String): Future[Boolean]
 }
