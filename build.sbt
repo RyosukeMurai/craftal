@@ -24,6 +24,7 @@ libraryDependencies ++= Seq(
 )
 
 libraryDependencies ++= Seq(
+  "be.objectify" %% "deadbolt-scala" % "2.6.0",
   "com.mohiva" %% "play-silhouette" % "5.0.5",
   "com.mohiva" %% "play-silhouette-password-bcrypt" % "5.0.5",
   "com.mohiva" %% "play-silhouette-persistence" % "5.0.5",
