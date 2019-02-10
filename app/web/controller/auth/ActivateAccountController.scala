@@ -2,13 +2,13 @@ package web.controller.auth
 
 import java.net.URLDecoder
 import java.util.UUID
-import javax.inject.Inject
 
+import javax.inject.Inject
 import com.mohiva.play.silhouette.api._
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
 import useCase.auth.{ActivateUser, RetryUserActivation, ValidateAuthToken}
-import web.DefaultEnv
+import web.silhouette.DefaultEnv
 
 import scala.concurrent.{ExecutionContext, Future}
 

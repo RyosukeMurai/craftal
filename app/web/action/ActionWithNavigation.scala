@@ -20,3 +20,15 @@ class ActionWithNavigation @Inject()(val parser: BodyParsers.Default,
 
 case class NavigationContext[A](navigationCollection: Seq[Navigation], request: Request[A])
   extends WrappedRequest[A](request)
+
+import play.api.mvc._
+
+case class Logging[A](action: Action[A]) extends Action[A] {
+
+  def apply(request: Request[A]): Future[Result] = {
+    action(request)
+  }
+
+  override def parser = action.parser
+  override def executionContext = action.executionContext
+}

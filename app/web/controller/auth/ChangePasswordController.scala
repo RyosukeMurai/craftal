@@ -1,7 +1,6 @@
 package web.controller.auth
 
 import javax.inject.Inject
-
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.api.actions.SecuredRequest
 import com.mohiva.play.silhouette.api.exceptions.ProviderException
@@ -11,8 +10,8 @@ import org.webjars.play.WebJarsUtil
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 import useCase.auth.ChangePassword
-import web.DefaultEnv
 import web.form.auth.ChangePasswordForm
+import web.silhouette.DefaultEnv
 
 import scala.concurrent.{ExecutionContext, Future}
 

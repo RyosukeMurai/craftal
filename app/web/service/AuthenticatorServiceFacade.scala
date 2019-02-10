@@ -1,7 +1,6 @@
 package web.service
 
 import javax.inject.Inject
-
 import com.mohiva.play.silhouette.api.Authenticator.Implicits._
 import com.mohiva.play.silhouette.api.services.AuthenticatorResult
 import com.mohiva.play.silhouette.api.util.Clock
@@ -11,7 +10,7 @@ import com.mohiva.play.silhouette.impl.providers.CredentialsProvider
 import net.ceedubs.ficus.Ficus._
 import play.api.Configuration
 import play.api.mvc.{AnyContent, Request, Result}
-import web.DefaultEnv
+import web.silhouette.DefaultEnv
 
 import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.{ExecutionContext, Future}

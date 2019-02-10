@@ -12,6 +12,8 @@ trait AuthRepository {
 
   def findPasswordAuthInfoByEmail(email: String): Future[Option[PasswordAuthInfo]]
 
+  def findUserRole(userId: Int): Future[Role]
+
   def createAuthByPassword(userId: Int, hasher: String, hashedPassword: String): Future[Int]
 
   def createAuthToken(userId: Int, token: UUID, expiry: DateTime): Future[String]

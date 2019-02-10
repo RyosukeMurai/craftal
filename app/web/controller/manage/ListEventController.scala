@@ -1,15 +1,14 @@
 package web.controller.manage
 
 import javax.inject._
-
 import com.mohiva.play.silhouette.api.Silhouette
 import controllers.AssetsFinder
 import org.webjars.play.WebJarsUtil
 import play.api.mvc._
 import useCase.event.{CountNumberOfEvents, GetEvents}
-import web.DefaultEnv
 import web.mapper.EventTableDataMapper
 import web.model.common.Page
+import web.silhouette.DefaultEnv
 
 import scala.concurrent.ExecutionContext
 

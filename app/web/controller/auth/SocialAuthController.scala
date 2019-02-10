@@ -1,7 +1,6 @@
 package web.controller.auth
 
 import javax.inject.Inject
-
 import auth.UserIdentityService
 import auth.model.UserAuthInfo
 import com.mohiva.play.silhouette.api._
@@ -10,7 +9,7 @@ import com.mohiva.play.silhouette.api.repositories.AuthInfoRepository
 import com.mohiva.play.silhouette.impl.providers._
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
-import web.DefaultEnv
+import web.silhouette.DefaultEnv
 
 import scala.concurrent.{ExecutionContext, Future}
 

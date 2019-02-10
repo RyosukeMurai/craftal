@@ -1,4 +1,4 @@
-package web
+package web.silhouette
 
 import auth.model.UserAuthInfo
 import com.mohiva.play.silhouette.api.Env

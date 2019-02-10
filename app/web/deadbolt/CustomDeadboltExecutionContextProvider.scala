@@ -1,4 +1,4 @@
-package web.security
+package web.deadbolt
 
 import be.objectify.deadbolt.scala.DeadboltExecutionContextProvider
 

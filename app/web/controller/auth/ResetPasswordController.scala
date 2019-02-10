@@ -1,16 +1,16 @@
 package web.controller.auth
 
 import java.util.UUID
-import javax.inject.Inject
 
+import javax.inject.Inject
 import com.mohiva.play.silhouette.api._
 import controllers.AssetsFinder
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
 import useCase.auth.{ResetPasswordByToken, ValidateAuthToken}
-import web.DefaultEnv
 import web.form.auth.ResetPasswordForm
+import web.silhouette.DefaultEnv
 
 import scala.concurrent.{ExecutionContext, Future}
 

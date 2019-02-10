@@ -1,4 +1,4 @@
-package web.security
+package web.deadbolt
 
 import be.objectify.deadbolt.scala.{AuthenticatedRequest, DeadboltHandler, DynamicResourceHandler}
 
@@ -6,7 +6,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 
-object WebAlternativeDynamicResourceHandler extends DynamicResourceHandler {
+object CustomAlternativeDynamicResourceHandler extends DynamicResourceHandler {
   override def isAllowed[A](name: String,
                             meta: Option[Any],
                             handler: DeadboltHandler,

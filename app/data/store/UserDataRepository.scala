@@ -3,7 +3,7 @@ package data.store
 import java.util.UUID
 
 import data.Tables
-import data.mapper.{PasswordAuthInfoEntityDataMapper, UserEntityDataMapper}
+import data.mapper.{RoleEntityDataMapper, UserEntityDataMapper}
 import domain.model.user.{User, UserRepository}
 import javax.inject.{Inject, Singleton}
 

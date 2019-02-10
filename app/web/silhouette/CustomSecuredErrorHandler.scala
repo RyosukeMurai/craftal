@@ -1,4 +1,4 @@
-package web.handler
+package web.silhouette
 
 import com.mohiva.play.silhouette.api.actions.SecuredErrorHandler
 import javax.inject.Inject
@@ -9,7 +9,7 @@ import play.api.mvc.{RequestHeader, Result}
 import scala.concurrent.Future
 
 /**
-  * Custom secured error handler.
+  * Custom secured error silhouette.
   *
   * @param messagesApi The Play messages API.
   */

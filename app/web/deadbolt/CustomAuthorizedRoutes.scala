@@ -1,12 +1,10 @@
-package web
-
-import javax.inject.Inject
+package web.deadbolt
 
 import be.objectify.deadbolt.scala.allOfGroup
-import be.objectify.deadbolt.scala.filters.{AuthorizedRoute, AuthorizedRoutes, FilterConstraints}
-import be.objectify.deadbolt.scala.filters._
+import be.objectify.deadbolt.scala.filters.{AuthorizedRoute, AuthorizedRoutes, FilterConstraints, _}
+import javax.inject.Inject
 
-class WebAuthorizedRoutes @Inject()(filterConstraints: FilterConstraints) extends AuthorizedRoutes {
+class CustomAuthorizedRoutes @Inject()(filterConstraints: FilterConstraints) extends AuthorizedRoutes {
 
   override val routes: Seq[AuthorizedRoute] =
     Seq(

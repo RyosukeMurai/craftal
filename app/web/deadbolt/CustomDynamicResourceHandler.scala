@@ -1,4 +1,4 @@
-package security
+package web.deadbolt
 
 import be.objectify.deadbolt.scala.{AuthenticatedRequest, DeadboltHandler, DynamicResourceHandler}
 
@@ -6,9 +6,9 @@ import scala.collection.immutable.Map
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class WebDynamicResourceHandler extends DynamicResourceHandler {
+class CustomDynamicResourceHandler extends DynamicResourceHandler {
   override def isAllowed[A](name: String, meta: Option[Any], handler: DeadboltHandler, request: AuthenticatedRequest[A]): Future[Boolean] = {
-    WebDynamicResourceHandler.handlers(name).isAllowed(name,
+    CustomDynamicResourceHandler.handlers(name).isAllowed(name,
       meta,
       handler,
       request)
@@ -17,7 +17,7 @@ class WebDynamicResourceHandler extends DynamicResourceHandler {
   override def checkPermission[A](permissionValue: String, meta: Option[Any] = None, deadboltHandler: DeadboltHandler, request: AuthenticatedRequest[A]): Future[Boolean] = Future(false)
 }
 
-object WebDynamicResourceHandler {
+object CustomDynamicResourceHandler {
   val handlers: Map[String, DynamicResourceHandler] =
     Map(
       "pureLuck" -> new DynamicResourceHandler() {

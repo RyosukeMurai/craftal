@@ -5,12 +5,12 @@ import be.objectify.deadbolt.scala.cache.HandlerCache
 import be.objectify.deadbolt.scala.filters.AuthorizedRoutes
 import play.api.inject.{Binding, Module}
 import play.api.{Configuration, Environment}
-import web.security.{CustomDeadboltExecutionContextProvider, WebHandlerCache}
+import web.deadbolt.{CustomAuthorizedRoutes, CustomDeadboltExecutionContextProvider, CustomHandlerCache}
 
-class CustomDeadboltHook extends Module {
+class DeadboltModule extends Module {
   override def bindings(environment: Environment, configuration: Configuration): Seq[Binding[_]] = Seq(
-    bind[HandlerCache].to[WebHandlerCache],
+    bind[HandlerCache].to[CustomHandlerCache],
     bind[DeadboltExecutionContextProvider].to[CustomDeadboltExecutionContextProvider],
-    bind[AuthorizedRoutes].to[WebAuthorizedRoutes]
+    bind[AuthorizedRoutes].to[CustomAuthorizedRoutes]
   )
 }

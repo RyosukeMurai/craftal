@@ -14,7 +14,7 @@ trait Tables {
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
-  lazy val schema: profile.SchemaDescription = Array(ArtistPhoto.schema, Event.schema, EventArtist.schema, EventLocation.schema, EventPhoto.schema, EventSchedule.schema, EventStatus.schema, Genre.schema, Photo.schema, PlayEvolutions.schema, User.schema, UserAuth.schema, UserAuthPassword.schema, UserAuthToken.schema).reduceLeft(_ ++ _)
+  lazy val schema: profile.SchemaDescription = Array(ArtistPhoto.schema, Event.schema, EventArtist.schema, EventLocation.schema, EventPhoto.schema, EventSchedule.schema, EventStatus.schema, Genre.schema, Permission.schema, Photo.schema, PlayEvolutions.schema, Role.schema, RolePermission.schema, User.schema, UserAuth.schema, UserAuthPassword.schema, UserAuthToken.schema, UserRole.schema).reduceLeft(_ ++ _)
   @deprecated("Use .schema instead of .ddl", "3.0")
   def ddl = schema
 
@@ -315,6 +315,35 @@ trait Tables {
   /** Collection-like TableQuery object for table Genre */
   lazy val Genre = new TableQuery(tag => new Genre(tag))
 
+  /** Entity class storing rows of table Permission
+   *  @param id Database column id SqlType(TINYINT UNSIGNED), PrimaryKey
+   *  @param name Database column name SqlType(ENUM), Length(5,false)
+   *  @param code Database column code SqlType(ENUM), Length(14,false) */
+  case class PermissionRow(id: Byte, name: String, code: String)
+  /** GetResult implicit for fetching PermissionRow objects using plain SQL queries */
+  implicit def GetResultPermissionRow(implicit e0: GR[Byte], e1: GR[String]): GR[PermissionRow] = GR{
+    prs => import prs._
+    PermissionRow.tupled((<<[Byte], <<[String], <<[String]))
+  }
+  /** Table description of table permission. Objects of this class serve as prototypes for rows in queries. */
+  class Permission(_tableTag: Tag) extends profile.api.Table[PermissionRow](_tableTag, Some("craftal"), "permission") {
+    def * = (id, name, code) <> (PermissionRow.tupled, PermissionRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = (Rep.Some(id), Rep.Some(name), Rep.Some(code)).shaped.<>({r=>import r._; _1.map(_=> PermissionRow.tupled((_1.get, _2.get, _3.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column id SqlType(TINYINT UNSIGNED), PrimaryKey */
+    val id: Rep[Byte] = column[Byte]("id", O.PrimaryKey)
+    /** Database column name SqlType(ENUM), Length(5,false) */
+    val name: Rep[String] = column[String]("name", O.Length(5,varying=false))
+    /** Database column code SqlType(ENUM), Length(14,false) */
+    val code: Rep[String] = column[String]("code", O.Length(14,varying=false))
+
+    /** Uniqueness Index over (code) (database name code) */
+    val index1 = index("code", code, unique=true)
+  }
+  /** Collection-like TableQuery object for table Permission */
+  lazy val Permission = new TableQuery(tag => new Permission(tag))
+
   /** Entity class storing rows of table Photo
    *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
    *  @param fileIdentifier Database column file_identifier SqlType(VARCHAR), Length(255,true)
@@ -393,6 +422,78 @@ trait Tables {
   }
   /** Collection-like TableQuery object for table PlayEvolutions */
   lazy val PlayEvolutions = new TableQuery(tag => new PlayEvolutions(tag))
+
+  /** Entity class storing rows of table Role
+   *  @param id Database column id SqlType(TINYINT UNSIGNED), PrimaryKey
+   *  @param name Database column name SqlType(ENUM), Length(5,false)
+   *  @param code Database column code SqlType(ENUM), Length(14,false) */
+  case class RoleRow(id: Byte, name: String, code: String)
+  /** GetResult implicit for fetching RoleRow objects using plain SQL queries */
+  implicit def GetResultRoleRow(implicit e0: GR[Byte], e1: GR[String]): GR[RoleRow] = GR{
+    prs => import prs._
+    RoleRow.tupled((<<[Byte], <<[String], <<[String]))
+  }
+  /** Table description of table role. Objects of this class serve as prototypes for rows in queries. */
+  class Role(_tableTag: Tag) extends profile.api.Table[RoleRow](_tableTag, Some("craftal"), "role") {
+    def * = (id, name, code) <> (RoleRow.tupled, RoleRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = (Rep.Some(id), Rep.Some(name), Rep.Some(code)).shaped.<>({r=>import r._; _1.map(_=> RoleRow.tupled((_1.get, _2.get, _3.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column id SqlType(TINYINT UNSIGNED), PrimaryKey */
+    val id: Rep[Byte] = column[Byte]("id", O.PrimaryKey)
+    /** Database column name SqlType(ENUM), Length(5,false) */
+    val name: Rep[String] = column[String]("name", O.Length(5,varying=false))
+    /** Database column code SqlType(ENUM), Length(14,false) */
+    val code: Rep[String] = column[String]("code", O.Length(14,varying=false))
+
+    /** Uniqueness Index over (code) (database name code) */
+    val index1 = index("code", code, unique=true)
+  }
+  /** Collection-like TableQuery object for table Role */
+  lazy val Role = new TableQuery(tag => new Role(tag))
+
+  /** Entity class storing rows of table RolePermission
+   *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
+   *  @param roleId Database column role_id SqlType(TINYINT UNSIGNED)
+   *  @param permissionId Database column permission_id SqlType(TINYINT UNSIGNED)
+   *  @param createdAt Database column created_at SqlType(DATETIME)
+   *  @param updatedAt Database column updated_at SqlType(DATETIME)
+   *  @param isDeleted Database column is_deleted SqlType(BIT), Default(false) */
+  case class RolePermissionRow(id: Int, roleId: Byte, permissionId: Byte, createdAt: java.sql.Timestamp, updatedAt: java.sql.Timestamp, isDeleted: Boolean = false)
+  /** GetResult implicit for fetching RolePermissionRow objects using plain SQL queries */
+  implicit def GetResultRolePermissionRow(implicit e0: GR[Int], e1: GR[Byte], e2: GR[java.sql.Timestamp], e3: GR[Boolean]): GR[RolePermissionRow] = GR{
+    prs => import prs._
+    RolePermissionRow.tupled((<<[Int], <<[Byte], <<[Byte], <<[java.sql.Timestamp], <<[java.sql.Timestamp], <<[Boolean]))
+  }
+  /** Table description of table role_permission. Objects of this class serve as prototypes for rows in queries. */
+  class RolePermission(_tableTag: Tag) extends profile.api.Table[RolePermissionRow](_tableTag, Some("craftal"), "role_permission") {
+    def * = (id, roleId, permissionId, createdAt, updatedAt, isDeleted) <> (RolePermissionRow.tupled, RolePermissionRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = (Rep.Some(id), Rep.Some(roleId), Rep.Some(permissionId), Rep.Some(createdAt), Rep.Some(updatedAt), Rep.Some(isDeleted)).shaped.<>({r=>import r._; _1.map(_=> RolePermissionRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
+    val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
+    /** Database column role_id SqlType(TINYINT UNSIGNED) */
+    val roleId: Rep[Byte] = column[Byte]("role_id")
+    /** Database column permission_id SqlType(TINYINT UNSIGNED) */
+    val permissionId: Rep[Byte] = column[Byte]("permission_id")
+    /** Database column created_at SqlType(DATETIME) */
+    val createdAt: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("created_at")
+    /** Database column updated_at SqlType(DATETIME) */
+    val updatedAt: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("updated_at")
+    /** Database column is_deleted SqlType(BIT), Default(false) */
+    val isDeleted: Rep[Boolean] = column[Boolean]("is_deleted", O.Default(false))
+
+    /** Foreign key referencing Permission (database name role_permission_ibfk_2) */
+    lazy val permissionFk = foreignKey("role_permission_ibfk_2", permissionId, Permission)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing Role (database name role_permission_ibfk_1) */
+    lazy val roleFk = foreignKey("role_permission_ibfk_1", roleId, Role)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+
+    /** Uniqueness Index over (roleId,permissionId) (database name role_id) */
+    val index1 = index("role_id", (roleId, permissionId), unique=true)
+  }
+  /** Collection-like TableQuery object for table RolePermission */
+  lazy val RolePermission = new TableQuery(tag => new RolePermission(tag))
 
   /** Entity class storing rows of table User
    *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
@@ -542,4 +643,47 @@ trait Tables {
   }
   /** Collection-like TableQuery object for table UserAuthToken */
   lazy val UserAuthToken = new TableQuery(tag => new UserAuthToken(tag))
+
+  /** Entity class storing rows of table UserRole
+   *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
+   *  @param userId Database column user_id SqlType(INT UNSIGNED)
+   *  @param roleId Database column role_id SqlType(TINYINT UNSIGNED)
+   *  @param createdAt Database column created_at SqlType(DATETIME)
+   *  @param updatedAt Database column updated_at SqlType(DATETIME)
+   *  @param isDeleted Database column is_deleted SqlType(BIT), Default(false) */
+  case class UserRoleRow(id: Int, userId: Int, roleId: Byte, createdAt: java.sql.Timestamp, updatedAt: java.sql.Timestamp, isDeleted: Boolean = false)
+  /** GetResult implicit for fetching UserRoleRow objects using plain SQL queries */
+  implicit def GetResultUserRoleRow(implicit e0: GR[Int], e1: GR[Byte], e2: GR[java.sql.Timestamp], e3: GR[Boolean]): GR[UserRoleRow] = GR{
+    prs => import prs._
+    UserRoleRow.tupled((<<[Int], <<[Int], <<[Byte], <<[java.sql.Timestamp], <<[java.sql.Timestamp], <<[Boolean]))
+  }
+  /** Table description of table user_role. Objects of this class serve as prototypes for rows in queries. */
+  class UserRole(_tableTag: Tag) extends profile.api.Table[UserRoleRow](_tableTag, Some("craftal"), "user_role") {
+    def * = (id, userId, roleId, createdAt, updatedAt, isDeleted) <> (UserRoleRow.tupled, UserRoleRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = (Rep.Some(id), Rep.Some(userId), Rep.Some(roleId), Rep.Some(createdAt), Rep.Some(updatedAt), Rep.Some(isDeleted)).shaped.<>({r=>import r._; _1.map(_=> UserRoleRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
+    val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
+    /** Database column user_id SqlType(INT UNSIGNED) */
+    val userId: Rep[Int] = column[Int]("user_id")
+    /** Database column role_id SqlType(TINYINT UNSIGNED) */
+    val roleId: Rep[Byte] = column[Byte]("role_id")
+    /** Database column created_at SqlType(DATETIME) */
+    val createdAt: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("created_at")
+    /** Database column updated_at SqlType(DATETIME) */
+    val updatedAt: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("updated_at")
+    /** Database column is_deleted SqlType(BIT), Default(false) */
+    val isDeleted: Rep[Boolean] = column[Boolean]("is_deleted", O.Default(false))
+
+    /** Foreign key referencing Role (database name user_role_ibfk_2) */
+    lazy val roleFk = foreignKey("user_role_ibfk_2", roleId, Role)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing User (database name user_role_ibfk_1) */
+    lazy val userFk = foreignKey("user_role_ibfk_1", userId, User)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+
+    /** Uniqueness Index over (userId,roleId) (database name user_id) */
+    val index1 = index("user_id", (userId, roleId), unique=true)
+  }
+  /** Collection-like TableQuery object for table UserRole */
+  lazy val UserRole = new TableQuery(tag => new UserRole(tag))
 }

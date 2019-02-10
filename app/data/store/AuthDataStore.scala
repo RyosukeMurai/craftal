@@ -4,8 +4,8 @@ import java.sql.Timestamp
 import java.util.UUID
 
 import data.Tables
-import data.mapper.{AuthTokenEntityDataMapper, PasswordAuthInfoEntityDataMapper}
-import domain.model.auth.{AuthRepository, AuthToken, PasswordAuthInfo}
+import data.mapper.{AuthTokenEntityDataMapper, PasswordAuthInfoEntityDataMapper, RoleEntityDataMapper}
+import domain.model.auth.{AuthRepository, AuthToken, PasswordAuthInfo, Role}
 import javax.inject.{Inject, Singleton}
 import org.joda.time.DateTime
 import play.api.db.slick.DatabaseConfigProvider
@@ -105,6 +105,21 @@ class AuthDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit
         command
       )
 
+  }
+
+  override def findUserRole(userId: Int): Future[Role] = {
+    val query = for {
+      u <- Tables.UserRole
+      r <- Tables.Role
+      if u.id === userId
+      if r.id === u.roleId
+    } yield r
+
+    dbConfig
+      .db
+      .run(
+        query.to[List].result.head.map(RoleEntityDataMapper.transform)
+      )
   }
 }
 

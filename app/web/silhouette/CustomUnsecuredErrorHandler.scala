@@ -1,4 +1,4 @@
-package web.handler
+package web.silhouette
 
 import com.mohiva.play.silhouette.api.actions.UnsecuredErrorHandler
 import play.api.mvc.Results._
@@ -7,7 +7,7 @@ import play.api.mvc.{RequestHeader, Result}
 import scala.concurrent.Future
 
 /**
-  * Custom unsecured error handler.
+  * Custom unsecured error silhouette.
   */
 class CustomUnsecuredErrorHandler extends UnsecuredErrorHandler {
 

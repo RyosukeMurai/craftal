@@ -33,14 +33,14 @@ import play.api.Configuration
 import play.api.libs.openid.OpenIdClient
 import play.api.libs.ws.WSClient
 import play.api.mvc.{Cookie, CookieHeaderEncoding}
-import web.handler.{CustomSecuredErrorHandler, CustomUnsecuredErrorHandler}
+import web.silhouette.{CustomSecuredErrorHandler, CustomUnsecuredErrorHandler, DefaultEnv}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
 /**
   * The Guice module which wires all Silhouette dependencies.
   */
-class AuthModule extends AbstractModule with ScalaModule {
+class SilhouetteModule extends AbstractModule with ScalaModule {
 
   /**
     * A very nested optional reader, to support these cases:
@@ -171,10 +171,10 @@ class AuthModule extends AbstractModule with ScalaModule {
   }
 
   /**
-    * Provides the signer for the CSRF state item handler.
+    * Provides the signer for the CSRF state item silhouette.
     *
     * @param configuration The Play configuration.
-    * @return The signer for the CSRF state item handler.
+    * @return The signer for the CSRF state item silhouette.
     */
   @Provides
   @Named("csrf-state-item-signer")
@@ -185,10 +185,10 @@ class AuthModule extends AbstractModule with ScalaModule {
   }
 
   /**
-    * Provides the signer for the social state handler.
+    * Provides the signer for the social state silhouette.
     *
     * @param configuration The Play configuration.
-    * @return The signer for the social state handler.
+    * @return The signer for the social state silhouette.
     */
   @Provides
   @Named("social-state-signer")
@@ -303,7 +303,7 @@ class AuthModule extends AbstractModule with ScalaModule {
   }
 
   /**
-    * Provides the CSRF state item handler.
+    * Provides the CSRF state item silhouette.
     *
     * @param idGenerator   The ID generator implementation.
     * @param signer        The signer implementation.
@@ -320,10 +320,10 @@ class AuthModule extends AbstractModule with ScalaModule {
   }
 
   /**
-    * Provides the social state handler.
+    * Provides the social state silhouette.
     *
     * @param signer The signer implementation.
-    * @return The social state handler implementation.
+    * @return The social state silhouette implementation.
     */
   @Provides
   def provideSocialStateHandler(
@@ -362,7 +362,7 @@ class AuthModule extends AbstractModule with ScalaModule {
     * Provides the Facebook provider.
     *
     * @param httpLayer          The HTTP layer implementation.
-    * @param socialStateHandler The social state handler implementation.
+    * @param socialStateHandler The social state silhouette implementation.
     * @param configuration      The Play configuration.
     * @return The Facebook provider.
     */
@@ -379,7 +379,7 @@ class AuthModule extends AbstractModule with ScalaModule {
     * Provides the Google provider.
     *
     * @param httpLayer          The HTTP layer implementation.
-    * @param socialStateHandler The social state handler implementation.
+    * @param socialStateHandler The social state silhouette implementation.
     * @param configuration      The Play configuration.
     * @return The Google provider.
     */
@@ -396,7 +396,7 @@ class AuthModule extends AbstractModule with ScalaModule {
     * Provides the VK provider.
     *
     * @param httpLayer          The HTTP layer implementation.
-    * @param socialStateHandler The social state handler implementation.
+    * @param socialStateHandler The social state silhouette implementation.
     * @param configuration      The Play configuration.
     * @return The VK provider.
     */

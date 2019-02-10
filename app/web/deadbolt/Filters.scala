@@ -1,8 +1,8 @@
-package web.security
+package web.deadbolt
 
 import be.objectify.deadbolt.scala.filters.DeadboltRoutePathFilter
 import javax.inject.Inject
-import play.api.http.{DefaultHttpFilters, EnabledFilters, HttpFilters}
+import play.api.http.{DefaultHttpFilters, EnabledFilters}
 import play.filters.cors.CORSFilter
 
 class Filters @Inject()(
