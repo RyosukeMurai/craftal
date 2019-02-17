@@ -8,7 +8,7 @@ class CustomAuthorizedRoutes @Inject()(filterConstraints: FilterConstraints) ext
 
   override val routes: Seq[AuthorizedRoute] =
     Seq(
-      AuthorizedRoute(Get, "/events", filterConstraints.subjectPresent, handler = None),
-      AuthorizedRoute(Get, "/events/$id<[^/]+>", filterConstraints.restrict(allOfGroup("someRole")), handler = None)
+      AuthorizedRoute(Get, "/manage/events", filterConstraints.restrict(allOfGroup("administrator")), handler = None),
+      AuthorizedRoute(Get, "/manage/events/$id<[^/]+>", filterConstraints.restrict(allOfGroup("administrator")), handler = None)
     )
 }

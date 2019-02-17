@@ -40,7 +40,6 @@ class SignInController @Inject()(
             case _: NotActivatedException => //TODO(RyosukeMurai): remove dependency to auth module
               Ok(web.view.auth.html.activateAccount(data.email))
             case e: ProviderException =>
-              println(e)
               Redirect(routes.SignInController.view()).flashing("error" -> Messages("invalid.credentials"))
           }
       })

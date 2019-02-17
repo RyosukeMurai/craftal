@@ -111,14 +111,14 @@ class AuthDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit
     val query = for {
       u <- Tables.UserRole
       r <- Tables.Role
-      if u.id === userId
+      if u.userId === userId
       if r.id === u.roleId
     } yield r
 
     dbConfig
       .db
       .run(
-        query.to[List].result.head.map(RoleEntityDataMapper.transform)
+        query.result.head.map(RoleEntityDataMapper.transform)
       )
   }
 }

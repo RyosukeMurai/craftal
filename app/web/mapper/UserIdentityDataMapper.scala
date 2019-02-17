@@ -10,6 +10,7 @@ object UserIdentityDataMapper {
       user.id,
       Option(user.email),
       Option(user.name),
+      None,
       user.activated
     )
 }
