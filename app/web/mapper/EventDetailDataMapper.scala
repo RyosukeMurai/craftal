@@ -1,8 +1,9 @@
 package web.mapper
 
-import domain.model.artist.Artist
 import domain.model.event._
-import domain.model.photo.Photo
+import net.craftal.core.domain.model.artist.Artist
+import net.craftal.core.domain.model.event.Event
+import net.craftal.core.domain.model.photo.Photo
 import web.model.event.EventDetail
 
 

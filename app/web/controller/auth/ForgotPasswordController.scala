@@ -6,7 +6,7 @@ import controllers.AssetsFinder
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
-import useCase.auth.ForgotPassword
+import usecase.auth.ForgotPassword
 import web.form.auth.ForgotPasswordForm
 import web.silhouette.DefaultEnv
 

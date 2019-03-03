@@ -1,12 +1,11 @@
 package web.controller.event
 
 import javax.inject._
-
 import controllers.AssetsFinder
+import net.craftal.core.usecase.artist.GetArtistsParticipatingInEvent
+import net.craftal.core.usecase.event.GetEvent
 import org.webjars.play.WebJarsUtil
 import play.api.mvc._
-import useCase.artist.GetArtistsParticipatingInEvent
-import useCase.event.GetEvent
 import web.action.{ActionWithNavigation, NavigationContext}
 import web.mapper.EventDetailDataMapper
 

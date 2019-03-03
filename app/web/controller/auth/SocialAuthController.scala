@@ -7,6 +7,7 @@ import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.api.exceptions.ProviderException
 import com.mohiva.play.silhouette.api.repositories.AuthInfoRepository
 import com.mohiva.play.silhouette.impl.providers._
+import domain.model.auth.Role
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
 import web.silhouette.DefaultEnv
@@ -47,7 +48,7 @@ class SocialAuthController @Inject()(
           case Left(result) => Future.successful(result)
           case Right(authInfo) => for {
             profile <- p.retrieveProfile(authInfo)
-            user <- Future.successful(UserAuthInfo(0, null, null, true)) //userService.save(profile)
+            user <- Future.successful(UserAuthInfo(0, null, null, Option(Role(1, "", "")), true)) //userService.save(profile)
             authInfo <- authInfoRepository.save(profile.loginInfo, authInfo)
             authenticator <- silhouette.env.authenticatorService.create(profile.loginInfo)
             value <- silhouette.env.authenticatorService.init(authenticator)

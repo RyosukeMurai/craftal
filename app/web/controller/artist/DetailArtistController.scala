@@ -1,11 +1,10 @@
 package web.controller.artist
 
 import javax.inject._
-
 import controllers.AssetsFinder
+import net.craftal.core.usecase.artist.GetArtist
 import org.webjars.play.WebJarsUtil
 import play.api.mvc._
-import useCase.artist.GetArtist
 import web.action.{ActionWithNavigation, NavigationContext}
 import web.mapper.ArtistDetailDataMapper
 

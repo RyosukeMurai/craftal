@@ -9,7 +9,7 @@ import controllers.AssetsFinder
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
-import useCase.auth.ChangePassword
+import usecase.auth.ChangePassword
 import web.form.auth.ChangePasswordForm
 import web.silhouette.DefaultEnv
 

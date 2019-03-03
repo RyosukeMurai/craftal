@@ -1,8 +1,8 @@
 package web.model.artist
 
-import domain.model.artist.Artist
 import domain.model.genre.Genre
-import domain.model.photo.Photo
+import net.craftal.core.domain.model.artist.Artist
+import net.craftal.core.domain.model.photo.Photo
 
 class ArtistDescriptor(id: Int,
                        name: String,

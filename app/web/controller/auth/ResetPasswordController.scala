@@ -8,7 +8,7 @@ import controllers.AssetsFinder
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
-import useCase.auth.{ResetPasswordByToken, ValidateAuthToken}
+import usecase.auth.{ResetPasswordByToken, ValidateAuthToken}
 import web.form.auth.ResetPasswordForm
 import web.silhouette.DefaultEnv
 

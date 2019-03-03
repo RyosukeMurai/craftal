@@ -1,12 +1,11 @@
 package web.controller.artist
 
 import javax.inject._
-
 import controllers.AssetsFinder
+import net.craftal.core.usecase.artist.GetArtistsOfGenre
 import org.webjars.play.WebJarsUtil
 import play.api.mvc._
-import useCase.artist.GetArtistsByGenre
-import useCase.photo.GetPhotosByIdList
+import usecase.photo.GetPhotosByIdList
 import web.action.{ActionWithNavigation, NavigationContext}
 import web.form.artist.SearchArtistForm
 import web.mapper.ArtistListDataMapper
@@ -16,7 +15,7 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class ListArtistByGenreController @Inject()(controllerComponents: ControllerComponents,
                                             actionWithNavigation: ActionWithNavigation,
-                                            getArtists: GetArtistsByGenre,
+                                            getArtists: GetArtistsOfGenre,
                                             getPhotos: GetPhotosByIdList)
                                            (implicit executionContext: ExecutionContext,
                                             webJarsUtil: WebJarsUtil,

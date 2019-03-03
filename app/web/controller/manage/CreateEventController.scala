@@ -3,11 +3,11 @@ package web.controller.manage
 import javax.inject._
 import com.mohiva.play.silhouette.api.Silhouette
 import controllers.AssetsFinder
+import net.craftal.core.usecase.event.CreateEvent
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.Messages
 import play.api.mvc._
-import useCase.event.CreateEvent
-import useCase.event.request.CreateEventRequest
+import usecase.event.request.CreateEventRequest
 import web.form.event.{CreateEventForm, CreateEventFormDefinition}
 import web.silhouette.DefaultEnv
 

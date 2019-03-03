@@ -1,9 +1,10 @@
 package web.model.event
 
-import domain.model.event.EventLocation.EventLocation
-import domain.model.event.EventStatus.EventStatus
+import net.craftal.core.domain.model.event.EventLocation.EventLocation
+import net.craftal.core.domain.model.event.EventStatus.EventStatus
 import domain.model.event.{Event, EventSchedule}
-import domain.model.photo.Photo
+import net.craftal.core.domain.model.event.{Event, EventSchedule}
+import net.craftal.core.domain.model.photo.Photo
 
 class EventDescriptor(id: Int,
                       title: String,

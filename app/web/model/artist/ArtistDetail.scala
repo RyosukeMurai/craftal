@@ -1,8 +1,8 @@
 package web.model.artist
 
-import domain.model.event.Event
 import domain.model.genre.Genre
-import domain.model.photo.Photo
+import net.craftal.core.domain.model.event.Event
+import net.craftal.core.domain.model.photo.Photo
 
 class ArtistDetail(id: Int,
                    name: String,

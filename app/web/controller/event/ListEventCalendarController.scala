@@ -6,9 +6,9 @@ import javax.inject._
 import controllers.AssetsFinder
 import org.webjars.play.WebJarsUtil
 import play.api.mvc._
-import useCase.event.GetEventsWithinPeriod
-import useCase.genre.GetGenres
-import useCase.photo.GetPhotosByIdList
+import usecase.event.GetEventsWithinPeriod
+import usecase.genre.GetGenres
+import usecase.photo.GetPhotosByIdList
 import web.action.{ActionWithNavigation, NavigationContext}
 import web.form.event.SearchEventForm
 import web.mapper.EventCalendarDataMapper

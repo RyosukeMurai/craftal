@@ -1,13 +1,13 @@
 package web
 
 import com.google.inject.AbstractModule
-import data.store._
 import domain.model.auth.AuthRepository
-import domain.model.artist.ArtistRepository
-import domain.model.event.EventRepository
 import domain.model.genre.GenreRepository
-import domain.model.photo.PhotoRepository
 import domain.model.user.UserRepository
+import net.craftal.core.domain.model.artist.ArtistRepository
+import net.craftal.core.domain.model.event.EventRepository
+import net.craftal.core.domain.model.photo.PhotoRepository
+import net.craftal.core.domain.repository.EventRepository
 
 class DataModule extends AbstractModule {
 

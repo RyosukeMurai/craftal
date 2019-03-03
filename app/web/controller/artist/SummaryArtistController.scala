@@ -5,8 +5,8 @@ import javax.inject._
 import controllers.AssetsFinder
 import org.webjars.play.WebJarsUtil
 import play.api.mvc._
-import useCase.artist.GetArtists
-import useCase.photo.GetPhotosByIdList
+import usecase.artist.GetArtists
+import usecase.photo.GetPhotosByIdList
 import web.action.{ActionWithNavigation, NavigationContext}
 import web.form.artist.SearchArtistForm
 import web.mapper.ArtistSummaryDataMapper

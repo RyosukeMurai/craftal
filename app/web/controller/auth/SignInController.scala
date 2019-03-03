@@ -9,7 +9,7 @@ import controllers.AssetsFinder
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
-import useCase.auth.SignInByPassword
+import usecase.auth.Authenticate
 import web.form.auth.SignInForm
 import web.silhouette.DefaultEnv
 
@@ -18,7 +18,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class SignInController @Inject()(
                                   components: ControllerComponents,
                                   silhouette: Silhouette[DefaultEnv],
-                                  signInByPassword: SignInByPassword,
+                                  signInByPassword: Authenticate,
                                   socialProviderRegistry: SocialProviderRegistry,
                                 )(
                                   implicit

@@ -1,6 +1,7 @@
 package web.mapper
 
 import domain.model.event._
+import net.craftal.core.domain.model.event.Event
 import play.api.i18n.Messages
 import web.model.common.table.{ColumnDefinition, Table}
 
