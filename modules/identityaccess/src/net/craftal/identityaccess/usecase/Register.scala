@@ -16,9 +16,13 @@ import scala.language.postfixOps
 class Register @Inject()(userRepository: UserRepository,
                          identityRepository: IdentityRepository)
                         (implicit ex: ExecutionContext) extends Interactor {
-  def execute(name: String, email: String, password: String, verificationExpiration: FiniteDuration = 5 minutes): Future[(Int, UUID)] = {
+  def execute(email: String,
+              hasher: String,
+              password: String,
+              name: Option[String],
+              verificationExpiration: FiniteDuration = 5 minutes): Future[(Int, UUID)] = {
     for {
-      userId <- this.userRepository.createUser(name, email)
+      userId <- this.userRepository.createUser(name.getOrElse(""), email)
       token <- this.identityRepository.createIdentityToken(
         userId,
         UUID.randomUUID(),

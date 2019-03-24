@@ -1,0 +1,89 @@
+@import controllers.AssetsFinder
+@import org.webjars.play.WebJarsUtil
+@import play.api.data.Form
+@import play.api.i18n.Messages
+@@@@import java.util.Date
+@(form: Form[Data],
+        calendar: Option[EventCalendar]
+)(implicit request: NavigationContext[_],
+        messages: Messages,
+        webJarsUtil: WebJarsUtil,
+        assets: AssetsFinder
+)
+
+    @web.view.layout.html.public("events") {
+
+        <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
+            <div class="col-md-6 px-0">
+                <h1 class="display-4 font-italic">あなただけの<br>クラフトワークを探そう</h1>
+                <p class="lead my-3">日本中のクラフトワークが集まっているただ一つのサイトです。クラフトワークのイベントを探すこともできます。</p>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-md-12">
+            @helper.form(
+                action = web.controller.event.routes.ListEventCalendarController.view,
+                'class -> "form-inline mt-2 mt-md-0 pb-3 mb-4",
+                'method -> "get"
+            ) {
+                @helper.inputText(
+                    form("keyword"),
+                    'name -> "keyword",
+                    'class -> "form-control mr-sm-2",
+                    'placeholder -> "Search",
+                    '_label -> messages("craftal.public.common.form.search-keyword")
+                )
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                @messages("craftal.public.common.form.button.search")
+                </button>
+            }
+            </div>
+        </div>
+
+
+        @calendar.map { c =>
+            @c.events.keys.map { date: Date =>
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <h3 class="pb-3 mb-4 font-italic border-bottom">
+                            @date.format("MM月dd日")
+                        </h3>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                @for(e <- c.events.get(date)) {
+                    @e.map { event =>
+                        <div class="col-md-6">
+                            <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+                                <div class="card-body d-flex flex-column align-items-start">
+                                    <strong class="d-inline-block mb-2 text-primary">屋内</strong>
+                                    <h3 class="mb-0">
+                                        <a class="text-dark" href="#">@event.title</a>
+                                    </h3>
+                                    @for(schedule <- event.getSchedule) {
+                                        <div class="mb-1 text-muted">
+                                            @schedule.stateTime.format("hh:mm:ss")~ @schedule.endTime.format("hh:mm:ss")
+                                        </div>
+                                        <div class="mb-1 text-muted">
+                                        @schedule.venue
+                                        </div>
+                                    }
+                                    <p class="card-text mb-auto">@event.description</p>
+                                    <a href="/events/@event.id">詳細を見る</a>
+                                </div>
+                                <img class="card-img-right flex-auto d-none d-lg-block"
+                                alt="Card image cap">
+                            </div>
+                        </div>
+                    }
+                }
+                </div>
+            }
+        }.getOrElse {
+            <div class="row mb-2">
+                <div class="col-md-12">
+                    <h3>No data</h3>
+                </div>
+            </div>
+        }
+    }

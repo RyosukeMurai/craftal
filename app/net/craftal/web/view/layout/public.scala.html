@@ -1,0 +1,12 @@
+@import controllers.AssetsFinder
+@import org.webjars.play.WebJarsUtil
+@import play.api.i18n.Messages
+@import play.twirl.api.Html
+@@(title: String)(content: Html)(implicit request: NavigationContext[_], messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+
+@web.view.html.main(title) {
+
+    @web.view.helper.html.navigation(request.navigationCollection)
+
+    @content
+}

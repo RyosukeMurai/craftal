@@ -10,4 +10,6 @@ import scala.concurrent.Future
 class GetGenres @Inject()(repository: GenreRepository) extends Interactor {
 
   def execute(): Future[List[Genre]] = this.repository.findAll()
+
+  def execute(genreIdList: List[Int]): Future[List[Genre]] = this.repository.findAll()
 }

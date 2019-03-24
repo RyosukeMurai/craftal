@@ -1,0 +1,19 @@
+@@(table: Table[_])
+<table class="table table-bordered">
+    <thead>
+      <tr>
+      @for(c <- table.columns) {
+        <th scope="col">@c.label</th>
+      }
+      </tr>
+    </thead>
+    <tbody>
+    @for(r <- table.rows) {
+    <tr>
+        @for(c <- r.cells) {
+        <td>@c.value</td>
+        }
+    </tr>
+    }
+    </tbody>
+</table>

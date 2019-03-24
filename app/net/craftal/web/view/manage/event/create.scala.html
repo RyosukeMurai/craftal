@@ -1,0 +1,14 @@
+@import play.api.i18n.Messages
+@import play.api.mvc.RequestHeader
+@import org.webjars.play.WebJarsUtil
+@import controllers.AssetsFinder
+
+@@(
+definition: FormDefinition[_]
+)(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+
+@web.view.layout.html.manage(messages("craftal.management.event.create.title")) {
+
+    @web.view.helper.html.baseForm(definition)
+}
+

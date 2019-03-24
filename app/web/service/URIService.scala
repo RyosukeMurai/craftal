@@ -2,8 +2,6 @@ package web.service
 
 import java.net.URL
 
-import web.service.ResourceType.ResourceType
-
 object URIService {
   def resolveUrlByIdentifierAndResourceType(identifier: String, resourceType: ResourceType): URL = {
     resourceType match {

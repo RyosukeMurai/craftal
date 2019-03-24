@@ -10,7 +10,6 @@ import com.mohiva.play.silhouette.impl.providers.CredentialsProvider
 import net.ceedubs.ficus.Ficus._
 import play.api.Configuration
 import play.api.mvc.{AnyContent, Request, Result}
-import web.silhouette.DefaultEnv
 
 import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.{ExecutionContext, Future}

@@ -24,8 +24,8 @@ lazy val commonSettings = Seq(
 lazy val root = (project in file("."))
   .settings(commonSettings)
   .enablePlugins(PlayScala)
-  .dependsOn(common, identityaccess)
-  .aggregate(common, identityaccess)
+  .dependsOn(common, core, identityaccess)
+  .aggregate(common, core, identityaccess)
 
 lazy val common = (project in file("modules/common"))
   .settings(commonSettings)

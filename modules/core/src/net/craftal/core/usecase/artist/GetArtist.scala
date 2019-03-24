@@ -9,5 +9,5 @@ import scala.concurrent.Future
 @Singleton
 class GetArtist @Inject()(repository: ArtistRepository) extends Interactor {
 
-  def execute(id: Int): Future[Artist] = this.repository.findArtist(id)
+  def execute(artistId: Int): Future[Artist] = this.repository.findArtist(artistId)
 }

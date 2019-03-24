@@ -1,0 +1,31 @@
+@import controllers.AssetsFinder
+@import org.webjars.play.WebJarsUtil
+@import play.api.i18n.Messages
+@@(artist: web.model.artist.ArtistDetail)(implicit request: NavigationContext[_], messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+
+@web.view.html.main(artist.name) {
+    <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
+        <div class="col-md-6 px-0">
+            <h1 class="display-4 font-italic">@artist.name</h1>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-md-12 blog-main">
+            <div class="blog-post">
+                <span class="blog-post-meta">兵庫県</span>
+                <span class="blog-post-meta">屋外</span>
+                <span class="blog-post-meta">募集中</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-md-12 blog-main">
+            <h3 class="pb-3 mb-4 font-italic border-bottom">
+                どんな作家？
+            </h3>
+            <p>@artist.email</p>
+        </div>
+    </div>
+}

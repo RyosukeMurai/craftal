@@ -1,0 +1,32 @@
+@import controllers.AssetsFinder
+@import org.webjars.play.WebJarsUtil
+@import play.api.i18n.Messages
+@@@(artists: Option[Seq[ArtistDescriptor]])(implicit request: NavigationContext[_], messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+
+@web.view.html.main("artists") {
+
+    @artists.map { list =>
+        @list.map { artist =>
+            <div class="col-md-6">
+                <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+                    <img class="card-img-right flex-auto d-none d-lg-block"
+                    alt="Card image cap">
+                    <div class="card-body d-flex flex-column align-items-start">
+                        <h3 class="mb-0">
+                            <a class="text-dark" href="#">@artist.name</a>
+                        </h3>
+                        <p class="card-text mb-auto">@artist.email</p>
+                        <a href="/artists/@artist.id">詳細を見る</a>
+                    </div>
+                </div>
+            </div>
+        }
+    }.getOrElse {
+        <div class="row mb-2">
+            <div class="col-md-12">>
+                <h3>No data</h3>
+            </div>
+        </div>
+    }
+
+}
