@@ -1,5 +1,6 @@
 package net.craftal.web.model.form.event
 
+import net.craftal.web.model.common.table.{FieldDefinition, FormDefinition}
 import play.api.data.Form
 import play.api.i18n.Messages
 

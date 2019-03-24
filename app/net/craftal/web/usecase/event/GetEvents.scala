@@ -2,18 +2,19 @@ package net.craftal.web.usecase.event
 
 import javax.inject._
 import net.craftal.common.usecase.Interactor
-import net.craftal.core.domain.model.event.{Event, EventRepository}
-import org.joda.time.DateTime
+import net.craftal.core.api.DomainService
+import net.craftal.core.domain.model.event.Event
+import play.api.i18n.Messages
+import play.api.mvc.{AnyContent, Request}
 
 import scala.concurrent.Future
 
-@Singleton
-class GetEvents @Inject()(repository: EventRepository) extends Interactor {
 
-  def execute(): Future[List[Event]] = this.repository.findAll()
+class GetEvents @Inject()(domainService: DomainService) extends Interactor {
 
-  def execute(termStart: DateTime,
-              termEnd: Option[DateTime],
-              keyword: Option[String]): Future[List[Event]] =
-    this.repository.findEventsByTerm(termStart, termEnd, keyword)
+  def execute(implicit request: Request[AnyContent], messages: Messages): Future[(List[Event], Int)] =
+    for {
+      e <- this.domainService.getEvents
+      c <- this.domainService.countNumberOfEvents
+    } yield (e, c)
 }

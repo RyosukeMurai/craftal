@@ -11,7 +11,6 @@ import org.joda.time.DateTime
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.postfixOps
 
-@Singleton
 class ResetPassword @Inject()(userRepository: UserRepository,
                               identityRepository: IdentityRepository)
                              (implicit ex: ExecutionContext) extends Interactor {

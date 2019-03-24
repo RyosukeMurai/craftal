@@ -9,7 +9,6 @@ import net.craftal.core.domain.model.event.{Event, EventRepository}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.postfixOps
 
-@Singleton
 class CreateEvent @Inject()(eventRepository: EventRepository)
                            (implicit ex: ExecutionContext) extends Interactor {
   def execute(title: String,

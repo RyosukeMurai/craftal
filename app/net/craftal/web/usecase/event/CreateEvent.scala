@@ -2,24 +2,26 @@ package net.craftal.web.usecase.event
 
 import javax.inject._
 import net.craftal.common.usecase.Interactor
-import net.craftal.core.domain.model.event.EventLocation.EventLocation
-import net.craftal.core.domain.model.event.EventStatus.EventStatus
-import net.craftal.core.domain.model.event.{Event, EventRepository}
+import net.craftal.core.api.DomainService
+import net.craftal.core.domain.model.event.{Event, EventLocation, EventStatus}
+import play.api.i18n.Messages
+import play.api.mvc.{AnyContent, Request}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.postfixOps
 
-@Singleton
-class CreateEvent @Inject()(eventRepository: EventRepository)
+class CreateEvent @Inject()(domainService: DomainService)
                            (implicit ex: ExecutionContext) extends Interactor {
+
   def execute(title: String,
               description: String,
-              status: EventStatus,
-              location: EventLocation): Future[Event] =
-    this.eventRepository.createEvent(
-      title = title,
-      description = description,
-      status = status,
-      location = location
+              status: Int,
+              location: Int)
+             (implicit request: Request[AnyContent], messages: Messages): Future[Event] =
+    this.domainService.createEvent(
+      title,
+      description,
+      EventStatus(status),
+      EventLocation(location)
     )
 }

@@ -7,7 +7,6 @@ import net.craftal.identityaccess.domain.model.user.UserRepository
 
 import scala.concurrent.{ExecutionContext, Future}
 
-@Singleton
 class IsActivated @Inject()(userRepository: UserRepository,
                             identityRepository: IdentityRepository)(implicit ex: ExecutionContext) extends Interactor {
   def execute(userId: Int): Future[Boolean] =

@@ -6,7 +6,6 @@ import net.craftal.core.domain.model.photo.{Photo, PhotoRepository}
 
 import scala.concurrent.Future
 
-@Singleton
 class GetPhotos @Inject()(repository: PhotoRepository) extends Interactor {
 
   def execute(idList: List[Int]): Future[List[Photo]] = this.repository.findPhotosByIdList(idList)

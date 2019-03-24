@@ -12,7 +12,6 @@ import scala.concurrent.duration.{FiniteDuration, _}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.postfixOps
 
-@Singleton
 class Register @Inject()(userRepository: UserRepository,
                          identityRepository: IdentityRepository)
                         (implicit ex: ExecutionContext) extends Interactor {

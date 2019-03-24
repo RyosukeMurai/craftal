@@ -3,13 +3,15 @@ package net.craftal.web.controller.common
 import controllers.AssetsFinder
 import javax.inject._
 import net.craftal.web.controller.{ActionWithNavigation, NavigationContext}
+import net.craftal.web.presenter.common.CommonViewPresenter
 import org.webjars.play.WebJarsUtil
 import play.api.mvc._
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class AboutController @Inject()(controllerComponents: ControllerComponents,
-                                actionWithNavigation: ActionWithNavigation)
+                                actionWithNavigation: ActionWithNavigation,
+                                presenter: CommonViewPresenter)
                                (implicit executionContext: ExecutionContext,
                                 webJarsUtil: WebJarsUtil,
                                 assetsFinder: AssetsFinder)
@@ -17,8 +19,8 @@ class AboutController @Inject()(controllerComponents: ControllerComponents,
 
   def view: Action[AnyContent] = actionWithNavigation.async { implicit request: NavigationContext[AnyContent] =>
     Future.successful {
-      Ok(web.view.about.html.view())
+      Ok(presenter.presentAbout)
     }
   }
-
 }
+

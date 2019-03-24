@@ -3,24 +3,20 @@ package net.craftal.web.usecase.artist
 import javax.inject._
 import net.craftal.common.usecase.Interactor
 import net.craftal.core.api.DomainService
+import net.craftal.core.domain.model.artist.Artist
 import net.craftal.core.domain.model.genre.Genre
+import play.api.i18n.Messages
+import play.api.mvc.{AnyContent, Request}
 
 import scala.concurrent.Future
 
-@Singleton
+
 class GetArtists @Inject()(domainService: DomainService) extends Interactor {
 
-  case class Item(id: Int,
-                  name: String,
-                  email: String,
-                  genre: Genre)
-
-  case class Response(items: Seq[Item])
-
-  def execute(keyword: Option[String]): Future[Response] = {
+  def execute(keyword: Option[String])
+             (implicit request: Request[AnyContent], messages: Messages): Future[(List[Artist], List[Genre])] =
     for {
-      a <- this.domainService.getArtists(keyword = keyword)
+      a <- this.domainService.getArtists(keyword)
       g <- this.domainService.getGenres(a.map(_.genreId))
-    } yield Response(a.id, a.name, a.email, g)
-  }
+    } yield (a, g)
 }

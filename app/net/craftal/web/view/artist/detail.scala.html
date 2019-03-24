@@ -1,7 +1,7 @@
 @import controllers.AssetsFinder
 @import org.webjars.play.WebJarsUtil
 @import play.api.i18n.Messages
-@@(artist: web.model.artist.ArtistDetail)(implicit request: NavigationContext[_], messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+@(artist: web.model.artist.ArtistDetail)(implicit request: NavigationContext[_], messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
 
 @web.view.html.main(artist.name) {
     <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">

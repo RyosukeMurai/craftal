@@ -6,7 +6,6 @@ import net.craftal.core.domain.model.artist.{Artist, ArtistRepository}
 
 import scala.concurrent.Future
 
-@Singleton
 class GetArtistsParticipatingInEvent @Inject()(repository: ArtistRepository) extends Interactor {
 
   def execute(eventId: Int, keyword: Option[String]): Future[List[Artist]] =

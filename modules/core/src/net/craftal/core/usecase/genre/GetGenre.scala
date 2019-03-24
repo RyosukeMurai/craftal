@@ -6,7 +6,6 @@ import net.craftal.core.domain.model.genre.{Genre, GenreRepository}
 
 import scala.concurrent.Future
 
-@Singleton
 class GetGenre @Inject()(repository: GenreRepository) extends Interactor {
 
   def execute(genreId: Int): Future[Genre] = this.repository.findGenre(genreId)

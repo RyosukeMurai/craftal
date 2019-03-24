@@ -6,7 +6,6 @@ import net.craftal.core.domain.model.event.EventRepository
 
 import scala.concurrent.Future
 
-@Singleton
 class CountNumberOfEvents @Inject()(repository: EventRepository) extends Interactor {
 
   def execute(): Future[Int] = this.repository.countNumberOfEvents

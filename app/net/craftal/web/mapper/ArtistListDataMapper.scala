@@ -10,7 +10,7 @@ object ArtistListDataMapper {
 
   def transform(artistCollection: List[Artist], photoCollection: List[Photo]): Seq[ArtistDescriptor] =
     artistCollection.map { a =>
-      new ArtistDescriptor(a.id, a.name, a.email, new Genre(1 ,"", None),
+      new ArtistDescriptor(a.id, a.name, a.email, Genre(1, "", None),
         photoCollection.filter(p => a.photos.map(_.photoId).contains(p.id))
       )
     }

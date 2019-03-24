@@ -8,7 +8,6 @@ import net.craftal.identityaccess.domain.model.user.UserRepository
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.postfixOps
 
-@Singleton
 class GetPasswordIdentity @Inject()(userRepository: UserRepository,
                                     identityRepository: IdentityRepository)
                                    (implicit ex: ExecutionContext) extends Interactor {

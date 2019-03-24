@@ -1,6 +1,6 @@
 package net.craftal.core.data.store
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.Inject
 import net.craftal.common.data.Tables
 import net.craftal.core.data.mapper.ArtistEntityDataMapper
 import net.craftal.core.domain.model.artist.{Artist, ArtistRepository}
@@ -10,7 +10,6 @@ import slick.jdbc.JdbcProfile
 import scala.concurrent.{ExecutionContext, Future}
 
 
-@Singleton
 class ArtistDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext)
   extends ArtistRepository {
 

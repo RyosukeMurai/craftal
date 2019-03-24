@@ -8,7 +8,6 @@ import net.craftal.identityaccess.domain.model.user.{User, UserRepository}
 
 import scala.concurrent.Future
 
-@Singleton
 class GetUser @Inject()(repository: UserRepository) extends Interactor {
 
   def execute(userId: Int): Future[User] = this.repository.findUser(userId)

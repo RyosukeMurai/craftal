@@ -7,7 +7,6 @@ import org.joda.time.DateTime
 
 import scala.concurrent.Future
 
-@Singleton
 class GetEvents @Inject()(repository: EventRepository) extends Interactor {
 
   def execute(): Future[List[Event]] = this.repository.findAll()
