@@ -14,14 +14,14 @@ import play.twirl.api.HtmlFormat
 class ArtistSummaryViewPresenter()(implicit webJarsUtil: WebJarsUtil,
                                    assetsFinder: AssetsFinder) extends WebPresenter {
 
-  def present(form: Form[_])(implicit request: Request[AnyContent], messages: Messages): HtmlFormat.Appendable =
+  def present(form: Form[Any])(implicit request: Request[AnyContent], messages: Messages): HtmlFormat.Appendable =
     web.view.artist.html.summary(form, None)
 
-  def present(form: Form[_], values: (List[Artist], List[Genre]))
+  def present(form: Form[Any], values: (List[Artist], List[Genre]))
              (implicit request: Request[AnyContent], messages: Messages): HtmlFormat.Appendable =
     this.present(form, values._1, values._2)
 
-  def present(form: Form[_], artists: List[Artist], genres: List[Genre])
+  def present(form: Form[Any], artists: List[Artist], genres: List[Genre])
              (implicit request: Request[AnyContent], messages: Messages): HtmlFormat.Appendable =
     web.view.artist.html.summary(
       form,

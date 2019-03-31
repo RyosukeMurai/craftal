@@ -1,7 +1,7 @@
 package net.craftal.web.controller.auth
 
-import auth.model.UserAuthInfo
 import com.mohiva.play.silhouette.api.{Authenticator, Authorization}
+import net.craftal.web.port.silhouette.UserIdentity
 import play.api.mvc.Request
 
 import scala.concurrent.Future
@@ -12,7 +12,7 @@ import scala.concurrent.Future
   * @param provider The provider ID the user must authenticated with.
   * @tparam A The type of the authenticator.
   */
-case class WithProvider[A <: Authenticator](provider: String) extends Authorization[UserAuthInfo, A] {
+case class WithProvider[A <: Authenticator](provider: String) extends Authorization[UserIdentity, A] {
 
   /**
     * Indicates if a user is authorized to access an action.
@@ -23,7 +23,7 @@ case class WithProvider[A <: Authenticator](provider: String) extends Authorizat
     * @tparam B The type of the request body.
     * @return True if the user is authorized, false otherwise.
     */
-  override def isAuthorized[B](user: UserAuthInfo, authenticator: A)(
+  override def isAuthorized[B](user: UserIdentity, authenticator: A)(
     implicit
     request: Request[B]): Future[Boolean] = {
 

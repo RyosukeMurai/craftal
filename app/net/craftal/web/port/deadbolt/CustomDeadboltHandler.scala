@@ -27,7 +27,7 @@ class CustomDeadboltHandler @Inject()(silhouette: Silhouette[DefaultEnv]) extend
         }
       } yield {
         u.map { x =>
-          new AuthSubject(
+          new CustomSubject(
             userName = x.name.getOrElse(""),
             roleCodes = x.role.map(r => List(r.code)).getOrElse(List()),
             permissionCodes = List("")

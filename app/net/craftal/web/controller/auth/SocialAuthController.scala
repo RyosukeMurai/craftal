@@ -1,32 +1,20 @@
 package net.craftal.web.controller.auth
 
-import javax.inject.Inject
-import auth.UserIdentityService
-import auth.model.UserAuthInfo
 import com.mohiva.play.silhouette.api._
-import com.mohiva.play.silhouette.api.exceptions.ProviderException
 import com.mohiva.play.silhouette.api.repositories.AuthInfoRepository
 import com.mohiva.play.silhouette.impl.providers._
-import domain.model.auth.Role
+import javax.inject.Inject
+import net.craftal.web.port.silhouette.DefaultEnv
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
+import web.controller.auth.routes
 
 import scala.concurrent.{ExecutionContext, Future}
 
-/**
-  * The social auth controller.
-  *
-  * @param components             The Play controller components.
-  * @param silhouette             The Silhouette stack.
-  * @param userService            The user service implementation.
-  * @param authInfoRepository     The auth info service implementation.
-  * @param socialProviderRegistry The social provider registry.
-  * @param ex                     The execution context.
-  */
+
 class SocialAuthController @Inject()(
                                       components: ControllerComponents,
                                       silhouette: Silhouette[DefaultEnv],
-                                      userService: UserIdentityService,
                                       authInfoRepository: AuthInfoRepository,
                                       socialProviderRegistry: SocialProviderRegistry
                                     )(
@@ -41,6 +29,7 @@ class SocialAuthController @Inject()(
     * @return The result to display.
     */
   def authenticate(provider: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    /*
     (socialProviderRegistry.get[SocialProvider](provider) match {
       case Some(p: SocialProvider with CommonSocialProfileBuilder) =>
         p.authenticate().flatMap {
@@ -63,5 +52,7 @@ class SocialAuthController @Inject()(
         logger.error("Unexpected provider error", e)
         Redirect(routes.SignInController.view()).flashing("error" -> Messages("could.not.authenticate"))
     }
+    */
+    Future.successful(Redirect(routes.SignInController.view()).flashing("error" -> Messages("could.not.authenticate")))
   }
 }

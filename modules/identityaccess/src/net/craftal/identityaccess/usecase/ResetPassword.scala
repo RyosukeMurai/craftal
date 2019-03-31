@@ -2,7 +2,7 @@ package net.craftal.identityaccess.usecase
 
 import java.util.UUID
 
-import javax.inject.{Inject, _}
+import javax.inject.Inject
 import net.craftal.common.usecase.Interactor
 import net.craftal.identityaccess.domain.model.identity.IdentityRepository
 import net.craftal.identityaccess.domain.model.user.UserRepository
@@ -20,10 +20,11 @@ class ResetPassword @Inject()(userRepository: UserRepository,
         case Some(x) => x
         case None => throw new IllegalArgumentException("The passed token is illegal")
       }
-      _ <- this.identityRepository.findIdentityTokenDetail(token).map {
-        case x if x.expiry.isAfter(new DateTime()) => this.identityRepository.updatePassword(u.id, "", "")
-        case _ => throw new VerifyError("The token is already expired")
+      result <- this.identityRepository.findIdentityTokenDetail(token).flatMap {
+        case Some(x) if x.expiry.isAfter(new DateTime()) => this.identityRepository.updatePassword(u.id, "", "")
+        case Some(_) => throw new VerifyError("The token is already expired")
+        case None => throw new IllegalArgumentException("The passed token is illegal")
       }
-    } yield true
+    } yield result
   }
 }

@@ -4,6 +4,7 @@ import com.mohiva.play.silhouette.api.LoginInfo
 import com.mohiva.play.silhouette.api.util.PasswordInfo
 import com.mohiva.play.silhouette.persistence.daos.DelegableAuthInfoDAO
 import javax.inject.Inject
+import net.craftal.identityaccess.api.AuthenticationService
 
 import scala.concurrent.{ExecutionContext, Future}
 

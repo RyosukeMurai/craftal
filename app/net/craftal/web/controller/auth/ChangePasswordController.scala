@@ -1,22 +1,27 @@
 package net.craftal.web.controller.auth
 
-import javax.inject.Inject
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.api.actions.SecuredRequest
 import com.mohiva.play.silhouette.api.exceptions.ProviderException
 import com.mohiva.play.silhouette.impl.providers.CredentialsProvider
 import controllers.AssetsFinder
+import javax.inject.Inject
+import net.craftal.web.model.form.auth.ChangePasswordForm
+import net.craftal.web.port.silhouette.DefaultEnv
+import net.craftal.web.presenter.auth.ChangePasswordViewPresenter
+import net.craftal.web.usecase.auth.ChangePassword
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
-import usecase.auth.ChangePassword
+import web.controller.auth.routes
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class ChangePasswordController @Inject()(
                                           components: ControllerComponents,
                                           silhouette: Silhouette[DefaultEnv],
-                                          changePassword: ChangePassword
+                                          changePassword: ChangePassword,
+                                          presenter: ChangePasswordViewPresenter
                                         )(
                                           implicit
                                           webJarsUtil: WebJarsUtil,
@@ -26,13 +31,13 @@ class ChangePasswordController @Inject()(
 
   def view: Action[AnyContent] = silhouette.SecuredAction(WithProvider[DefaultEnv#A](CredentialsProvider.ID)) {
     implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
-      Ok(web.view.auth.html.changePassword(ChangePasswordForm.form, request.identity))
+      Ok(presenter.present(ChangePasswordForm.form))
   }
 
   def submit: Action[AnyContent] = silhouette.SecuredAction(WithProvider[DefaultEnv#A](CredentialsProvider.ID)).async {
     implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
       ChangePasswordForm.form.bindFromRequest.fold(
-        form => Future.successful(BadRequest(web.view.auth.html.changePassword(form, request.identity))),
+        form => Future.successful(BadRequest(presenter.present(form))),
         password => {
           val (currentPassword, newPassword) = password
           this.changePassword.execute(request.identity.email.getOrElse(""), currentPassword, newPassword).map { _ =>

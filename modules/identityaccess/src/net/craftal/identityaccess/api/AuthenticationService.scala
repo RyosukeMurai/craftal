@@ -29,6 +29,8 @@ class AuthenticationService @Inject()(activate: Activate,
   def changePassword(userId: Int, currentPassword: String, newPassword: String): Future[Boolean] =
     this.changePassword.execute(userId, currentPassword, newPassword)
 
+  def resetPassword(token: UUID, password: String): Future[Boolean] = this.resetPassword.execute(token, password)
+
   def createIdentityToken(email: String): Future[UUID] = this.createIdentityToken.execute(email)
 
   def getUser(userId: Int): Future[User] = this.getUser.execute(userId)
@@ -47,7 +49,4 @@ class AuthenticationService @Inject()(activate: Activate,
 
   def register(email: String, hasher: String, password: String, name: Option[String]): Future[(Int, UUID)] =
     this.register.execute(email, hasher, password, name)
-
-  def resetPassword(token: UUID, password: String): Future[Boolean] = this.resetPassword.execute(token, password)
-
 }

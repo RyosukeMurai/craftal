@@ -1,32 +1,34 @@
 package net.craftal.web.usecase.auth
 
+import com.mohiva.play.silhouette.api.Silhouette
 import javax.inject._
 import net.craftal.common.usecase.Interactor
 import net.craftal.identityaccess.api.AuthenticationService
-import net.craftal.identityaccess.domain.model.user.User
+import net.craftal.web.port.silhouette.{DefaultEnv, SilhouetteAuthenticatorFactory, SilhouetteServiceFacade}
 import play.api.i18n.Messages
-import play.api.mvc.{AnyContent, Request, Result}
-import web.service.SilhouetteServiceFacade
+import play.api.mvc.{AnyContent, Request}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.postfixOps
 
 class SignInByPassword @Inject()(authService: AuthenticationService,
-                                 authenticatorServiceFacade: SilhouetteServiceFacade)
+                                 silhouetteServiceFacade: SilhouetteServiceFacade,
+                                 authenticatorFactory: SilhouetteAuthenticatorFactory)
                                 (implicit ex: ExecutionContext) extends Interactor {
 
   def execute(email: String,
               password: String,
-              rememberMe: Boolean,
-              result: Result)
-             (implicit request: Request[AnyContent], messages: Messages): Future[Result] = {
+              rememberMe: Boolean)
+             (implicit request: Request[AnyContent],
+              messages: Messages,
+              silhouette: Silhouette[DefaultEnv]): Future[DefaultEnv#A] = {
     for {
-      loginInfo <- this.authService.authenticate(email, password)
-      authenticator <- this.authenticatorServiceFacade.create(loginInfo).map {
-        case a if rememberMe => this.authenticatorServiceFacade.recreateWithNewExpiration(a)
+      l <- this.silhouetteServiceFacade.authenticate(email, password) //auth for silhouette
+      _ <- this.authService.authenticate(email, password) //auth for identity access context
+      authenticator <- this.authenticatorFactory.generate(silhouette, l).map {
+        case a if rememberMe => this.authenticatorFactory.regenerateWithNewExpiration(silhouette, a)
         case a => a
       }
-      embedded <- this.authenticatorServiceFacade.embedAuthenticationToResult(authenticator, result)
-    } yield embedded
+    } yield authenticator
   }
 }

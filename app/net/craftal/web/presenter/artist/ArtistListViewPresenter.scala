@@ -13,7 +13,7 @@ import play.twirl.api.HtmlFormat
 class ArtistListViewPresenter()(implicit webJarsUtil: WebJarsUtil,
                                 assetsFinder: AssetsFinder) extends WebPresenter {
 
-  def present(implicit request: Request[AnyContent], messages: Messages): HtmlFormat.Appendable =
+  def present()(implicit request: Request[AnyContent], messages: Messages): HtmlFormat.Appendable =
     web.view.artist.html.list(None)
 
   def present(values: (List[Artist], List[Photo]))

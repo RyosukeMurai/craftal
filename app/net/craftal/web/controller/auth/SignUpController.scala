@@ -1,18 +1,23 @@
 package net.craftal.web.controller.auth
 
-import javax.inject.Inject
 import com.mohiva.play.silhouette.api._
 import controllers.AssetsFinder
+import javax.inject.Inject
+import net.craftal.web.model.form.auth.SignUpForm
+import net.craftal.web.port.silhouette.DefaultEnv
+import net.craftal.web.presenter.auth.SignUpViewPresenter
+import net.craftal.web.usecase.auth.Register
 import org.webjars.play.WebJarsUtil
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
-import usecase.auth.RegisterUser
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class SignUpController @Inject()(components: ControllerComponents,
                                  silhouette: Silhouette[DefaultEnv],
-                                 registerUser: RegisterUser,
+                                 registerUser: Register,
+                                 presenter: SignUpViewPresenter
                                 )(implicit
                                   webJarsUtil: WebJarsUtil,
                                   assets: AssetsFinder,
@@ -20,12 +25,12 @@ class SignUpController @Inject()(components: ControllerComponents,
                                 ) extends AbstractController(components) with I18nSupport {
 
   def view: Action[AnyContent] = silhouette.UnsecuredAction.async { implicit request: Request[AnyContent] =>
-    Future.successful(Ok(web.view.auth.html.signUp(SignUpForm.form)))
+    Future.successful(Ok(presenter.present(SignUpForm.form.asInstanceOf[Form[Any]])))
   }
 
   def submit: Action[AnyContent] = silhouette.UnsecuredAction.async { implicit request: Request[AnyContent] =>
     SignUpForm.form.bindFromRequest.fold(
-      form => Future.successful(BadRequest(web.view.auth.html.signUp(form))),
+      form => Future.successful(BadRequest(presenter.present(form.asInstanceOf[Form[Any]]))),
       data => this.registerUser.execute(data.email, data.name, data.password).map(_ =>
         Redirect(web.controller.auth.routes.SignUpController.view())
           .flashing("info" -> Messages("sign.up.email.sent", data.email))

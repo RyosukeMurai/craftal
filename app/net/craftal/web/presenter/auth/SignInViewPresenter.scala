@@ -16,7 +16,7 @@ class SignInViewPresenter @Inject()(socialProviderRegistry: SocialProviderRegist
                                     assetsFinder: AssetsFinder) extends WebPresenter {
 
   def present(form: Form[SignInForm.Data])(implicit request: Request[AnyContent], messages: Messages): HtmlFormat.Appendable =
-    web.view.auth.html.signIn(form, socialProviderRegistry)
+    web.view.auth.html.signIn(form.asInstanceOf[Form[Any]], socialProviderRegistry)
 
   def presentActivate(email: String)(implicit request: Request[AnyContent], messages: Messages): HtmlFormat.Appendable =
     web.view.auth.html.activateAccount(email)

@@ -4,9 +4,11 @@ import javax.inject.Inject
 import com.mohiva.play.silhouette.api.actions.SecuredRequest
 import com.mohiva.play.silhouette.api.{LogoutEvent, Silhouette}
 import controllers.AssetsFinder
+import net.craftal.web.port.silhouette.DefaultEnv
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.I18nSupport
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
+import web.controller.auth.routes
 
 import scala.concurrent.Future
 
