@@ -21,6 +21,16 @@ class NotificationService @Inject()(mailService: MailService,
       ))
   }
 
+  private def sendNotificationByEmail(request: NotificationRequest): Future[Boolean] =
+    Future.successful(
+      this.mailService.send(
+        request.title,
+        request.senderIdentifier,
+        request.destinationIdentifier,
+        request.plainFormatContent,
+        request.richFormatContent
+      ))
+
   def notifySignUp(email: String, name: Option[String], token: UUID)
                   (implicit request: Request[AnyContent], messages: Messages): Future[Boolean] = {
     this.sendNotificationByEmail(
@@ -53,14 +63,4 @@ class NotificationService @Inject()(mailService: MailService,
         token
       ))
   }
-
-  private def sendNotificationByEmail(request: NotificationRequest): Future[Boolean] =
-    Future.successful(
-      this.mailService.send(
-        request.title,
-        request.senderIdentifier,
-        request.destinationIdentifier,
-        request.plainFormatContent,
-        request.richFormatContent
-      ))
 }

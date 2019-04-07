@@ -4,4 +4,4 @@
 @(userName: Option[String])(implicit messages: Messages, request: RequestHeader)
 @messages("email.already.signed.up.hello", userName.getOrElse("user"))
 
-@messages("email.already.signed.up.txt.text", web.controller.auth.routes.SignInController.view().absoluteURL())
+@messages("email.already.signed.up.txt.text", net.craftal.web.controller.auth.routes.SignInController.view().absoluteURL())

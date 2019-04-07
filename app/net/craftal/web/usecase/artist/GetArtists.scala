@@ -8,13 +8,14 @@ import net.craftal.core.domain.model.genre.Genre
 import play.api.i18n.Messages
 import play.api.mvc.{AnyContent, Request}
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 
-class GetArtists @Inject()(domainService: DomainService) extends Interactor {
+class GetArtists @Inject()(domainService: DomainService)(implicit ex: ExecutionContext) extends Interactor {
 
   def execute(keyword: Option[String])
-             (implicit request: Request[AnyContent], messages: Messages): Future[(List[Artist], List[Genre])] =
+             (implicit request: Request[AnyContent],
+              messages: Messages): Future[(List[Artist], List[Genre])] =
     for {
       a <- this.domainService.getArtists(keyword)
       g <- this.domainService.getGenres(a.map(_.genreId))

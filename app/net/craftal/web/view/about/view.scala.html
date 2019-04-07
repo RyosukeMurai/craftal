@@ -1,11 +1,10 @@
-@import play.api.i18n.Messages
+@import net.craftal.web.controller.NavigationContext
 @import org.webjars.play.WebJarsUtil
-@import controllers.AssetsFinder
-@@()(implicit request: NavigationContext[AnyContent], messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+@()(implicit request: NavigationContext[AnyContent], messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
 
 @request.navigationCollection.last.name
 
-@web.view.html.main("about") {
+@net.craftal.web.view.html.main("about") {
 
     <div>ABOUTページです</div>
 

@@ -3,63 +3,63 @@
 # ~~~~
 
 # Map event resources
-GET         /events                         web.controller.event.ListEventCalendarController.view
+GET         /events                         net.craftal.web.controller.event.ListEventCalendarController.view
 
-GET         /events/:id                     web.controller.event.DetailEventController.view(id)
+GET         /events/:id                     net.craftal.web.controller.event.DetailEventController.view(id)
 
 
 # Map artist resources
-GET         /artists                        web.controller.artist.SummaryArtistController.view
+GET         /artists                        net.craftal.web.controller.artist.SummaryArtistController.view
 
-GET         /artists/genre/:genreId         web.controller.artist.ListArtistByGenreController.view(genreId: Int)
+GET         /artists/genre/:genreId         net.craftal.web.controller.artist.ListArtistByGenreController.view(genreId: Int)
 
-GET         /artists/:id                    web.controller.artist.DetailArtistController.view(id)
+GET         /artists/:id                    net.craftal.web.controller.artist.DetailArtistController.view(id)
 
 
 # Map common resources
-GET         /faq                            web.controller.common.FAQController.view
+GET         /faq                            net.craftal.web.controller.common.FAQController.view
 
-GET         /about                          web.controller.common.AboutController.view
+GET         /about                          net.craftal.web.controller.common.AboutController.view
 
 
 # Home page
-GET         /                               web.controller.auth.ApplicationController.index
+GET         /                               net.craftal.web.controller.auth.ApplicationController.index
 
-GET         /signOut                        web.controller.auth.ApplicationController.signOut
+GET         /signOut                        net.craftal.web.controller.auth.ApplicationController.signOut
 
-GET         /authenticate/:provider         web.controller.auth.SocialAuthController.authenticate(provider)
+GET         /authenticate/:provider         net.craftal.web.controller.auth.SocialAuthController.authenticate(provider)
 
-GET         /signUp                         web.controller.auth.SignUpController.view
+GET         /signUp                         net.craftal.web.controller.auth.SignUpController.view
 
-POST        /signUp                         web.controller.auth.SignUpController.submit
+POST        /signUp                         net.craftal.web.controller.auth.SignUpController.submit
 
-GET         /signIn                         web.controller.auth.SignInController.view
+GET         /signIn                         net.craftal.web.controller.auth.SignInController.view
 
-POST        /signIn                         web.controller.auth.SignInController.submit
+POST        /signIn                         net.craftal.web.controller.auth.SignInController.submit
 
-GET         /password/forgot                web.controller.auth.ForgotPasswordController.view
+GET         /password/forgot                net.craftal.web.controller.auth.ForgotPasswordController.view
 
-POST        /password/forgot                web.controller.auth.ForgotPasswordController.submit
+POST        /password/forgot                net.craftal.web.controller.auth.ForgotPasswordController.submit
 
-GET         /password/reset/:token          web.controller.auth.ResetPasswordController.view(token: java.util.UUID)
+GET         /password/reset/:token          net.craftal.web.controller.auth.ResetPasswordController.view(token: java.util.UUID)
 
-POST        /password/reset/:token          web.controller.auth.ResetPasswordController.submit(token: java.util.UUID)
+POST        /password/reset/:token          net.craftal.web.controller.auth.ResetPasswordController.submit(token: java.util.UUID)
 
-GET         /password/change                web.controller.auth.ChangePasswordController.view
+GET         /password/change                net.craftal.web.controller.auth.ChangePasswordController.view
 
-POST        /password/change                web.controller.auth.ChangePasswordController.submit
+POST        /password/change                net.craftal.web.controller.auth.ChangePasswordController.submit
 
-GET         /account/email/:email           web.controller.auth.ActivateAccountController.send(email: String)
+GET         /account/email/:email           net.craftal.web.controller.auth.ActivateAccountController.send(email: String)
 
-GET         /account/activate/:token        web.controller.auth.ActivateAccountController.activate(token: java.util.UUID)
+GET         /account/activate/:token        net.craftal.web.controller.auth.ActivateAccountController.activate(token: java.util.UUID)
 
 
 # Management page
-GET         /manage/events                  web.controller.manage.ListEventController.view(page: Int ?= 1)
+GET         /manage/events                  net.craftal.web.controller.manage.ListEventController.view(page: Int ?= 1)
 
-GET         /manage/events/create           web.controller.manage.CreateEventController.view
+GET         /manage/events/create           net.craftal.web.controller.manage.CreateEventController.view
 
-POST        /manage/events/create           web.controller.manage.CreateEventController.submit
+POST        /manage/events/create           net.craftal.web.controller.manage.CreateEventController.submit
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                   controllers.Assets.versioned(file)

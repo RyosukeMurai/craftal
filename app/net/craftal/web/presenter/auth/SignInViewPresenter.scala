@@ -16,9 +16,9 @@ class SignInViewPresenter @Inject()(socialProviderRegistry: SocialProviderRegist
                                     assetsFinder: AssetsFinder) extends WebPresenter {
 
   def present(form: Form[SignInForm.Data])(implicit request: Request[AnyContent], messages: Messages): HtmlFormat.Appendable =
-    web.view.auth.html.signIn(form.asInstanceOf[Form[Any]], socialProviderRegistry)
+    net.craftal.web.view.auth.html.signIn(form, socialProviderRegistry)
 
   def presentActivate(email: String)(implicit request: Request[AnyContent], messages: Messages): HtmlFormat.Appendable =
-    web.view.auth.html.activateAccount(email)
+    net.craftal.web.view.auth.html.activateAccount(email)
 
 }

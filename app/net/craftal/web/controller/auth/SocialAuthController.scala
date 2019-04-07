@@ -7,7 +7,7 @@ import javax.inject.Inject
 import net.craftal.web.port.silhouette.DefaultEnv
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
-import web.controller.auth.routes
+import net.craftal.web.controller.auth.routes
 
 import scala.concurrent.{ExecutionContext, Future}
 

@@ -1,6 +1,9 @@
-package web.service
+package net.craftal.core.application.service
 
 import java.net.URL
+
+import net.craftal.core.application.service.ResourceType.ResourceType
+
 
 object URIService {
   def resolveUrlByIdentifierAndResourceType(identifier: String, resourceType: ResourceType): URL = {

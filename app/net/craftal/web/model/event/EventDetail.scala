@@ -1,9 +1,9 @@
 package net.craftal.web.model.event
 
-import net.craftal.core.domain.model.event.EventStatus.EventStatus
 import net.craftal.core.domain.model.artist.Artist
 import net.craftal.core.domain.model.event.EventLocation.EventLocation
 import net.craftal.core.domain.model.event.EventSchedule
+import net.craftal.core.domain.model.event.EventStatus.EventStatus
 import net.craftal.core.domain.model.photo.Photo
 
 class EventDetail(id: Int,

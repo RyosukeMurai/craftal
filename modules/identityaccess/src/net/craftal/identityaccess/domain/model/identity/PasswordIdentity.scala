@@ -1,7 +1,7 @@
 package net.craftal.identityaccess.domain.model.identity
 
-case class PasswordIdentity(override val userId: Int,
-                            override val activated: Boolean,
+case class PasswordIdentity(userId: Int,
+                            activated: Boolean,
                             hasher: String,
-                            password: String) extends Identity(userId, activated) {
+                            password: String) extends Identity {
 }

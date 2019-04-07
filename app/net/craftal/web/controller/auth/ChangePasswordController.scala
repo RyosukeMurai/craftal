@@ -13,7 +13,7 @@ import net.craftal.web.usecase.auth.ChangePassword
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
-import web.controller.auth.routes
+import net.craftal.web.controller.auth.routes
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -31,13 +31,13 @@ class ChangePasswordController @Inject()(
 
   def view: Action[AnyContent] = silhouette.SecuredAction(WithProvider[DefaultEnv#A](CredentialsProvider.ID)) {
     implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
-      Ok(presenter.present(ChangePasswordForm.form))
+      Ok(presenter.present(ChangePasswordForm.form, request.identity))
   }
 
   def submit: Action[AnyContent] = silhouette.SecuredAction(WithProvider[DefaultEnv#A](CredentialsProvider.ID)).async {
     implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
       ChangePasswordForm.form.bindFromRequest.fold(
-        form => Future.successful(BadRequest(presenter.present(form))),
+        form => Future.successful(BadRequest(presenter.present(form, request.identity))),
         password => {
           val (currentPassword, newPassword) = password
           this.changePassword.execute(request.identity.email.getOrElse(""), currentPassword, newPassword).map { _ =>

@@ -26,27 +26,6 @@ class EmailNotificationRequestAssembler {
       bodyHtml = notification.template.email.html.signUp(recipientName, token).body
     )
 
-  def assembleForUserActivationEmail(toEmailAddress: String,
-                                     recipientName: Option[String],
-                                     token: UUID)(implicit messages: Messages, request: Request[AnyContent]): NotificationRequest =
-    this.assemble(
-      toEmailAddress = toEmailAddress,
-      subject = messages("email.activate.account.subject"),
-      bodyPlain = notification.template.email.txt.activateAccount(recipientName, token).body,
-      bodyHtml = notification.template.email.html.activateAccount(recipientName, token).body
-    )
-
-
-  def assembleForResetPasswordEmail(toEmailAddress: String,
-                                    recipientName: Option[String],
-                                    token: UUID)(implicit messages: Messages, request: Request[AnyContent]): NotificationRequest =
-    this.assemble(
-      toEmailAddress = toEmailAddress,
-      subject = Messages("email.reset.password.subject"),
-      bodyPlain = notification.template.email.txt.resetPassword(recipientName, token).body,
-      bodyHtml = notification.template.email.html.resetPassword(recipientName, token).body
-    )
-
   private def assemble(toEmailAddress: String,
                        subject: String,
                        bodyPlain: String,
@@ -59,4 +38,24 @@ class EmailNotificationRequestAssembler {
       richFormatContent = Some(bodyHtml)
     )
   }
+
+  def assembleForUserActivationEmail(toEmailAddress: String,
+                                     recipientName: Option[String],
+                                     token: UUID)(implicit messages: Messages, request: Request[AnyContent]): NotificationRequest =
+    this.assemble(
+      toEmailAddress = toEmailAddress,
+      subject = messages("email.activate.account.subject"),
+      bodyPlain = notification.template.email.txt.activateAccount(recipientName, token).body,
+      bodyHtml = notification.template.email.html.activateAccount(recipientName, token).body
+    )
+
+  def assembleForResetPasswordEmail(toEmailAddress: String,
+                                    recipientName: Option[String],
+                                    token: UUID)(implicit messages: Messages, request: Request[AnyContent]): NotificationRequest =
+    this.assemble(
+      toEmailAddress = toEmailAddress,
+      subject = Messages("email.reset.password.subject"),
+      bodyPlain = notification.template.email.txt.resetPassword(recipientName, token).body,
+      bodyHtml = notification.template.email.html.resetPassword(recipientName, token).body
+    )
 }

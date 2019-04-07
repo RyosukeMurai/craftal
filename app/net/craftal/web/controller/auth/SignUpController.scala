@@ -8,7 +8,6 @@ import net.craftal.web.port.silhouette.DefaultEnv
 import net.craftal.web.presenter.auth.SignUpViewPresenter
 import net.craftal.web.usecase.auth.Register
 import org.webjars.play.WebJarsUtil
-import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
 
@@ -25,14 +24,14 @@ class SignUpController @Inject()(components: ControllerComponents,
                                 ) extends AbstractController(components) with I18nSupport {
 
   def view: Action[AnyContent] = silhouette.UnsecuredAction.async { implicit request: Request[AnyContent] =>
-    Future.successful(Ok(presenter.present(SignUpForm.form.asInstanceOf[Form[Any]])))
+    Future.successful(Ok(presenter.present(SignUpForm.form)))
   }
 
   def submit: Action[AnyContent] = silhouette.UnsecuredAction.async { implicit request: Request[AnyContent] =>
     SignUpForm.form.bindFromRequest.fold(
-      form => Future.successful(BadRequest(presenter.present(form.asInstanceOf[Form[Any]]))),
+      form => Future.successful(BadRequest(presenter.present(form))),
       data => this.registerUser.execute(data.email, data.name, data.password).map(_ =>
-        Redirect(web.controller.auth.routes.SignUpController.view())
+        Redirect(net.craftal.web.controller.auth.routes.SignUpController.view())
           .flashing("info" -> Messages("sign.up.email.sent", data.email))
       )
     )

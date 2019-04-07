@@ -1,16 +1,16 @@
-@import play.api.data.Form
-@import play.api.i18n.Messages
-@import play.api.mvc.RequestHeader
+
+@import net.craftal.web.model.form.auth.SignUpForm.Data
 @import org.webjars.play.WebJarsUtil
-@import controllers.AssetsFinder
-@@(signUpForm: Form[Data])(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+@(signUpForm: Form[Data])(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
 
-@implicitFieldConstructor = @{ b3.vertical.fieldConstructor() }
+@implicitFieldConstructor = @{
+    b3.vertical.fieldConstructor()
+}
 
-@web.view.html.main(messages("sign.up.title")) {
+@net.craftal.web.view.html.main(messages("sign.up.title")) {
     <fieldset class="col-md-6 col-md-offset-3">
         <legend>@messages("sign.up.account")</legend>
-        @helper.form(action = web.controller.auth.routes.SignUpController.submit()) {
+        @helper.form(action = net.craftal.web.controller.auth.routes.SignUpController.submit()) {
             @helper.CSRF.formField
             @b3.text(signUpForm("name"), '_hiddenLabel -> messages("full.name"), 'placeholder -> messages("full.name"), 'class -> "form-control input-lg")
             @b3.text(signUpForm("email"), '_hiddenLabel -> messages("email"), 'placeholder -> messages("email"), 'class -> "form-control input-lg")
@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="sign-in-now">
-                <p>@messages("already.a.member") <a href="@web.controller.auth.routes.SignInController.view">@messages("sign.in.now")</a></p>
+                <p>@messages("already.a.member") <a href="@net.craftal.web.controller.auth.routes.SignInController.view">@messages("sign.in.now")</a></p>
             </div>
         }
     </fieldset>

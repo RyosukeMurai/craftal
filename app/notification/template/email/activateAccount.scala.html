@@ -9,6 +9,6 @@
 <html>
     <body>
         <p>@messages("email.activate.account.hello", userName.getOrElse("user"))</p>
-        <p>@Html(messages("email.activate.account.html.text", web.controller.auth.routes.ActivateAccountController.activate(token).absoluteURL()))</p>
+        <p>@Html(messages("email.activate.account.html.text", net.craftal.web.controller.auth.routes.ActivateAccountController.activate(token).absoluteURL()))</p>
     </body>
 </html>

@@ -1,6 +1,6 @@
 @import play.api.i18n.Messages
-@import play.twirl.api.Html
 @import play.api.mvc.RequestHeader
+@import play.twirl.api.Html
 
 @(userName: Option[String])(implicit messages: Messages, request: RequestHeader)
 
@@ -8,6 +8,6 @@
     <body>
         <p>@messages("email.already.signed.up.hello", userName.getOrElse("user"))</p>
         <p>@Html(messages("email.already.signed.up.html.text",
-            web.controller.auth.routes.SignInController.view().absoluteURL()))</p>
+            net.craftal.web.controller.auth.routes.SignInController.view().absoluteURL()))</p>
     </body>
 </html>

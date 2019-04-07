@@ -1,14 +1,13 @@
 package net.craftal.web.port.silhouette
 
 import com.mohiva.play.silhouette.api.Authenticator.Implicits._
-import com.mohiva.play.silhouette.api.services.AuthenticatorResult
 import com.mohiva.play.silhouette.api.util.Clock
 import com.mohiva.play.silhouette.api.{LoginInfo, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.CookieAuthenticator
 import javax.inject.Inject
 import net.ceedubs.ficus.Ficus._
 import play.api.Configuration
-import play.api.mvc.{AnyContent, Request, Result}
+import play.api.mvc.{AnyContent, Request}
 
 import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.{ExecutionContext, Future}

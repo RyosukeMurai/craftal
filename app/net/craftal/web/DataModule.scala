@@ -6,8 +6,9 @@ import net.craftal.core.domain.model.artist.ArtistRepository
 import net.craftal.core.domain.model.event.EventRepository
 import net.craftal.core.domain.model.genre.GenreRepository
 import net.craftal.core.domain.model.photo.PhotoRepository
-import net.craftal.identityaccess.data.store.{IdentityDataStore, UserDataStore}
+import net.craftal.identityaccess.data.store.{IdentityDataStore, RoleDataStore, UserDataStore}
 import net.craftal.identityaccess.domain.model.identity.IdentityRepository
+import net.craftal.identityaccess.domain.model.role.RoleRepository
 import net.craftal.identityaccess.domain.model.user.UserRepository
 
 class DataModule extends AbstractModule {
@@ -25,6 +26,8 @@ class DataModule extends AbstractModule {
     bind(classOf[PhotoRepository]).to(classOf[PhotoDataStore])
 
     bind(classOf[GenreRepository]).to(classOf[GenreDataStore])
+
+    bind(classOf[RoleRepository]).to(classOf[RoleDataStore])
   }
 
 }

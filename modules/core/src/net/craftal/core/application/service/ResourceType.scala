@@ -1,4 +1,4 @@
-package web.service
+package net.craftal.core.application.service
 
 object ResourceType extends Enumeration {
   type ResourceType = Value

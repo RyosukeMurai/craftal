@@ -35,7 +35,7 @@ class CreateEventController @Inject()(controllerComponents: ControllerComponents
         1,
         1,
       ).map(_ =>
-        Redirect(web.controller.manage.routes.ListEventController.view())
+        Redirect(net.craftal.web.controller.manage.routes.ListEventController.view())
           .flashing("info" -> Messages("craftal.management.event.message.create.success", data.title))
       )
     )

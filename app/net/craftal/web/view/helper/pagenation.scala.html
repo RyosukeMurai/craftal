@@ -1,6 +1,5 @@
-@import play.api.i18n.Messages
-
-@@(page: Page)(implicit messages: Messages)
+@import net.craftal.web.model.common.Page
+@(page: Page)(implicit messages: Messages)
 <nav>
     <ul class="pagination">
         @page.prev.map { page =>
@@ -10,17 +9,17 @@
             </a>
         </li>
         }.getOrElse {
-        <li class="page-item disabled">
-            <a class="page-link" href="#">
+            <li class="page-item disabled">
+                <a class="page-link" href="#">
                 @messages("craftal.management.common.pagenation.prev")
-            </a>
-        </li>
+                </a>
+            </li>
         }
 
         @for(p <- page.getSurroundingPages()) {
-        <li class="page-item">
-            <a class="page-link" href="#">@p.page</a>
-        </li>
+            <li class="page-item">
+                <a class="page-link" href="#">@p.page</a>
+            </li>
         }
 
         @page.next.map { page =>
@@ -30,11 +29,11 @@
             </a>
         </li>
         }.getOrElse {
-        <li class="page-item disabled">
-            <a class="page-link" href="#">
+            <li class="page-item disabled">
+                <a class="page-link" href="#">
                 @messages("craftal.management.common.pagenation.next")
-            </a>
-        </li>
+                </a>
+            </li>
         }
     </ul>
 </nav>

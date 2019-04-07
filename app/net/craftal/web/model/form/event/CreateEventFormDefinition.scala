@@ -10,6 +10,6 @@ class CreateEventFormDefinition(form: Option[Form[CreateEventForm.Data]])(implic
     FieldDefinition("description", messages("craftal.management.event.filed.description"), 2),
   ),
   form = form.getOrElse(CreateEventForm.form),
-  submitAction = web.controller.manage.routes.CreateEventController.submit(),
-  cancelAction = web.controller.manage.routes.ListEventController.view(),
+  submitAction = net.craftal.web.controller.manage.routes.CreateEventController.submit(),
+  cancelAction = net.craftal.web.controller.manage.routes.ListEventController.view(),
 )

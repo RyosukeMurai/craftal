@@ -4,9 +4,10 @@ import javax.inject._
 import net.craftal.common.usecase.Interactor
 import net.craftal.core.domain.model.event.EventRepository
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
-class CountNumberOfEvents @Inject()(repository: EventRepository) extends Interactor {
+class CountNumberOfEvents @Inject()(repository: EventRepository)
+                                   (implicit executionContext: ExecutionContext)extends Interactor {
 
   def execute(): Future[Int] = this.repository.countNumberOfEvents
 }

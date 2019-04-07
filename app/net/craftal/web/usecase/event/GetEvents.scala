@@ -7,10 +7,10 @@ import net.craftal.core.domain.model.event.Event
 import play.api.i18n.Messages
 import play.api.mvc.{AnyContent, Request}
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 
-class GetEvents @Inject()(domainService: DomainService) extends Interactor {
+class GetEvents @Inject()(domainService: DomainService)(implicit ec: ExecutionContext) extends Interactor {
 
   def execute(implicit request: Request[AnyContent], messages: Messages): Future[(List[Event], Int)] =
     for {

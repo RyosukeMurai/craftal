@@ -8,6 +8,6 @@ import play.api.i18n.Messages
 object GenreNavigationDataMapper {
 
   def transform(genreCollection: List[Genre])(implicit messages: Messages): Seq[Navigation] =
-    genreCollection.map(g => Navigation(g.name, web.controller.artist.routes.ListArtistByGenreController.view(g.id)))
+    genreCollection.map(g => Navigation(g.name, net.craftal.web.controller.artist.routes.ListArtistByGenreController.view(g.id)))
 
 }

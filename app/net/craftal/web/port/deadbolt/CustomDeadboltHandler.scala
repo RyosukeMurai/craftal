@@ -4,6 +4,7 @@ import be.objectify.deadbolt.scala.models.Subject
 import be.objectify.deadbolt.scala.{AuthenticatedRequest, DeadboltHandler, DynamicResourceHandler}
 import com.mohiva.play.silhouette.api.Silhouette
 import javax.inject.Inject
+import net.craftal.web.port.silhouette.DefaultEnv
 import play.api.mvc.Results._
 import play.api.mvc.{Request, Result}
 
@@ -25,15 +26,7 @@ class CustomDeadboltHandler @Inject()(silhouette: Silhouette[DefaultEnv]) extend
           case Some(x) if !x.isValid => Future.successful(None)
           case None => Future.successful(None)
         }
-      } yield {
-        u.map { x =>
-          new CustomSubject(
-            userName = x.name.getOrElse(""),
-            roleCodes = x.role.map(r => List(r.code)).getOrElse(List()),
-            permissionCodes = List("")
-          )
-        }
-      }
+      } yield u.map(new CustomSubjectAdapter(_))
     }
   }
 
@@ -43,7 +36,7 @@ class CustomDeadboltHandler @Inject()(silhouette: Silhouette[DefaultEnv]) extend
 
   override def onAuthFailure[A](request: AuthenticatedRequest[A]): Future[Result] =
     Future.successful(
-      request.subject.map(_ => Redirect(web.controller.auth.routes.ApplicationController.index()))
-        .getOrElse(Redirect(web.controller.auth.routes.SignInController.view()))
+      request.subject.map(_ => Redirect(net.craftal.web.controller.auth.routes.ApplicationController.index()))
+        .getOrElse(Redirect(net.craftal.web.controller.auth.routes.SignInController.view()))
     )
 }

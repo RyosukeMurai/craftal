@@ -1,14 +1,13 @@
+@import controllers.AssetsFinder
+@import net.craftal.core.domain.model.event.Event
+@import net.craftal.web.model.common.Page
+@import net.craftal.web.model.common.table.Table
+@import org.webjars.play.WebJarsUtil
 @import play.api.i18n.Messages
 @import play.api.mvc.RequestHeader
-@import org.webjars.play.WebJarsUtil
-@import controllers.AssetsFinder
+@(table: Table[Event], page: Page)(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
 
-@@@import net.craftal.core.domain.model.event.Event
-@(table: Table[Event],
-        page: Page
-)(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
-
-@web.view.layout.html.manage(messages("craftal.management.event.list.title")) {
+@net.craftal.web.view.layout.html.manage(messages("craftal.management.event.list.title")) {
 
     <div class="btn-toolbar mb-3">
         <a class="btn btn-sm btn-outline-primary" href="events/create">
@@ -16,8 +15,8 @@
         </a>
     </div>
 
-    @web.view.helper.html.table(table)
+    @net.craftal.web.view.helper.html.table(table)
 
-    @web.view.helper.html.pagenation(page)
+    @net.craftal.web.view.helper.html.pagenation(page)
 }
 

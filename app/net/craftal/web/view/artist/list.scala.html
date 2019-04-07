@@ -1,9 +1,11 @@
 @import controllers.AssetsFinder
 @import org.webjars.play.WebJarsUtil
 @import play.api.i18n.Messages
-@@@(artists: Option[Seq[ArtistDescriptor]])(implicit request: NavigationContext[_], messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+@import net.craftal.web.model.artist.ArtistDescriptor
+@import net.craftal.web.controller.NavigationContext
+@(artists: Option[Seq[ArtistDescriptor]])( implicit request: NavigationContext[_], messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
 
-@web.view.html.main("artists") {
+@net.craftal.web.view.html.main("artists") {
 
     @artists.map { list =>
         @list.map { artist =>

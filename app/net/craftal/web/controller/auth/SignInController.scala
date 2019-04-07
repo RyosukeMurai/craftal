@@ -10,14 +10,12 @@ import net.craftal.web.usecase.auth.SignInByPassword
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
-import web.controller.auth.routes
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class SignInController @Inject()(
                                   components: ControllerComponents,
                                   implicit val silhouette: Silhouette[DefaultEnv],
-
                                   signInByPassword: SignInByPassword,
                                   presenter: SignInViewPresenter
                                 )(
@@ -28,13 +26,14 @@ class SignInController @Inject()(
                                 ) extends AbstractController(components) with I18nSupport {
 
   def view: Action[AnyContent] = silhouette.UnsecuredAction.async { implicit request: Request[AnyContent] =>
-    Future.successful(Ok())
+    Future.successful(Ok(presenter.present(SignInForm.form)))
   }
 
   def submit: Action[AnyContent] = silhouette.UnsecuredAction.async { implicit request: Request[AnyContent] =>
     SignInForm.form.bindFromRequest.fold(
       form => Future.successful(BadRequest(presenter.present(form))),
       data => {
+        println(data)
         this.signInByPassword
           .execute(data.email, data.password, data.rememberMe)
           .flatMap { authenticator =>
@@ -47,7 +46,7 @@ class SignInController @Inject()(
             case _: VerifyError =>
               Ok(presenter.presentActivate(data.email))
             case _: Exception =>
-              Redirect(web.controller.auth.routes.SignInController.view()).flashing("error" -> Messages("invalid.credentials"))
+              Redirect(net.craftal.web.controller.auth.routes.SignInController.view()).flashing("error" -> Messages("invalid.credentials"))
           }
       })
   }

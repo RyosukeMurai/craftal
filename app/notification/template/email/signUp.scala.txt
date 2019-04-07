@@ -6,4 +6,4 @@
 @(userName: Option[String], token: UUID)(implicit messages: Messages, request: RequestHeader)
 @messages("email.sign.up.hello", userName.getOrElse("user"))
 
-@messages("email.sign.up.txt.text", web.controller.auth.routes.ActivateAccountController.activate(token).absoluteURL())
+@messages("email.sign.up.txt.text", net.craftal.web.controller.auth.routes.ActivateAccountController.activate(token).absoluteURL())

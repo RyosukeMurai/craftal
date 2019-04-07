@@ -1,11 +1,11 @@
+@import controllers.AssetsFinder
+@import org.webjars.play.WebJarsUtil
 @import play.api.i18n.Messages
 @import play.api.mvc.RequestHeader
-@import org.webjars.play.WebJarsUtil
-@import controllers.AssetsFinder
 
-@(event: web.model.event.EventDetail)(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+@(event: net.craftal.web.model.event.EventDetail)(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
 
-@web.view.html.main(event.title) {
+@net.craftal.web.view.html.main(event.title) {
     <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
         <div class="col-md-6 px-0">
             <h1 class="display-4 font-italic">@event.title</h1>

@@ -2,7 +2,7 @@ package net.craftal.web.port.deadbolt
 
 import be.objectify.deadbolt.scala.cache.HandlerCache
 import be.objectify.deadbolt.scala.{DeadboltHandler, HandlerKey}
-import javax.inject.{Inject, Singleton}
+import javax.inject.Inject
 
 class CustomHandlerCache @Inject()(val defaultHandler: CustomDeadboltHandler) extends HandlerCache {
 

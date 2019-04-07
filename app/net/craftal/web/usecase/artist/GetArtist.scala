@@ -8,9 +8,9 @@ import net.craftal.core.domain.model.genre.Genre
 import play.api.i18n.Messages
 import play.api.mvc.{AnyContent, Request}
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
-class GetArtist @Inject()(domainService: DomainService) extends Interactor {
+class GetArtist @Inject()(domainService: DomainService)(implicit ex: ExecutionContext)  extends Interactor {
 
   def execute(artistId: Int)
              (implicit request: Request[AnyContent], messages: Messages): Future[(Artist, Genre)] =
