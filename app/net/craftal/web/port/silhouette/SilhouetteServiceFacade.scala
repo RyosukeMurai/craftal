@@ -21,7 +21,7 @@ class SilhouetteServiceFacade @Inject()(authenticationService: AuthenticationSer
     for {
       r <- authInfoRepository.add(
         LoginInfo(CredentialsProvider.ID, email),
-        passwordHasherRegistry.current.hash(password)
+        passwordHasherRegistry.current.hash(password),
       )
     } yield r
   }

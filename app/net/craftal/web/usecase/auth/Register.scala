@@ -3,6 +3,7 @@ package net.craftal.web.usecase.auth
 import javax.inject.Inject
 import net.craftal.common.usecase.Interactor
 import net.craftal.identityaccess.api.AuthenticationService
+import net.craftal.web.port.silhouette.SilhouetteServiceFacade
 import notification.NotificationService
 import play.api.i18n.Messages
 import play.api.mvc.{AnyContent, Request}
@@ -12,7 +13,8 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.language.postfixOps
 
 class Register @Inject()(authService: AuthenticationService,
-                         notificationService: NotificationService)
+                         notificationService: NotificationService,
+                         silhouetteServiceFacade: SilhouetteServiceFacade)
                         (implicit ex: ExecutionContext) extends Interactor {
   def execute(email: String,
               name: String,
@@ -24,9 +26,13 @@ class Register @Inject()(authService: AuthenticationService,
         this.notificationService.notifyAlreadySignedUp(email, Option(x.name))
       case _ =>
         for {
-          (userId, token) <- this.authService.register(email, "" /*hasher*/ , password, Option(name))
-          user <- this.authService.getUser(userId)
-          result <- this.notificationService.notifySignUp(user.email, Option(user.name), token)
+          _ <- this.silhouetteServiceFacade.addPasswordAuthInfo(email, name, password) // register via silhouette
+          u <- this.authService.getUser(email).map {
+            case Some(x) => x
+            case None => throw new IllegalArgumentException("there is no user with the specified email address")
+          }
+          t <- this.authService.createIdentityToken(email)
+          result <- this.notificationService.notifySignUp(u.email, Option(u.name), t)
         } yield result
     }
   }

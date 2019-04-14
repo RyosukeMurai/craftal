@@ -9,7 +9,6 @@ import net.craftal.web.port.silhouette.DefaultEnv
 import net.craftal.web.usecase.auth.{Activate, RetryUserActivation}
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
-import net.craftal.web.controller.auth.routes
 
 import scala.concurrent.ExecutionContext
 

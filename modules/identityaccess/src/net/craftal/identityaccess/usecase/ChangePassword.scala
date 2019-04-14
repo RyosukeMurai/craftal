@@ -11,14 +11,9 @@ import scala.language.postfixOps
 class ChangePassword @Inject()(userRepository: UserRepository,
                                identityRepository: IdentityRepository)
                               (implicit ex: ExecutionContext) extends Interactor {
-  def execute(userId: Int, currentPassword: String, newPassword: String): Future[Boolean] = {
+  def execute(userId: Int, hasher: String, hashedPassword: String): Future[Boolean] = {
     for {
-      u <- this.userRepository.findUser(userId)
-      //c <- this.credentialsProvider.authenticate(Credentials(u.email, currentPassword))
-      //_ <- this.authInfoRepository.update[PasswordInfo](
-      //  LoginInfo(CredentialsProvider.ID, c.providerKey),
-      //  this.passwordHasherRegistry.current.hash(newPassword)
-      //)
+      _ <- this.identityRepository.updatePassword(userId, hasher, hashedPassword)
     } yield true
   }
 }

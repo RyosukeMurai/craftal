@@ -6,4 +6,6 @@ trait RoleRepository {
 
   def findUserRole(userId: Int): Future[Role]
 
+  def addUserRole(userId: Int, roleId: Int): Future[Int]
+
 }

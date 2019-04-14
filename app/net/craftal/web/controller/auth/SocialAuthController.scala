@@ -7,7 +7,6 @@ import javax.inject.Inject
 import net.craftal.web.port.silhouette.DefaultEnv
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
-import net.craftal.web.controller.auth.routes
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -36,7 +35,7 @@ class SocialAuthController @Inject()(
           case Left(result) => Future.successful(result)
           case Right(authInfo) => for {
             profile <- p.retrieveProfile(authInfo)
-            user <- Future.successful(UserAuthInfo(0, null, null, Option(Role(1, "", "")), true)) //userService.save(profile)
+            user <- Future.successful(UserIdentityInfo(0, null, null, Option(Role(1, "", "")), true)) //userService.save(profile)
             authInfo <- authInfoRepository.save(profile.loginInfo, authInfo)
             authenticator <- silhouette.env.authenticatorService.create(profile.loginInfo)
             value <- silhouette.env.authenticatorService.init(authenticator)

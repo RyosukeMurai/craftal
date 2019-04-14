@@ -13,7 +13,6 @@ import net.craftal.web.usecase.auth.ChangePassword
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
-import net.craftal.web.controller.auth.routes
 
 import scala.concurrent.{ExecutionContext, Future}
 

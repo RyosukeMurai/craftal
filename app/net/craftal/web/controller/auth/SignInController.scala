@@ -33,7 +33,6 @@ class SignInController @Inject()(
     SignInForm.form.bindFromRequest.fold(
       form => Future.successful(BadRequest(presenter.present(form))),
       data => {
-        println(data)
         this.signInByPassword
           .execute(data.email, data.password, data.rememberMe)
           .flatMap { authenticator =>
@@ -45,7 +44,8 @@ class SignInController @Inject()(
           .recover {
             case _: VerifyError =>
               Ok(presenter.presentActivate(data.email))
-            case _: Exception =>
+            case e: Exception =>
+              print(e)
               Redirect(net.craftal.web.controller.auth.routes.SignInController.view()).flashing("error" -> Messages("invalid.credentials"))
           }
       })

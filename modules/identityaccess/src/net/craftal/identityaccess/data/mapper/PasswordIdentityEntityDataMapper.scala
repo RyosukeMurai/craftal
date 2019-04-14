@@ -4,7 +4,7 @@ import net.craftal.common.data.Tables
 import net.craftal.identityaccess.domain.model.identity.PasswordIdentity
 
 object PasswordIdentityEntityDataMapper {
-  def transform(authRow: (Tables.UserRow, Tables.UserAuthRow, Tables.UserAuthPasswordRow)): PasswordIdentity =
+  def transform(authRow: (Tables.UserRow, Tables.UserIdentityRow, Tables.UserIdentityPasswordRow)): PasswordIdentity =
     PasswordIdentity(
       userId = authRow._1.id,
       hasher = authRow._3.hasher,

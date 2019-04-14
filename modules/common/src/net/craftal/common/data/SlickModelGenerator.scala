@@ -11,7 +11,7 @@ object SlickModelGenerator {
     val user = "craftal"
     val password = "craftal"
 
-    val outputFolder = "../modules/common/src"
+    val outputFolder = "modules/common/src"
     val pkg = "net.craftal.common.data"
 
     SourceCodeGenerator.main(

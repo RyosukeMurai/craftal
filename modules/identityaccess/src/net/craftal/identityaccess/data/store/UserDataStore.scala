@@ -30,7 +30,7 @@ class UserDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit
   override def findUserByToken(token: UUID): Future[Option[User]] = {
     val query = for {
       u <- Tables.User
-      t <- Tables.UserAuthToken
+      t <- Tables.UserIdentityToken
       if t.token === token.toString
       if t.userId === u.id
     } yield u

@@ -31,5 +31,13 @@ class RoleDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit
         query.result.head.map(RoleEntityDataMapper.transform)
       )
   }
+
+  override def addUserRole(userId: Int, roleId: Int): Future[Int] = {
+    dbConfig
+      .db
+      .run(
+        Tables.UserRole.map(r => (r.userId, r.roleId)) returning Tables.UserRole.map(_.id) += (userId, roleId.toByte)
+      )
+  }
 }
 

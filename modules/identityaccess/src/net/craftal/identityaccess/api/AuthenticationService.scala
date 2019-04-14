@@ -18,26 +18,23 @@ class AuthenticationService @Inject()(activate: Activate,
                                       getPasswordIdentity: GetPasswordIdentity,
                                       getUserRole: GetUserRole,
                                       isActivated: IsActivated,
-                                      register: Register,
-                                      resetPassword: ResetPassword)
+                                      register: Register)
                                      (implicit ex: ExecutionContext) {
 
   def activate(token: UUID): Future[Boolean] = this.activate.execute(token)
 
-  def authenticate(email: String, password: String): Future[User] = this.authenticate.execute(email, password)
+  def authenticate(email: String): Future[User] = this.authenticate.execute(email)
 
-  def changePassword(userId: Int, currentPassword: String, newPassword: String): Future[Boolean] =
-    this.changePassword.execute(userId, currentPassword, newPassword)
+  def authenticate(token: UUID): Future[User] = this.authenticate.execute(token)
 
-  def resetPassword(token: UUID, password: String): Future[Boolean] = this.resetPassword.execute(token, password)
+  def changePassword(userId: Int, hasher: String, hashedPassword: String): Future[Boolean] =
+    this.changePassword.execute(userId, hasher, hashedPassword)
 
   def createIdentityToken(email: String): Future[UUID] = this.createIdentityToken.execute(email)
 
   def getUser(userId: Int): Future[User] = this.getUser.execute(userId)
 
   def getUser(email: String): Future[Option[User]] = this.getUser.execute(email)
-
-  def getUser(token: UUID): Future[Option[User]] = this.getUser.execute(token)
 
   def getUserRole(userId: Int): Future[Role] = this.getUserRole.execute(userId)
 
@@ -47,6 +44,6 @@ class AuthenticationService @Inject()(activate: Activate,
 
   def isActivated(userId: Int): Future[Boolean] = this.isActivated(userId)
 
-  def register(email: String, hasher: String, password: String, name: Option[String]): Future[(Int, UUID)] =
+  def register(email: String, hasher: String, password: String, name: Option[String] = None): Future[Int] =
     this.register.execute(email, hasher, password, name)
 }

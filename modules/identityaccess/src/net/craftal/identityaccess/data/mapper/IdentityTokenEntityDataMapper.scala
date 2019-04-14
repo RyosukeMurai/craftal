@@ -7,7 +7,7 @@ import net.craftal.identityaccess.domain.model.identity.IdentityToken
 import org.joda.time.DateTime
 
 object IdentityTokenEntityDataMapper {
-  def transform(tokenRow: Tables.UserAuthTokenRow): IdentityToken =
+  def transform(tokenRow: Tables.UserIdentityTokenRow): IdentityToken =
     IdentityToken(
       token = UUID.fromString(tokenRow.token),
       userId = tokenRow.userId,

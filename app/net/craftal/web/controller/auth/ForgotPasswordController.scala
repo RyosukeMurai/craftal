@@ -10,7 +10,6 @@ import net.craftal.web.usecase.auth.ForgotPassword
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
-import net.craftal.web.controller.auth.routes
 
 import scala.concurrent.{ExecutionContext, Future}
 

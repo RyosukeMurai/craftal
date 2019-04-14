@@ -14,7 +14,7 @@ trait Tables {
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
-  lazy val schema: profile.SchemaDescription = Array(ArtistPhoto.schema, Event.schema, EventArtist.schema, EventLocation.schema, EventPhoto.schema, EventSchedule.schema, EventStatus.schema, Genre.schema, Permission.schema, Photo.schema, PlayEvolutions.schema, Role.schema, RolePermission.schema, User.schema, UserAuth.schema, UserAuthPassword.schema, UserAuthToken.schema, UserRole.schema).reduceLeft(_ ++ _)
+  lazy val schema: profile.SchemaDescription = Array(ArtistPhoto.schema, Event.schema, EventArtist.schema, EventLocation.schema, EventPhoto.schema, EventSchedule.schema, EventStatus.schema, Genre.schema, Permission.schema, Photo.schema, PlayEvolutions.schema, Role.schema, RolePermission.schema, User.schema, UserIdentity.schema, UserIdentityPassword.schema, UserIdentityToken.schema, UserRole.schema).reduceLeft(_ ++ _)
   @deprecated("Use .schema instead of .ddl", "3.0")
   def ddl = schema
 
@@ -533,23 +533,23 @@ trait Tables {
   /** Collection-like TableQuery object for table User */
   lazy val User = new TableQuery(tag => new User(tag))
 
-  /** Entity class storing rows of table UserAuth
+  /** Entity class storing rows of table UserIdentity
    *  @param userId Database column user_id SqlType(INT UNSIGNED), PrimaryKey
    *  @param isActivated Database column is_activated SqlType(BIT), Default(false)
    *  @param createdAt Database column created_at SqlType(DATETIME)
    *  @param updatedAt Database column updated_at SqlType(DATETIME)
    *  @param isDeleted Database column is_deleted SqlType(BIT), Default(false) */
-  case class UserAuthRow(userId: Int, isActivated: Boolean = false, createdAt: java.sql.Timestamp, updatedAt: java.sql.Timestamp, isDeleted: Boolean = false)
-  /** GetResult implicit for fetching UserAuthRow objects using plain SQL queries */
-  implicit def GetResultUserAuthRow(implicit e0: GR[Int], e1: GR[Boolean], e2: GR[java.sql.Timestamp]): GR[UserAuthRow] = GR{
+  case class UserIdentityRow(userId: Int, isActivated: Boolean = false, createdAt: java.sql.Timestamp, updatedAt: java.sql.Timestamp, isDeleted: Boolean = false)
+  /** GetResult implicit for fetching UserIdentityRow objects using plain SQL queries */
+  implicit def GetResultUserIdentityRow(implicit e0: GR[Int], e1: GR[Boolean], e2: GR[java.sql.Timestamp]): GR[UserIdentityRow] = GR{
     prs => import prs._
-    UserAuthRow.tupled((<<[Int], <<[Boolean], <<[java.sql.Timestamp], <<[java.sql.Timestamp], <<[Boolean]))
+    UserIdentityRow.tupled((<<[Int], <<[Boolean], <<[java.sql.Timestamp], <<[java.sql.Timestamp], <<[Boolean]))
   }
-  /** Table description of table user_auth. Objects of this class serve as prototypes for rows in queries. */
-  class UserAuth(_tableTag: Tag) extends profile.api.Table[UserAuthRow](_tableTag, Some("craftal"), "user_auth") {
-    def * = (userId, isActivated, createdAt, updatedAt, isDeleted) <> (UserAuthRow.tupled, UserAuthRow.unapply)
+  /** Table description of table user_identity. Objects of this class serve as prototypes for rows in queries. */
+  class UserIdentity(_tableTag: Tag) extends profile.api.Table[UserIdentityRow](_tableTag, Some("craftal"), "user_identity") {
+    def * = (userId, isActivated, createdAt, updatedAt, isDeleted) <> (UserIdentityRow.tupled, UserIdentityRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(userId), Rep.Some(isActivated), Rep.Some(createdAt), Rep.Some(updatedAt), Rep.Some(isDeleted)).shaped.<>({r=>import r._; _1.map(_=> UserAuthRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(userId), Rep.Some(isActivated), Rep.Some(createdAt), Rep.Some(updatedAt), Rep.Some(isDeleted)).shaped.<>({r=>import r._; _1.map(_=> UserIdentityRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column user_id SqlType(INT UNSIGNED), PrimaryKey */
     val userId: Rep[Int] = column[Int]("user_id", O.PrimaryKey)
@@ -562,30 +562,30 @@ trait Tables {
     /** Database column is_deleted SqlType(BIT), Default(false) */
     val isDeleted: Rep[Boolean] = column[Boolean]("is_deleted", O.Default(false))
 
-    /** Foreign key referencing User (database name user_auth_ibfk_1) */
-    lazy val userFk = foreignKey("user_auth_ibfk_1", userId, User)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing User (database name user_identity_ibfk_1) */
+    lazy val userFk = foreignKey("user_identity_ibfk_1", userId, User)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
   }
-  /** Collection-like TableQuery object for table UserAuth */
-  lazy val UserAuth = new TableQuery(tag => new UserAuth(tag))
+  /** Collection-like TableQuery object for table UserIdentity */
+  lazy val UserIdentity = new TableQuery(tag => new UserIdentity(tag))
 
-  /** Entity class storing rows of table UserAuthPassword
+  /** Entity class storing rows of table UserIdentityPassword
    *  @param userId Database column user_id SqlType(INT UNSIGNED), PrimaryKey
    *  @param hasher Database column hasher SqlType(VARCHAR), Length(255,true)
    *  @param password Database column password SqlType(VARCHAR), Length(255,true)
    *  @param createdAt Database column created_at SqlType(DATETIME)
    *  @param updatedAt Database column updated_at SqlType(DATETIME)
    *  @param isDeleted Database column is_deleted SqlType(BIT), Default(false) */
-  case class UserAuthPasswordRow(userId: Int, hasher: String, password: String, createdAt: java.sql.Timestamp, updatedAt: java.sql.Timestamp, isDeleted: Boolean = false)
-  /** GetResult implicit for fetching UserAuthPasswordRow objects using plain SQL queries */
-  implicit def GetResultUserAuthPasswordRow(implicit e0: GR[Int], e1: GR[String], e2: GR[java.sql.Timestamp], e3: GR[Boolean]): GR[UserAuthPasswordRow] = GR{
+  case class UserIdentityPasswordRow(userId: Int, hasher: String, password: String, createdAt: java.sql.Timestamp, updatedAt: java.sql.Timestamp, isDeleted: Boolean = false)
+  /** GetResult implicit for fetching UserIdentityPasswordRow objects using plain SQL queries */
+  implicit def GetResultUserIdentityPasswordRow(implicit e0: GR[Int], e1: GR[String], e2: GR[java.sql.Timestamp], e3: GR[Boolean]): GR[UserIdentityPasswordRow] = GR{
     prs => import prs._
-    UserAuthPasswordRow.tupled((<<[Int], <<[String], <<[String], <<[java.sql.Timestamp], <<[java.sql.Timestamp], <<[Boolean]))
+    UserIdentityPasswordRow.tupled((<<[Int], <<[String], <<[String], <<[java.sql.Timestamp], <<[java.sql.Timestamp], <<[Boolean]))
   }
-  /** Table description of table user_auth_password. Objects of this class serve as prototypes for rows in queries. */
-  class UserAuthPassword(_tableTag: Tag) extends profile.api.Table[UserAuthPasswordRow](_tableTag, Some("craftal"), "user_auth_password") {
-    def * = (userId, hasher, password, createdAt, updatedAt, isDeleted) <> (UserAuthPasswordRow.tupled, UserAuthPasswordRow.unapply)
+  /** Table description of table user_identity_password. Objects of this class serve as prototypes for rows in queries. */
+  class UserIdentityPassword(_tableTag: Tag) extends profile.api.Table[UserIdentityPasswordRow](_tableTag, Some("craftal"), "user_identity_password") {
+    def * = (userId, hasher, password, createdAt, updatedAt, isDeleted) <> (UserIdentityPasswordRow.tupled, UserIdentityPasswordRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(userId), Rep.Some(hasher), Rep.Some(password), Rep.Some(createdAt), Rep.Some(updatedAt), Rep.Some(isDeleted)).shaped.<>({r=>import r._; _1.map(_=> UserAuthPasswordRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(userId), Rep.Some(hasher), Rep.Some(password), Rep.Some(createdAt), Rep.Some(updatedAt), Rep.Some(isDeleted)).shaped.<>({r=>import r._; _1.map(_=> UserIdentityPasswordRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column user_id SqlType(INT UNSIGNED), PrimaryKey */
     val userId: Rep[Int] = column[Int]("user_id", O.PrimaryKey)
@@ -600,30 +600,30 @@ trait Tables {
     /** Database column is_deleted SqlType(BIT), Default(false) */
     val isDeleted: Rep[Boolean] = column[Boolean]("is_deleted", O.Default(false))
 
-    /** Foreign key referencing User (database name user_auth_password_ibfk_1) */
-    lazy val userFk = foreignKey("user_auth_password_ibfk_1", userId, User)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing User (database name user_identity_password_ibfk_1) */
+    lazy val userFk = foreignKey("user_identity_password_ibfk_1", userId, User)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
   }
-  /** Collection-like TableQuery object for table UserAuthPassword */
-  lazy val UserAuthPassword = new TableQuery(tag => new UserAuthPassword(tag))
+  /** Collection-like TableQuery object for table UserIdentityPassword */
+  lazy val UserIdentityPassword = new TableQuery(tag => new UserIdentityPassword(tag))
 
-  /** Entity class storing rows of table UserAuthToken
+  /** Entity class storing rows of table UserIdentityToken
    *  @param token Database column token SqlType(VARCHAR), PrimaryKey, Length(36,true)
    *  @param userId Database column user_id SqlType(INT UNSIGNED)
    *  @param expiredAt Database column expired_at SqlType(DATETIME)
    *  @param createdAt Database column created_at SqlType(DATETIME)
    *  @param updatedAt Database column updated_at SqlType(DATETIME)
    *  @param isDeleted Database column is_deleted SqlType(BIT), Default(false) */
-  case class UserAuthTokenRow(token: String, userId: Int, expiredAt: java.sql.Timestamp, createdAt: java.sql.Timestamp, updatedAt: java.sql.Timestamp, isDeleted: Boolean = false)
-  /** GetResult implicit for fetching UserAuthTokenRow objects using plain SQL queries */
-  implicit def GetResultUserAuthTokenRow(implicit e0: GR[String], e1: GR[Int], e2: GR[java.sql.Timestamp], e3: GR[Boolean]): GR[UserAuthTokenRow] = GR{
+  case class UserIdentityTokenRow(token: String, userId: Int, expiredAt: java.sql.Timestamp, createdAt: java.sql.Timestamp, updatedAt: java.sql.Timestamp, isDeleted: Boolean = false)
+  /** GetResult implicit for fetching UserIdentityTokenRow objects using plain SQL queries */
+  implicit def GetResultUserIdentityTokenRow(implicit e0: GR[String], e1: GR[Int], e2: GR[java.sql.Timestamp], e3: GR[Boolean]): GR[UserIdentityTokenRow] = GR{
     prs => import prs._
-    UserAuthTokenRow.tupled((<<[String], <<[Int], <<[java.sql.Timestamp], <<[java.sql.Timestamp], <<[java.sql.Timestamp], <<[Boolean]))
+    UserIdentityTokenRow.tupled((<<[String], <<[Int], <<[java.sql.Timestamp], <<[java.sql.Timestamp], <<[java.sql.Timestamp], <<[Boolean]))
   }
-  /** Table description of table user_auth_token. Objects of this class serve as prototypes for rows in queries. */
-  class UserAuthToken(_tableTag: Tag) extends profile.api.Table[UserAuthTokenRow](_tableTag, Some("craftal"), "user_auth_token") {
-    def * = (token, userId, expiredAt, createdAt, updatedAt, isDeleted) <> (UserAuthTokenRow.tupled, UserAuthTokenRow.unapply)
+  /** Table description of table user_identity_token. Objects of this class serve as prototypes for rows in queries. */
+  class UserIdentityToken(_tableTag: Tag) extends profile.api.Table[UserIdentityTokenRow](_tableTag, Some("craftal"), "user_identity_token") {
+    def * = (token, userId, expiredAt, createdAt, updatedAt, isDeleted) <> (UserIdentityTokenRow.tupled, UserIdentityTokenRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(token), Rep.Some(userId), Rep.Some(expiredAt), Rep.Some(createdAt), Rep.Some(updatedAt), Rep.Some(isDeleted)).shaped.<>({r=>import r._; _1.map(_=> UserAuthTokenRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(token), Rep.Some(userId), Rep.Some(expiredAt), Rep.Some(createdAt), Rep.Some(updatedAt), Rep.Some(isDeleted)).shaped.<>({r=>import r._; _1.map(_=> UserIdentityTokenRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column token SqlType(VARCHAR), PrimaryKey, Length(36,true) */
     val token: Rep[String] = column[String]("token", O.PrimaryKey, O.Length(36,varying=true))
@@ -638,11 +638,11 @@ trait Tables {
     /** Database column is_deleted SqlType(BIT), Default(false) */
     val isDeleted: Rep[Boolean] = column[Boolean]("is_deleted", O.Default(false))
 
-    /** Foreign key referencing User (database name user_auth_token_ibfk_1) */
-    lazy val userFk = foreignKey("user_auth_token_ibfk_1", userId, User)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing User (database name user_identity_token_ibfk_1) */
+    lazy val userFk = foreignKey("user_identity_token_ibfk_1", userId, User)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
   }
-  /** Collection-like TableQuery object for table UserAuthToken */
-  lazy val UserAuthToken = new TableQuery(tag => new UserAuthToken(tag))
+  /** Collection-like TableQuery object for table UserIdentityToken */
+  lazy val UserIdentityToken = new TableQuery(tag => new UserIdentityToken(tag))
 
   /** Entity class storing rows of table UserRole
    *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey

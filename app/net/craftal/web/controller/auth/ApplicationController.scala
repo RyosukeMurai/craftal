@@ -8,7 +8,6 @@ import net.craftal.web.port.silhouette.DefaultEnv
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.I18nSupport
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
-import net.craftal.web.controller.auth.routes
 
 import scala.concurrent.Future
 
