@@ -6,6 +6,7 @@ case class Artist(id: Int,
                   var name: String,
                   var email: String,
                   var genreId: Int,
+                  var prefectureId: Int,
                   photos: List[ArtistPhoto] = List()) extends Entity[Artist] {
 
   def iconPhotoId: Int = {
@@ -13,5 +14,16 @@ case class Artist(id: Int,
       throw new IllegalAccessException(s"Artist ($this.name) doesn't have any photos.")
     }
     this.photos.sortWith(_.positionNo < _.positionNo).head.photoId
+  }
+
+  def coverPhotoId: Int = {
+    if (this.photos.isEmpty) {
+      throw new IllegalAccessException(s"Artist ($this.name) doesn't have any photos.")
+    }
+    this.photos
+      .filter(p => p.photoId != this.iconPhotoId)
+      .sortWith(_.positionNo < _.positionNo)
+      .head
+      .photoId
   }
 }

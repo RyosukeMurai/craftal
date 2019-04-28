@@ -20,6 +20,6 @@ class DetailEventController @Inject()(controllerComponents: ControllerComponents
   extends AbstractController(controllerComponents) with play.api.i18n.I18nSupport {
 
   def view(id: String): Action[AnyContent] = actionWithNavigation.async { implicit request: NavigationContext[AnyContent] =>
-    this.getEvent.execute(id.toInt).map { response => Ok(presenter.present(response._1, response._2)) }
+    this.getEvent.execute(id.toInt).map { response => Ok(presenter.present(response)) }
   }
 }

@@ -4,31 +4,25 @@ import net.craftal.common.data.Tables
 import net.craftal.core.domain.model.artist.{Artist, ArtistPhoto}
 
 object ArtistEntityDataMapper {
-  def transform(userEntity: Tables.UserRow): Artist =
+  def transform(entity: (Tables.UserRow, Tables.ArtistRow, List[Tables.ArtistPhotoRow])): Artist =
     Artist(
-      id = userEntity.id,
-      name = userEntity.name,
-      email = userEntity.email,
-      genreId = 1
-    )
-
-  def transform(userEntity: Tables.UserRow,
-                photoCollection: List[Tables.ArtistPhotoRow]): Artist =
-    Artist(
-      id = userEntity.id,
-      name = userEntity.name,
-      email = userEntity.email,
-      genreId = 1,
-      photoCollection.map(photo => ArtistPhoto(
+      id = entity._1.id,
+      name = entity._1.name,
+      email = entity._1.email,
+      genreId = entity._2.genreId,
+      prefectureId = entity._2.prefectureId,
+      entity._3.map(photo => ArtistPhoto(
         photoId = photo.photoId,
         positionNo = photo.positionNo
       ))
     )
 
-  def transformCollection(eventRows: List[(Tables.UserRow, Tables.ArtistPhotoRow)]): List[Artist] =
-    eventRows
+
+  def transformCollection(entities: List[(Tables.UserRow, Tables.ArtistRow, Tables.ArtistPhotoRow)]): List[Artist] = {
+    entities
       .groupBy(_._1.id)
-      .map(m => this.transform(m._2.head._1, m._2.map(_._2)))
+      .map(m => this.transform(m._2.head._1, m._2.head._2, m._2.map(_._3)))
       .toList
+  }
 
 }

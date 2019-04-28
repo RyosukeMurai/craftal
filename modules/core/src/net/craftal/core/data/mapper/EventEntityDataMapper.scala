@@ -27,8 +27,9 @@ object EventEntityDataMapper {
       eventScheduleCollection.map(schedule => EventSchedule(
         mapCoordinate = EventMapCoordinate(latitude = 0, longitude = 0),
         venue = schedule.venue,
-        stateTime = new DateTime(schedule.stateTime.getTime),
-        endTime = new DateTime(schedule.endTime.getTime)
+        startTime = new DateTime(schedule.startTime.getTime),
+        endTime = new DateTime(schedule.endTime.getTime),
+        prefectureId = schedule.prefectureId
       )),
       eventPhotoCollection.map(photo => EventPhoto(
         photoId = photo.photoId,

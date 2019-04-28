@@ -5,6 +5,7 @@ import org.joda.time.DateTime
 
 case class EventSchedule(venue: String,
                          mapCoordinate: EventMapCoordinate,
-                         stateTime: DateTime,
-                         endTime: DateTime) extends ValueObject[EventSchedule] {
+                         startTime: DateTime,
+                         endTime: DateTime,
+                         prefectureId: Int) extends ValueObject[EventSchedule] {
 }

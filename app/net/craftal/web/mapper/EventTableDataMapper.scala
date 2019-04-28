@@ -5,7 +5,7 @@ import net.craftal.web.model.common.table.{ColumnDefinition, Table}
 import play.api.i18n.Messages
 
 
-object EventTableDataMapper {
+object EventTableDataMapper extends DataMapper {
 
   def transform(eventCollection: List[Event])(implicit messages: Messages): Table[Event] =
     new Table(

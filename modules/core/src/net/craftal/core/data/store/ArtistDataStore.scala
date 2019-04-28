@@ -17,30 +17,38 @@ class ArtistDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implic
 
   val dbConfig = dbConfigProvider.get[JdbcProfile]
 
-  override def findArtist(id: Int): Future[Artist] =
+  override def findArtist(id: Int): Future[Artist] = {
+    val query = for {
+      u <- Tables.User if u.id === id
+      a <- Tables.Artist if u.id === a.userId
+      p <- Tables.ArtistPhoto if u.id === p.artistId
+    } yield (u, a, p)
+
     dbConfig.db
-      .run(Tables.User.filter(_.id === id).result.head.map(ArtistEntityDataMapper.transform))
+      .run(query.to[List].result.map(ArtistEntityDataMapper.transformCollection(_).head))
+  }
 
   override def findArtistsByEventId(eventId: Int, keyword: Option[String]): Future[List[Artist]] = {
     val query = for {
-      u <- Tables.User
-      if (for {
-        a <- Tables.EventArtist if u.id === a.userId && a.eventId === eventId
-      } yield a.userId).exists
-    } yield u
+      u <- Tables.User if (for {
+        a <- Tables.EventArtist if u.id === a.artistId && a.eventId === eventId
+      } yield a.artistId).exists
+      a <- Tables.Artist if u.id === a.userId
+      p <- Tables.ArtistPhoto if u.id === p.artistId
+    } yield (u, a, p)
     dbConfig
       .db
       .run(
-        query.to[List].result.map(_.map(ArtistEntityDataMapper.transform))
+        query.to[List].result.map(ArtistEntityDataMapper.transformCollection)
       )
   }
 
   override def findArtistsByGenreId(genreId: Int, keyword: Option[String]): Future[List[Artist]] = {
     val query = for {
       u <- Tables.User
-      p <- Tables.ArtistPhoto
-      if u.id === p.artistId
-    } yield (u, p)
+      a <- Tables.Artist if u.id === a.userId && a.genreId === genreId
+      p <- Tables.ArtistPhoto if u.id === p.artistId
+    } yield (u, a, p)
 
     dbConfig
       .db
@@ -52,9 +60,9 @@ class ArtistDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implic
   override def findArtistsByKeyword(keyword: Option[String]): Future[List[Artist]] = {
     val query = for {
       u <- Tables.User
-      p <- Tables.ArtistPhoto
-      if u.id === p.artistId
-    } yield (u, p)
+      a <- Tables.Artist if u.id === a.userId
+      p <- Tables.ArtistPhoto if u.id === p.artistId
+    } yield (u, a, p)
 
     dbConfig
       .db
@@ -63,11 +71,18 @@ class ArtistDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implic
       )
   }
 
-  override def findAll(): Future[List[Artist]] =
+  override def findAll(): Future[List[Artist]] = {
+    val query = for {
+      u <- Tables.User
+      a <- Tables.Artist if u.id === a.userId
+      p <- Tables.ArtistPhoto if u.id === p.artistId
+    } yield (u, a, p)
+
     dbConfig
       .db
       .run(
-        Tables.User.to[List].result.map(_.map(ArtistEntityDataMapper.transform))
+        query.to[List].result.map(ArtistEntityDataMapper.transformCollection)
       )
+  }
 }
 

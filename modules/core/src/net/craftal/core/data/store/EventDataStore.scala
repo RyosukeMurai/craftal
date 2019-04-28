@@ -2,7 +2,7 @@ package net.craftal.core.data.store
 
 import java.sql.Timestamp
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.Inject
 import net.craftal.common.data.Tables
 import net.craftal.core.data.mapper.EventEntityDataMapper
 import net.craftal.core.domain.model.event.EventLocation.EventLocation
@@ -22,10 +22,16 @@ class EventDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
 
   val dbConfig = dbConfigProvider.get[JdbcProfile]
 
-  override def findEvent(eventId: Int): Future[Event] =
-    dbConfig.db.run(
-      Tables.Event.filter(_.id === eventId).result.head.map(EventEntityDataMapper.transform)
-    )
+  override def findEvent(eventId: Int): Future[Event] = {
+    val query = for {
+      e <- Tables.Event if e.id === eventId
+      s <- Tables.EventSchedule if e.id === s.eventId
+      p <- Tables.EventPhoto if e.id === p.eventId
+    } yield (e, s, p)
+
+    dbConfig.db
+      .run(query.to[List].result.map(EventEntityDataMapper.transformCollection(_).head))
+  }
 
   override def findEventsByTerm(termStart: DateTime,
                                 termEnd: Option[DateTime],
@@ -41,7 +47,7 @@ class EventDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
       e <- this.keywordQuery(keyword)
       s <- this.termsQuery(termStart, termEnd)
       p <- Tables.EventPhoto
-      if e.id === s.eventId
+      if e.id === s.eventId && e.id === p.eventId
     } yield (e, s, p)
 
     dbConfig
@@ -86,7 +92,7 @@ class EventDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
   : Query[Tables.EventSchedule, Tables.EventScheduleRow, Seq] = {
     val formatted = termEnd.map(value => new Timestamp(value.getMillis))
     Tables.EventSchedule
-      .filter(schedule => schedule.stateTime >= new Timestamp(termStart.getMillis))
+      .filter(schedule => schedule.startTime >= new Timestamp(termStart.getMillis))
       .filter(schedule =>
         LiteralColumn(formatted).isEmpty
           || schedule.endTime <= LiteralColumn(formatted)

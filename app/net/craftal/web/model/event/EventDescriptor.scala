@@ -1,23 +1,11 @@
 package net.craftal.web.model.event
 
-import net.craftal.core.domain.model.event.EventLocation.EventLocation
 import net.craftal.core.domain.model.event.EventStatus.EventStatus
-import net.craftal.core.domain.model.event.{Event, EventSchedule}
-import net.craftal.core.domain.model.photo.Photo
+import net.craftal.web.model.photo.PhotoDescriptor
 
-class EventDescriptor(id: Int,
-                      title: String,
-                      description: String,
-                      status: EventStatus,
-                      location: EventLocation,
-                      schedule: Seq[EventSchedule] = List(),
-                      photos: Seq[Photo] = List())
-  extends Event(
-    id,
-    title,
-    description,
-    status,
-    location,
-    schedule
-  ) {
-}
+case class EventDescriptor(id: Int,
+                           title: String,
+                           description: String,
+                           status: EventStatus,
+                           schedule: EventScheduleDescriptor,
+                           eyecatchPhoto: PhotoDescriptor)

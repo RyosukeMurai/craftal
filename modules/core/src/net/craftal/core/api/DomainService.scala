@@ -7,10 +7,12 @@ import net.craftal.core.domain.model.event.EventLocation.EventLocation
 import net.craftal.core.domain.model.event.EventStatus.EventStatus
 import net.craftal.core.domain.model.genre.Genre
 import net.craftal.core.domain.model.photo.Photo
+import net.craftal.core.domain.model.prefecture.Prefecture
 import net.craftal.core.usecase.artist._
 import net.craftal.core.usecase.event._
 import net.craftal.core.usecase.genre._
 import net.craftal.core.usecase.photo._
+import net.craftal.core.usecase.prefecture.{GetPrefecture, GetPrefectures}
 import org.joda.time.DateTime
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -27,7 +29,9 @@ class DomainService @Inject()(getArtist: GetArtist,
                               getGenreInteractor: GetGenre,
                               getGenresInteractor: GetGenres,
                               getPhoto: GetPhoto,
-                              getPhotosInteractor: GetPhotos)
+                              getPhotosInteractor: GetPhotos,
+                              getPrefectureInteractor: GetPrefecture,
+                              getPrefecturesInteractor: GetPrefectures)
                              (implicit ex: ExecutionContext) {
 
   def getArtist(artistId: Int): Future[Artist] = this.getArtist.execute(artistId)
@@ -72,4 +76,8 @@ class DomainService @Inject()(getArtist: GetArtist,
   def getPhoto(photoId: Int): Future[Photo] = this.getPhoto.execute(photoId)
 
   def getPhotos(photoIdList: List[Int]): Future[List[Photo]] = this.getPhotosInteractor.execute(photoIdList)
+
+  def getPrefecture(prefectureId: Int): Future[Prefecture] = this.getPrefectureInteractor.execute(prefectureId)
+
+  def getPrefectures(prefectureIdList: List[Int]): Future[List[Prefecture]] = this.getPrefecturesInteractor.execute(prefectureIdList)
 }

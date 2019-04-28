@@ -14,12 +14,115 @@ trait Tables {
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
-  lazy val schema: profile.SchemaDescription = Array(ArtistPhoto.schema, Event.schema, EventArtist.schema, EventLocation.schema, EventPhoto.schema, EventSchedule.schema, EventStatus.schema, Genre.schema, Permission.schema, Photo.schema, PlayEvolutions.schema, Role.schema, RolePermission.schema, User.schema, UserIdentity.schema, UserIdentityPassword.schema, UserIdentityToken.schema, UserRole.schema).reduceLeft(_ ++ _)
+  lazy val schema: profile.SchemaDescription = Array(Artist.schema, ArtistAttribute.schema, ArtistPhoto.schema, Attribute.schema, Event.schema, EventArtist.schema, EventLocation.schema, EventPhoto.schema, EventSchedule.schema, EventStatus.schema, Genre.schema, Permission.schema, Photo.schema, PlayEvolutions.schema, Prefecture.schema, Role.schema, RolePermission.schema, User.schema, UserIdentity.schema, UserIdentityPassword.schema, UserIdentityToken.schema, UserRole.schema).reduceLeft(_ ++ _)
   @deprecated("Use .schema instead of .ddl", "3.0")
   def ddl = schema
 
-  /** Entity class storing rows of table ArtistPhoto
+  /** Entity class storing rows of table Artist
+   *  @param userId Database column user_id SqlType(INT UNSIGNED), PrimaryKey
+   *  @param genreId Database column genre_id SqlType(INT UNSIGNED)
+   *  @param prefectureId Database column prefecture_id SqlType(INT UNSIGNED)
+   *  @param createdAt Database column created_at SqlType(DATETIME)
+   *  @param updatedAt Database column updated_at SqlType(DATETIME)
+   *  @param isDeleted Database column is_deleted SqlType(BIT), Default(false)
+   *  @param selfIntroduction Database column self_introduction SqlType(TEXT)
+   *  @param aboutInquiry Database column about_inquiry SqlType(TEXT)
+   *  @param homePageUrl Database column home_page_url SqlType(VARCHAR), Length(255,true)
+   *  @param shopPageUrl Database column shop_page_url SqlType(VARCHAR), Length(255,true)
+   *  @param twitterUrl Database column twitter_url SqlType(VARCHAR), Length(255,true)
+   *  @param instagramUrl Database column instagram_url SqlType(VARCHAR), Length(255,true)
+   *  @param facebookUrl Database column facebook_url SqlType(VARCHAR), Length(255,true) */
+  case class ArtistRow(userId: Int, genreId: Int, prefectureId: Int, createdAt: java.sql.Timestamp, updatedAt: java.sql.Timestamp, isDeleted: Boolean = false, selfIntroduction: String, aboutInquiry: String, homePageUrl: String, shopPageUrl: String, twitterUrl: String, instagramUrl: String, facebookUrl: String)
+  /** GetResult implicit for fetching ArtistRow objects using plain SQL queries */
+  implicit def GetResultArtistRow(implicit e0: GR[Int], e1: GR[java.sql.Timestamp], e2: GR[Boolean], e3: GR[String]): GR[ArtistRow] = GR{
+    prs => import prs._
+    ArtistRow.tupled((<<[Int], <<[Int], <<[Int], <<[java.sql.Timestamp], <<[java.sql.Timestamp], <<[Boolean], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String]))
+  }
+  /** Table description of table artist. Objects of this class serve as prototypes for rows in queries. */
+  class Artist(_tableTag: Tag) extends profile.api.Table[ArtistRow](_tableTag, Some("craftal"), "artist") {
+    def * = (userId, genreId, prefectureId, createdAt, updatedAt, isDeleted, selfIntroduction, aboutInquiry, homePageUrl, shopPageUrl, twitterUrl, instagramUrl, facebookUrl) <> (ArtistRow.tupled, ArtistRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = (Rep.Some(userId), Rep.Some(genreId), Rep.Some(prefectureId), Rep.Some(createdAt), Rep.Some(updatedAt), Rep.Some(isDeleted), Rep.Some(selfIntroduction), Rep.Some(aboutInquiry), Rep.Some(homePageUrl), Rep.Some(shopPageUrl), Rep.Some(twitterUrl), Rep.Some(instagramUrl), Rep.Some(facebookUrl)).shaped.<>({r=>import r._; _1.map(_=> ArtistRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get, _11.get, _12.get, _13.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column user_id SqlType(INT UNSIGNED), PrimaryKey */
+    val userId: Rep[Int] = column[Int]("user_id", O.PrimaryKey)
+    /** Database column genre_id SqlType(INT UNSIGNED) */
+    val genreId: Rep[Int] = column[Int]("genre_id")
+    /** Database column prefecture_id SqlType(INT UNSIGNED) */
+    val prefectureId: Rep[Int] = column[Int]("prefecture_id")
+    /** Database column created_at SqlType(DATETIME) */
+    val createdAt: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("created_at")
+    /** Database column updated_at SqlType(DATETIME) */
+    val updatedAt: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("updated_at")
+    /** Database column is_deleted SqlType(BIT), Default(false) */
+    val isDeleted: Rep[Boolean] = column[Boolean]("is_deleted", O.Default(false))
+    /** Database column self_introduction SqlType(TEXT) */
+    val selfIntroduction: Rep[String] = column[String]("self_introduction")
+    /** Database column about_inquiry SqlType(TEXT) */
+    val aboutInquiry: Rep[String] = column[String]("about_inquiry")
+    /** Database column home_page_url SqlType(VARCHAR), Length(255,true) */
+    val homePageUrl: Rep[String] = column[String]("home_page_url", O.Length(255,varying=true))
+    /** Database column shop_page_url SqlType(VARCHAR), Length(255,true) */
+    val shopPageUrl: Rep[String] = column[String]("shop_page_url", O.Length(255,varying=true))
+    /** Database column twitter_url SqlType(VARCHAR), Length(255,true) */
+    val twitterUrl: Rep[String] = column[String]("twitter_url", O.Length(255,varying=true))
+    /** Database column instagram_url SqlType(VARCHAR), Length(255,true) */
+    val instagramUrl: Rep[String] = column[String]("instagram_url", O.Length(255,varying=true))
+    /** Database column facebook_url SqlType(VARCHAR), Length(255,true) */
+    val facebookUrl: Rep[String] = column[String]("facebook_url", O.Length(255,varying=true))
+
+    /** Foreign key referencing Genre (database name artist_ibfk_2) */
+    lazy val genreFk = foreignKey("artist_ibfk_2", genreId, Genre)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing Prefecture (database name artist_ibfk_3) */
+    lazy val prefectureFk = foreignKey("artist_ibfk_3", prefectureId, Prefecture)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing User (database name artist_ibfk_1) */
+    lazy val userFk = foreignKey("artist_ibfk_1", userId, User)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+  }
+  /** Collection-like TableQuery object for table Artist */
+  lazy val Artist = new TableQuery(tag => new Artist(tag))
+
+  /** Entity class storing rows of table ArtistAttribute
    *  @param id Database column id SqlType(INT UNSIGNED), PrimaryKey
+   *  @param artistId Database column artist_id SqlType(INT UNSIGNED)
+   *  @param attributeId Database column attribute_id SqlType(INT UNSIGNED)
+   *  @param createdAt Database column created_at SqlType(DATETIME)
+   *  @param updatedAt Database column updated_at SqlType(DATETIME)
+   *  @param isDeleted Database column is_deleted SqlType(BIT), Default(false) */
+  case class ArtistAttributeRow(id: Int, artistId: Int, attributeId: Int, createdAt: java.sql.Timestamp, updatedAt: java.sql.Timestamp, isDeleted: Boolean = false)
+  /** GetResult implicit for fetching ArtistAttributeRow objects using plain SQL queries */
+  implicit def GetResultArtistAttributeRow(implicit e0: GR[Int], e1: GR[java.sql.Timestamp], e2: GR[Boolean]): GR[ArtistAttributeRow] = GR{
+    prs => import prs._
+    ArtistAttributeRow.tupled((<<[Int], <<[Int], <<[Int], <<[java.sql.Timestamp], <<[java.sql.Timestamp], <<[Boolean]))
+  }
+  /** Table description of table artist_attribute. Objects of this class serve as prototypes for rows in queries. */
+  class ArtistAttribute(_tableTag: Tag) extends profile.api.Table[ArtistAttributeRow](_tableTag, Some("craftal"), "artist_attribute") {
+    def * = (id, artistId, attributeId, createdAt, updatedAt, isDeleted) <> (ArtistAttributeRow.tupled, ArtistAttributeRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = (Rep.Some(id), Rep.Some(artistId), Rep.Some(attributeId), Rep.Some(createdAt), Rep.Some(updatedAt), Rep.Some(isDeleted)).shaped.<>({r=>import r._; _1.map(_=> ArtistAttributeRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column id SqlType(INT UNSIGNED), PrimaryKey */
+    val id: Rep[Int] = column[Int]("id", O.PrimaryKey)
+    /** Database column artist_id SqlType(INT UNSIGNED) */
+    val artistId: Rep[Int] = column[Int]("artist_id")
+    /** Database column attribute_id SqlType(INT UNSIGNED) */
+    val attributeId: Rep[Int] = column[Int]("attribute_id")
+    /** Database column created_at SqlType(DATETIME) */
+    val createdAt: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("created_at")
+    /** Database column updated_at SqlType(DATETIME) */
+    val updatedAt: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("updated_at")
+    /** Database column is_deleted SqlType(BIT), Default(false) */
+    val isDeleted: Rep[Boolean] = column[Boolean]("is_deleted", O.Default(false))
+
+    /** Foreign key referencing Attribute (database name artist_attribute_ibfk_2) */
+    lazy val attributeFk = foreignKey("artist_attribute_ibfk_2", attributeId, Attribute)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing User (database name artist_attribute_ibfk_1) */
+    lazy val userFk = foreignKey("artist_attribute_ibfk_1", artistId, User)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+  }
+  /** Collection-like TableQuery object for table ArtistAttribute */
+  lazy val ArtistAttribute = new TableQuery(tag => new ArtistAttribute(tag))
+
+  /** Entity class storing rows of table ArtistPhoto
+   *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
    *  @param artistId Database column artist_id SqlType(INT UNSIGNED)
    *  @param photoId Database column photo_id SqlType(INT UNSIGNED)
    *  @param positionNo Database column position_no SqlType(INT UNSIGNED)
@@ -38,8 +141,8 @@ trait Tables {
     /** Maps whole row to an option. Useful for outer joins. */
     def ? = (Rep.Some(id), Rep.Some(artistId), Rep.Some(photoId), Rep.Some(positionNo), Rep.Some(createdAt), Rep.Some(updatedAt), Rep.Some(isDeleted)).shaped.<>({r=>import r._; _1.map(_=> ArtistPhotoRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
-    /** Database column id SqlType(INT UNSIGNED), PrimaryKey */
-    val id: Rep[Int] = column[Int]("id", O.PrimaryKey)
+    /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
+    val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
     /** Database column artist_id SqlType(INT UNSIGNED) */
     val artistId: Rep[Int] = column[Int]("artist_id")
     /** Database column photo_id SqlType(INT UNSIGNED) */
@@ -60,6 +163,29 @@ trait Tables {
   }
   /** Collection-like TableQuery object for table ArtistPhoto */
   lazy val ArtistPhoto = new TableQuery(tag => new ArtistPhoto(tag))
+
+  /** Entity class storing rows of table Attribute
+   *  @param id Database column id SqlType(INT UNSIGNED), PrimaryKey
+   *  @param name Database column name SqlType(VARCHAR), Length(255,true) */
+  case class AttributeRow(id: Int, name: String)
+  /** GetResult implicit for fetching AttributeRow objects using plain SQL queries */
+  implicit def GetResultAttributeRow(implicit e0: GR[Int], e1: GR[String]): GR[AttributeRow] = GR{
+    prs => import prs._
+    AttributeRow.tupled((<<[Int], <<[String]))
+  }
+  /** Table description of table attribute. Objects of this class serve as prototypes for rows in queries. */
+  class Attribute(_tableTag: Tag) extends profile.api.Table[AttributeRow](_tableTag, Some("craftal"), "attribute") {
+    def * = (id, name) <> (AttributeRow.tupled, AttributeRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = (Rep.Some(id), Rep.Some(name)).shaped.<>({r=>import r._; _1.map(_=> AttributeRow.tupled((_1.get, _2.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column id SqlType(INT UNSIGNED), PrimaryKey */
+    val id: Rep[Int] = column[Int]("id", O.PrimaryKey)
+    /** Database column name SqlType(VARCHAR), Length(255,true) */
+    val name: Rep[String] = column[String]("name", O.Length(255,varying=true))
+  }
+  /** Collection-like TableQuery object for table Attribute */
+  lazy val Attribute = new TableQuery(tag => new Attribute(tag))
 
   /** Entity class storing rows of table Event
    *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
@@ -110,29 +236,30 @@ trait Tables {
   /** Entity class storing rows of table EventArtist
    *  @param id Database column id SqlType(INT UNSIGNED), PrimaryKey
    *  @param eventId Database column event_id SqlType(INT UNSIGNED)
-   *  @param userId Database column user_id SqlType(INT UNSIGNED)
+   *  @param artistId Database column artist_id SqlType(INT UNSIGNED), Default(None)
    *  @param positionNo Database column position_no SqlType(INT UNSIGNED)
    *  @param createdAt Database column created_at SqlType(DATETIME)
    *  @param updatedAt Database column updated_at SqlType(DATETIME)
-   *  @param isDeleted Database column is_deleted SqlType(BIT), Default(false) */
-  case class EventArtistRow(id: Int, eventId: Int, userId: Int, positionNo: Int, createdAt: java.sql.Timestamp, updatedAt: java.sql.Timestamp, isDeleted: Boolean = false)
+   *  @param isDeleted Database column is_deleted SqlType(BIT), Default(false)
+   *  @param artistComment Database column artist_comment SqlType(TEXT) */
+  case class EventArtistRow(id: Int, eventId: Int, artistId: Option[Int] = None, positionNo: Int, createdAt: java.sql.Timestamp, updatedAt: java.sql.Timestamp, isDeleted: Boolean = false, artistComment: String)
   /** GetResult implicit for fetching EventArtistRow objects using plain SQL queries */
-  implicit def GetResultEventArtistRow(implicit e0: GR[Int], e1: GR[java.sql.Timestamp], e2: GR[Boolean]): GR[EventArtistRow] = GR{
+  implicit def GetResultEventArtistRow(implicit e0: GR[Int], e1: GR[Option[Int]], e2: GR[java.sql.Timestamp], e3: GR[Boolean], e4: GR[String]): GR[EventArtistRow] = GR{
     prs => import prs._
-    EventArtistRow.tupled((<<[Int], <<[Int], <<[Int], <<[Int], <<[java.sql.Timestamp], <<[java.sql.Timestamp], <<[Boolean]))
+    EventArtistRow.tupled((<<[Int], <<[Int], <<?[Int], <<[Int], <<[java.sql.Timestamp], <<[java.sql.Timestamp], <<[Boolean], <<[String]))
   }
   /** Table description of table event_artist. Objects of this class serve as prototypes for rows in queries. */
   class EventArtist(_tableTag: Tag) extends profile.api.Table[EventArtistRow](_tableTag, Some("craftal"), "event_artist") {
-    def * = (id, eventId, userId, positionNo, createdAt, updatedAt, isDeleted) <> (EventArtistRow.tupled, EventArtistRow.unapply)
+    def * = (id, eventId, artistId, positionNo, createdAt, updatedAt, isDeleted, artistComment) <> (EventArtistRow.tupled, EventArtistRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), Rep.Some(eventId), Rep.Some(userId), Rep.Some(positionNo), Rep.Some(createdAt), Rep.Some(updatedAt), Rep.Some(isDeleted)).shaped.<>({r=>import r._; _1.map(_=> EventArtistRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(id), Rep.Some(eventId), artistId, Rep.Some(positionNo), Rep.Some(createdAt), Rep.Some(updatedAt), Rep.Some(isDeleted), Rep.Some(artistComment)).shaped.<>({r=>import r._; _1.map(_=> EventArtistRow.tupled((_1.get, _2.get, _3, _4.get, _5.get, _6.get, _7.get, _8.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(INT UNSIGNED), PrimaryKey */
     val id: Rep[Int] = column[Int]("id", O.PrimaryKey)
     /** Database column event_id SqlType(INT UNSIGNED) */
     val eventId: Rep[Int] = column[Int]("event_id")
-    /** Database column user_id SqlType(INT UNSIGNED) */
-    val userId: Rep[Int] = column[Int]("user_id")
+    /** Database column artist_id SqlType(INT UNSIGNED), Default(None) */
+    val artistId: Rep[Option[Int]] = column[Option[Int]]("artist_id", O.Default(None))
     /** Database column position_no SqlType(INT UNSIGNED) */
     val positionNo: Rep[Int] = column[Int]("position_no")
     /** Database column created_at SqlType(DATETIME) */
@@ -141,11 +268,13 @@ trait Tables {
     val updatedAt: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("updated_at")
     /** Database column is_deleted SqlType(BIT), Default(false) */
     val isDeleted: Rep[Boolean] = column[Boolean]("is_deleted", O.Default(false))
+    /** Database column artist_comment SqlType(TEXT) */
+    val artistComment: Rep[String] = column[String]("artist_comment")
 
     /** Foreign key referencing Event (database name event_artist_ibfk_1) */
     lazy val eventFk = foreignKey("event_artist_ibfk_1", eventId, Event)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
     /** Foreign key referencing User (database name event_artist_ibfk_2) */
-    lazy val userFk = foreignKey("event_artist_ibfk_2", userId, User)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    lazy val userFk = foreignKey("event_artist_ibfk_2", artistId, User)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
   }
   /** Collection-like TableQuery object for table EventArtist */
   lazy val EventArtist = new TableQuery(tag => new EventArtist(tag))
@@ -174,7 +303,7 @@ trait Tables {
   lazy val EventLocation = new TableQuery(tag => new EventLocation(tag))
 
   /** Entity class storing rows of table EventPhoto
-   *  @param id Database column id SqlType(INT UNSIGNED), PrimaryKey
+   *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
    *  @param eventId Database column event_id SqlType(INT UNSIGNED)
    *  @param photoId Database column photo_id SqlType(INT UNSIGNED)
    *  @param positionNo Database column position_no SqlType(INT UNSIGNED)
@@ -193,8 +322,8 @@ trait Tables {
     /** Maps whole row to an option. Useful for outer joins. */
     def ? = (Rep.Some(id), Rep.Some(eventId), Rep.Some(photoId), Rep.Some(positionNo), Rep.Some(createdAt), Rep.Some(updatedAt), Rep.Some(isDeleted)).shaped.<>({r=>import r._; _1.map(_=> EventPhotoRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
-    /** Database column id SqlType(INT UNSIGNED), PrimaryKey */
-    val id: Rep[Int] = column[Int]("id", O.PrimaryKey)
+    /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
+    val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
     /** Database column event_id SqlType(INT UNSIGNED) */
     val eventId: Rep[Int] = column[Int]("event_id")
     /** Database column photo_id SqlType(INT UNSIGNED) */
@@ -217,37 +346,38 @@ trait Tables {
   lazy val EventPhoto = new TableQuery(tag => new EventPhoto(tag))
 
   /** Entity class storing rows of table EventSchedule
-   *  @param id Database column id SqlType(INT UNSIGNED), PrimaryKey
+   *  @param id Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey
    *  @param eventId Database column event_id SqlType(INT UNSIGNED)
    *  @param venue Database column venue SqlType(VARCHAR), Length(255,true)
    *  @param mapCoordinate Database column map_coordinate SqlType(GEOMETRY)
-   *  @param stateTime Database column state_time SqlType(DATETIME)
+   *  @param startTime Database column start_time SqlType(DATETIME)
    *  @param endTime Database column end_time SqlType(DATETIME)
    *  @param createdAt Database column created_at SqlType(DATETIME)
    *  @param updatedAt Database column updated_at SqlType(DATETIME)
-   *  @param isDeleted Database column is_deleted SqlType(BIT), Default(false) */
-  case class EventScheduleRow(id: Int, eventId: Int, venue: String, mapCoordinate: java.sql.Blob, stateTime: java.sql.Timestamp, endTime: java.sql.Timestamp, createdAt: java.sql.Timestamp, updatedAt: java.sql.Timestamp, isDeleted: Boolean = false)
+   *  @param isDeleted Database column is_deleted SqlType(BIT), Default(false)
+   *  @param prefectureId Database column prefecture_id SqlType(INT UNSIGNED), Default(13) */
+  case class EventScheduleRow(id: Int, eventId: Int, venue: String, mapCoordinate: java.sql.Blob, startTime: java.sql.Timestamp, endTime: java.sql.Timestamp, createdAt: java.sql.Timestamp, updatedAt: java.sql.Timestamp, isDeleted: Boolean = false, prefectureId: Int = 13)
   /** GetResult implicit for fetching EventScheduleRow objects using plain SQL queries */
   implicit def GetResultEventScheduleRow(implicit e0: GR[Int], e1: GR[String], e2: GR[java.sql.Blob], e3: GR[java.sql.Timestamp], e4: GR[Boolean]): GR[EventScheduleRow] = GR{
     prs => import prs._
-    EventScheduleRow.tupled((<<[Int], <<[Int], <<[String], <<[java.sql.Blob], <<[java.sql.Timestamp], <<[java.sql.Timestamp], <<[java.sql.Timestamp], <<[java.sql.Timestamp], <<[Boolean]))
+    EventScheduleRow.tupled((<<[Int], <<[Int], <<[String], <<[java.sql.Blob], <<[java.sql.Timestamp], <<[java.sql.Timestamp], <<[java.sql.Timestamp], <<[java.sql.Timestamp], <<[Boolean], <<[Int]))
   }
   /** Table description of table event_schedule. Objects of this class serve as prototypes for rows in queries. */
   class EventSchedule(_tableTag: Tag) extends profile.api.Table[EventScheduleRow](_tableTag, Some("craftal"), "event_schedule") {
-    def * = (id, eventId, venue, mapCoordinate, stateTime, endTime, createdAt, updatedAt, isDeleted) <> (EventScheduleRow.tupled, EventScheduleRow.unapply)
+    def * = (id, eventId, venue, mapCoordinate, startTime, endTime, createdAt, updatedAt, isDeleted, prefectureId) <> (EventScheduleRow.tupled, EventScheduleRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), Rep.Some(eventId), Rep.Some(venue), Rep.Some(mapCoordinate), Rep.Some(stateTime), Rep.Some(endTime), Rep.Some(createdAt), Rep.Some(updatedAt), Rep.Some(isDeleted)).shaped.<>({r=>import r._; _1.map(_=> EventScheduleRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(id), Rep.Some(eventId), Rep.Some(venue), Rep.Some(mapCoordinate), Rep.Some(startTime), Rep.Some(endTime), Rep.Some(createdAt), Rep.Some(updatedAt), Rep.Some(isDeleted), Rep.Some(prefectureId)).shaped.<>({r=>import r._; _1.map(_=> EventScheduleRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
-    /** Database column id SqlType(INT UNSIGNED), PrimaryKey */
-    val id: Rep[Int] = column[Int]("id", O.PrimaryKey)
+    /** Database column id SqlType(INT UNSIGNED), AutoInc, PrimaryKey */
+    val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
     /** Database column event_id SqlType(INT UNSIGNED) */
     val eventId: Rep[Int] = column[Int]("event_id")
     /** Database column venue SqlType(VARCHAR), Length(255,true) */
     val venue: Rep[String] = column[String]("venue", O.Length(255,varying=true))
     /** Database column map_coordinate SqlType(GEOMETRY) */
     val mapCoordinate: Rep[java.sql.Blob] = column[java.sql.Blob]("map_coordinate")
-    /** Database column state_time SqlType(DATETIME) */
-    val stateTime: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("state_time")
+    /** Database column start_time SqlType(DATETIME) */
+    val startTime: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("start_time")
     /** Database column end_time SqlType(DATETIME) */
     val endTime: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("end_time")
     /** Database column created_at SqlType(DATETIME) */
@@ -256,9 +386,13 @@ trait Tables {
     val updatedAt: Rep[java.sql.Timestamp] = column[java.sql.Timestamp]("updated_at")
     /** Database column is_deleted SqlType(BIT), Default(false) */
     val isDeleted: Rep[Boolean] = column[Boolean]("is_deleted", O.Default(false))
+    /** Database column prefecture_id SqlType(INT UNSIGNED), Default(13) */
+    val prefectureId: Rep[Int] = column[Int]("prefecture_id", O.Default(13))
 
     /** Foreign key referencing Event (database name event_schedule_ibfk_1) */
     lazy val eventFk = foreignKey("event_schedule_ibfk_1", eventId, Event)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing Prefecture (database name event_schedule_ibfk_2) */
+    lazy val prefectureFk = foreignKey("event_schedule_ibfk_2", prefectureId, Prefecture)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
   }
   /** Collection-like TableQuery object for table EventSchedule */
   lazy val EventSchedule = new TableQuery(tag => new EventSchedule(tag))
@@ -422,6 +556,29 @@ trait Tables {
   }
   /** Collection-like TableQuery object for table PlayEvolutions */
   lazy val PlayEvolutions = new TableQuery(tag => new PlayEvolutions(tag))
+
+  /** Entity class storing rows of table Prefecture
+   *  @param id Database column id SqlType(INT UNSIGNED), PrimaryKey
+   *  @param name Database column name SqlType(VARCHAR), Length(255,true) */
+  case class PrefectureRow(id: Int, name: String)
+  /** GetResult implicit for fetching PrefectureRow objects using plain SQL queries */
+  implicit def GetResultPrefectureRow(implicit e0: GR[Int], e1: GR[String]): GR[PrefectureRow] = GR{
+    prs => import prs._
+    PrefectureRow.tupled((<<[Int], <<[String]))
+  }
+  /** Table description of table prefecture. Objects of this class serve as prototypes for rows in queries. */
+  class Prefecture(_tableTag: Tag) extends profile.api.Table[PrefectureRow](_tableTag, Some("craftal"), "prefecture") {
+    def * = (id, name) <> (PrefectureRow.tupled, PrefectureRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = (Rep.Some(id), Rep.Some(name)).shaped.<>({r=>import r._; _1.map(_=> PrefectureRow.tupled((_1.get, _2.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column id SqlType(INT UNSIGNED), PrimaryKey */
+    val id: Rep[Int] = column[Int]("id", O.PrimaryKey)
+    /** Database column name SqlType(VARCHAR), Length(255,true) */
+    val name: Rep[String] = column[String]("name", O.Length(255,varying=true))
+  }
+  /** Collection-like TableQuery object for table Prefecture */
+  lazy val Prefecture = new TableQuery(tag => new Prefecture(tag))
 
   /** Entity class storing rows of table Role
    *  @param id Database column id SqlType(TINYINT UNSIGNED), PrimaryKey

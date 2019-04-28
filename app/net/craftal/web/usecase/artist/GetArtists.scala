@@ -5,6 +5,7 @@ import net.craftal.common.usecase.Interactor
 import net.craftal.core.api.DomainService
 import net.craftal.core.domain.model.artist.Artist
 import net.craftal.core.domain.model.genre.Genre
+import net.craftal.core.domain.model.photo.Photo
 import play.api.i18n.Messages
 import play.api.mvc.{AnyContent, Request}
 
@@ -15,9 +16,10 @@ class GetArtists @Inject()(domainService: DomainService)(implicit ex: ExecutionC
 
   def execute(keyword: Option[String])
              (implicit request: Request[AnyContent],
-              messages: Messages): Future[(List[Artist], List[Genre])] =
+              messages: Messages): Future[(List[Artist], List[Photo], List[Genre])] =
     for {
       a <- this.domainService.getArtists(keyword)
+      p <- this.domainService.getPhotos(a.flatMap(_.photos.map(_.photoId)))
       g <- this.domainService.getGenres(a.map(_.genreId))
-    } yield (a, g)
+    } yield (a, p, g)
 }

@@ -114,6 +114,11 @@ craftal.public.common.nav.auth.sign-in = ログイン
 craftal.public.common.nav.event.list-event-calendar = イベント
 craftal.public.common.nav.artist.summary-artist = 作家
 
+##############################
+# Craftal Core
+##############################
+craftal.core.event.location.indoor = 屋内
+craftal.core.event.location.outdoor = 屋外
 
 ##############################
 # Craftal Management

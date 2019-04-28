@@ -10,7 +10,7 @@ import play.api.mvc.{AnyContent, Request}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class GetArtistsOfGenre @Inject()(domainService: DomainService)(implicit ex: ExecutionContext)  extends Interactor {
+class GetArtistsOfGenre @Inject()(domainService: DomainService)(implicit ex: ExecutionContext) extends Interactor {
 
   def execute(genreId: Int, keyword: Option[String])
              (implicit request: Request[AnyContent], messages: Messages): Future[(List[Artist], List[Photo])] =

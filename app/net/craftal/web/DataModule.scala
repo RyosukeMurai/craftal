@@ -1,11 +1,12 @@
 package net.craftal.web
 
 import com.google.inject.AbstractModule
-import net.craftal.core.data.store.{ArtistDataStore, EventDataStore, GenreDataStore, PhotoDataStore}
+import net.craftal.core.data.store._
 import net.craftal.core.domain.model.artist.ArtistRepository
 import net.craftal.core.domain.model.event.EventRepository
 import net.craftal.core.domain.model.genre.GenreRepository
 import net.craftal.core.domain.model.photo.PhotoRepository
+import net.craftal.core.domain.model.prefecture.PrefectureRepository
 import net.craftal.identityaccess.data.store.{IdentityDataStore, RoleDataStore, UserDataStore}
 import net.craftal.identityaccess.domain.model.identity.IdentityRepository
 import net.craftal.identityaccess.domain.model.role.RoleRepository
@@ -28,6 +29,8 @@ class DataModule extends AbstractModule {
     bind(classOf[GenreRepository]).to(classOf[GenreDataStore])
 
     bind(classOf[RoleRepository]).to(classOf[RoleDataStore])
+
+    bind(classOf[PrefectureRepository]).to(classOf[PrefectureDataStore])
   }
 
 }

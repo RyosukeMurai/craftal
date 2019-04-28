@@ -4,6 +4,7 @@ import controllers.AssetsFinder
 import javax.inject.Inject
 import net.craftal.core.domain.model.artist.Artist
 import net.craftal.core.domain.model.genre.Genre
+import net.craftal.core.domain.model.photo.Photo
 import net.craftal.web.controller.NavigationContext
 import net.craftal.web.mapper.ArtistSummaryDataMapper
 import net.craftal.web.model.form.artist.SearchArtistForm
@@ -20,11 +21,11 @@ class ArtistSummaryViewPresenter @Inject()(implicit webJarsUtil: WebJarsUtil,
   def present(form: Form[SearchArtistForm.Data])(implicit request: NavigationContext[AnyContent], messages: Messages): HtmlFormat.Appendable =
     net.craftal.web.view.artist.html.summary(form, None)
 
-  def present(form: Form[SearchArtistForm.Data], values: (List[Artist], List[Genre]))
+  def present(form: Form[SearchArtistForm.Data], values: (List[Artist], List[Photo], List[Genre]))
              (implicit request: NavigationContext[AnyContent], messages: Messages): HtmlFormat.Appendable =
-    this.present(form, values._1, values._2)
+    this.present(form, values._1, values._2, values._3)
 
-  def present(form: Form[SearchArtistForm.Data], artists: List[Artist], genres: List[Genre])
+  def present(form: Form[SearchArtistForm.Data], artists: List[Artist], photos:List[Photo], genres: List[Genre])
              (implicit request: NavigationContext[AnyContent], messages: Messages): HtmlFormat.Appendable =
     net.craftal.web.view.artist.html.summary(
       form,

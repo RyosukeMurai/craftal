@@ -5,7 +5,7 @@ import net.craftal.core.domain.model.genre.Genre
 import net.craftal.web.model.artist.ArtistSummary
 
 
-object ArtistSummaryDataMapper {
+object ArtistSummaryDataMapper extends DataMapper {
 
   def transform(artistCollection: List[Artist], genreCollection: List[Genre]): ArtistSummary =
     ArtistSummary(artistCollection.groupBy(a => genreCollection.find(g => g.id == a.genreId).get))

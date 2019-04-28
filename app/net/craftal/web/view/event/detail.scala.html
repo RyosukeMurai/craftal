@@ -12,15 +12,17 @@
         </div>
     </div>
 
-    <div class="row mb-2">
-        <div class="col-md-12 blog-main">
-            <div class="blog-post">
-                <span class="blog-post-meta">兵庫県</span>
-                <span class="blog-post-meta">屋外</span>
-                <span class="blog-post-meta">募集中</span>
+    @for(s <- event.schedule) {
+        <div class="row mb-2">
+            <div class="col-md-12 blog-main">
+                <div class="blog-post">
+                    <span class="blog-post-meta">@s.prefecture</span>
+                    <span class="blog-post-meta">@s.location</span>
+                    <span class="blog-post-meta">募集中</span>
+                </div>
             </div>
         </div>
-    </div>
+    }
 
     <div class="row mb-2">
         <div class="col-md-12 blog-main">

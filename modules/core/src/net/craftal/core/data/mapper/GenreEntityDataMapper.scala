@@ -17,5 +17,4 @@ object GenreEntityDataMapper {
   def transformCollection(genreRows: List[(Tables.GenreRow, Option[Tables.GenreRow])]): List[Genre] =
     genreRows
       .map(m => this.transform(m._1, m._2))
-      .toList
 }
