@@ -1,0 +1,22 @@
+@import controllers.AssetsFinder
+@import net.craftal.core.domain.model.event.Event
+@import net.craftal.web.model.common.Page
+@import net.craftal.web.model.common.table.Table
+@import org.webjars.play.WebJarsUtil
+@import play.api.i18n.Messages
+@import play.api.mvc.RequestHeader
+@(table: Table[Event], page: Page)(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+
+@net.craftal.web.view.layout.html.mypage(messages("craftal.mypage.event.list.title")) {
+
+    <div class="btn-toolbar mb-3">
+        <a class="btn btn-sm btn-outline-primary" href="/mypage/events/apply">
+        @messages("craftal.mypage.common.operation.apply")
+        </a>
+    </div>
+
+    @net.craftal.web.view.helper.html.table(table)
+
+    @net.craftal.web.view.helper.html.pagenation(page)
+}
+

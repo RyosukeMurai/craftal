@@ -9,8 +9,13 @@ case class Event(id: Int,
                  var description: String,
                  var status: EventStatus,
                  var location: EventLocation,
+                 var homePageUrl: Option[String],
+                 var facebookUrl: Option[String],
+                 var twitterUrl: Option[String],
+                 var instagramUrl: Option[String],
                  schedule: Seq[EventSchedule] = List(),
-                 photos: Seq[EventPhoto] = List()) extends Entity[Event] {
+                 photos: Seq[EventPhoto] = List(),
+                 attributes: Seq[EventAttribute] = List()) extends Entity[Event] {
 
   def mainPhotoId: Int = {
     if (this.photos.isEmpty) {

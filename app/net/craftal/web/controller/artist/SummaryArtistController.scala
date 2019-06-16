@@ -23,7 +23,7 @@ class SummaryArtistController @Inject()(controllerComponents: ControllerComponen
   def view(): Action[AnyContent] = actionWithNavigation.async { implicit request: NavigationContext[AnyContent] =>
     SearchArtistForm.form.bindFromRequest(request.queryString).fold(
       form => Future.successful(BadRequest(presenter.present(form))),
-      data => getArtists.execute(Option(data.keyword)).map { response =>
+      data => getArtists.execute(data.keyword).map { response =>
         Ok(presenter.present(SearchArtistForm.form, response))
       })
   }

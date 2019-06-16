@@ -10,15 +10,15 @@ import play.api.mvc.{AnyContent, Request}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.postfixOps
 
-class ForgotPassword @Inject()(authService: AuthenticationService,
+class ForgotPassword @Inject()(authenticationService: AuthenticationService,
                                notificationService: NotificationService)
                               (implicit ex: ExecutionContext) extends Interactor {
   def execute(email: String)
              (implicit request: Request[AnyContent], messages: Messages): Future[Boolean] = {
-    this.authService.getUser(email).flatMap {
+    this.authenticationService.getUser(email).flatMap {
       case Some(x) =>
         for {
-          token <- this.authService.createIdentityToken(email)
+          token <- this.authenticationService.createIdentityToken(email)
           result <- this.notificationService.notifyForgotPassword(email, Option(x.name), token)
         } yield result
       case _ => Future.successful(false)

@@ -7,5 +7,10 @@ case class EventSchedule(venue: String,
                          mapCoordinate: EventMapCoordinate,
                          startTime: DateTime,
                          endTime: DateTime,
-                         prefectureId: Int) extends ValueObject[EventSchedule] {
+                         prefectureId: Int,
+                         address: String,
+                         postalCode: String,
+                         howToAccess: String,
+                         venueUrl: Option[String],
+                         venueRemarks: String) extends ValueObject[EventSchedule] {
 }

@@ -1,0 +1,60 @@
+@import controllers.AssetsFinder
+@import org.webjars.play.WebJarsUtil
+@import play.api.i18n.Messages
+@import play.api.mvc.RequestHeader
+@import play.twirl.api.Html
+
+@(title: String)(content: Html)(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+
+@net.craftal.web.view.html.main(title) {
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="#">@messages("craftal.mypage.common.site.name")</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+        aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/mypage">
+                    @messages("craftal.mypage.common.nav.index")
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mypage/events">
+                    @messages("craftal.mypage.common.nav.event.participation")
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="events">
+                    @messages("craftal.mypage.common.nav.event.organization")
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mypage/profile/edit">
+                    @messages("craftal.mypage.common.nav.profile")
+                    </a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <a class="btn btn-outline-success my-2 my-sm-0" href="/">@messages("craftal.mypage.common.nav.top")</a>
+            </form>
+        </div>
+    </nav>
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <main role="main" class="ml-sm-auto col pt-3 px-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
+                    <h1 class="h2">@title</h1>
+                </div>
+
+                @content
+
+            </main>
+        </div>
+    </div>
+}

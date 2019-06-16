@@ -21,7 +21,6 @@ class Register @Inject()(userRepository: UserRepository,
               verificationExpiration: FiniteDuration = 5 minutes): Future[Int] = {
     for {
       userId <- this.userRepository.createUser(name.getOrElse(""), email)
-      _ <- this.roleRepository.addUserRole(userId, 1 /*TODO(RyosukeMurai): use const file*/)
       _ <- this.identityRepository.createIdentityByPassword(userId, hasher, password)
     } yield userId
   }

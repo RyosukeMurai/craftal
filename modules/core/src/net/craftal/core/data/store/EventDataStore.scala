@@ -15,8 +15,8 @@ import slick.jdbc.JdbcProfile
 import scala.concurrent.{ExecutionContext, Future}
 
 
-class EventDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext)
-  extends EventRepository {
+class EventDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)
+                              (implicit ec: ExecutionContext) extends EventRepository {
 
   import slick.jdbc.MySQLProfile.api._
 
@@ -27,7 +27,8 @@ class EventDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
       e <- Tables.Event if e.id === eventId
       s <- Tables.EventSchedule if e.id === s.eventId
       p <- Tables.EventPhoto if e.id === p.eventId
-    } yield (e, s, p)
+      a <- Tables.EventAttribute if e.id === a.eventId
+    } yield (e, s, p, a)
 
     dbConfig.db
       .run(query.to[List].result.map(EventEntityDataMapper.transformCollection(_).head))
@@ -47,8 +48,9 @@ class EventDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
       e <- this.keywordQuery(keyword)
       s <- this.termsQuery(termStart, termEnd)
       p <- Tables.EventPhoto
-      if e.id === s.eventId && e.id === p.eventId
-    } yield (e, s, p)
+      a <- Tables.EventAttribute
+      if e.id === s.eventId && e.id === p.eventId && e.id === a.eventId
+    } yield (e, s, p, a)
 
     dbConfig
       .db
@@ -62,8 +64,26 @@ class EventDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
       e <- this.keywordQuery(Option(keyword))
       s <- Tables.EventSchedule
       p <- Tables.EventPhoto
-      if e.id === s.eventId && e.id === p.eventId
-    } yield (e, s, p)
+      a <- Tables.EventAttribute
+      if e.id === s.eventId && e.id === p.eventId && e.id === a.eventId
+    } yield (e, s, p, a)
+
+    dbConfig
+      .db
+      .run(
+        query.to[List].result.map(EventEntityDataMapper.transformCollection)
+      )
+  }
+
+  override def findEventsByArtistId(artistId: Int): Future[List[Event]] = {
+    val query = for {
+      e <- Tables.Event
+      s <- Tables.EventSchedule
+      p <- Tables.EventPhoto
+      a <- Tables.EventArtist
+      at <- Tables.EventAttribute
+      if e.id === s.eventId && e.id === p.eventId && e.id === at.eventId && a.artistId === artistId
+    } yield (e, s, p, at)
 
     dbConfig
       .db

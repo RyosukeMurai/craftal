@@ -143,3 +143,39 @@ craftal.management.event.create.title = イベント作成
 
 craftal.management.event.message.create.success = イベントを作成しました
 
+
+##############################
+# Craftal Mypage
+##############################
+
+# Mypage Common
+craftal.mypage.common.site.name = マイページ
+craftal.mypage.common.nav.event.participation = 参加イベント一覧
+craftal.mypage.common.nav.event.organization = 開催イベント一覧
+craftal.mypage.common.nav.index = マイページトップ
+craftal.mypage.common.nav.profile = プロフィール編集
+craftal.mypage.common.nav.top = サイトトップへ
+craftal.mypage.common.operation.apply = 他のイベントを申請
+
+# Mypage Event
+craftal.mypage.event.filed.id = ID
+craftal.mypage.event.filed.title = タイトル
+craftal.mypage.event.filed.description = 概要
+
+craftal.mypage.event.list.title = イベント一覧
+craftal.mypage.event.create.title = イベント作成
+
+craftal.mypage.event.message.create.success = イベントを作成しました
+
+# Mypage Profile
+craftal.mypage.profile.filed.id = ID
+craftal.mypage.profile.filed.name = 名前
+craftal.mypage.profile.filed.email = メールアドレス
+craftal.mypage.profile.filed.cover-photo = カバー画像
+craftal.mypage.profile.filed.icon-photo = アイコン画像
+craftal.mypage.profile.filed.prefecture = 都道府県
+craftal.mypage.profile.filed.genre = ジャンル
+craftal.mypage.profile.filed.attribute = 属性
+
+craftal.mypage.profile.edit.title = プロフィール編集
+craftal.mypage.profile.message.edit.success = プロフィールを更新しました

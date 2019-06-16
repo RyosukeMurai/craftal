@@ -1,14 +1,19 @@
-
-@import net.craftal.web.model.common.table.FormDefinition
+@import net.craftal.web.model.common.table.{FieldType, FormDefinition}
 @(formDefinition: FormDefinition[_])(implicit request: RequestHeader, messages: Messages)
-
 @import helper._
 
 @form(formDefinition.submitAction) {
     @helper.CSRF.formField
     <fieldset>
     @for(field <- formDefinition.fields) {
-        @inputText(formDefinition.form(field.name), '_label -> field.label)
+        @field.filedType match {
+            case FieldType.text => {
+                @inputText(formDefinition.form(field.name), '_label -> field.label)
+            }
+            case FieldType.select => {
+                @select(formDefinition.form(field.name), field.options.getOrElse(Seq()))
+            }
+        }
     }
     </fieldset>
 

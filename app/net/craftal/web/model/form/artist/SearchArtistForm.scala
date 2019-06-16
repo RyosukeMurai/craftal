@@ -7,10 +7,10 @@ object SearchArtistForm {
 
   val form = Form(
     mapping(
-      "keyword" -> nonEmptyText
+      "keyword" -> optional(text)
     )(Data.apply)(Data.unapply)
   )
 
-  case class Data(keyword: String)
+  case class Data(keyword: Option[String])
 
 }

@@ -2,15 +2,19 @@ package net.craftal.core.api
 
 import javax.inject.Inject
 import net.craftal.core.domain.model.artist.Artist
+import net.craftal.core.domain.model.attribute.Attribute
 import net.craftal.core.domain.model.event.Event
 import net.craftal.core.domain.model.event.EventLocation.EventLocation
 import net.craftal.core.domain.model.event.EventStatus.EventStatus
 import net.craftal.core.domain.model.genre.Genre
+import net.craftal.core.domain.model.member.Member
 import net.craftal.core.domain.model.photo.Photo
 import net.craftal.core.domain.model.prefecture.Prefecture
 import net.craftal.core.usecase.artist._
+import net.craftal.core.usecase.attribute.{GetAttribute, GetAttributes}
 import net.craftal.core.usecase.event._
 import net.craftal.core.usecase.genre._
+import net.craftal.core.usecase.member.GetMember
 import net.craftal.core.usecase.photo._
 import net.craftal.core.usecase.prefecture.{GetPrefecture, GetPrefectures}
 import org.joda.time.DateTime
@@ -18,12 +22,14 @@ import org.joda.time.DateTime
 import scala.concurrent.{ExecutionContext, Future}
 
 //TODO(RyosukeMurai): Separate API
-class DomainService @Inject()(getArtist: GetArtist,
+class DomainService @Inject()(getMember: GetMember,
+                              getArtist: GetArtist,
                               getArtists: GetArtists,
                               getArtistsOfGenre: GetArtistsOfGenre,
                               getArtistsParticipatingInEvent: GetArtistsParticipatingInEvent,
                               getEvent: GetEvent,
                               getEventsInteractor: GetEvents,
+                              getEventsForArtistParticipating: GetEventsForArtistParticipating,
                               createEvent: CreateEvent,
                               countNumberOfEventsInteractor: CountNumberOfEvents,
                               getGenreInteractor: GetGenre,
@@ -31,8 +37,12 @@ class DomainService @Inject()(getArtist: GetArtist,
                               getPhoto: GetPhoto,
                               getPhotosInteractor: GetPhotos,
                               getPrefectureInteractor: GetPrefecture,
-                              getPrefecturesInteractor: GetPrefectures)
+                              getPrefecturesInteractor: GetPrefectures,
+                              getAttribute: GetAttribute,
+                              getAttributesInteractor: GetAttributes)
                              (implicit ex: ExecutionContext) {
+
+  def getMember(memberId: Int): Future[Member] = this.getMember.execute(memberId)
 
   def getArtist(artistId: Int): Future[Artist] = this.getArtist.execute(artistId)
 
@@ -53,6 +63,8 @@ class DomainService @Inject()(getArtist: GetArtist,
                 termEnd: Option[DateTime],
                 keyword: Option[String]): Future[List[Event]] =
     this.getEventsInteractor.execute(termStart, termEnd, keyword)
+
+  def getEventsForArtistParticipating(artistId: Int): Future[List[Event]] = this.getEventsForArtistParticipating.execute(artistId)
 
   def createEvent(title: String,
                   description: String,
@@ -79,5 +91,12 @@ class DomainService @Inject()(getArtist: GetArtist,
 
   def getPrefecture(prefectureId: Int): Future[Prefecture] = this.getPrefectureInteractor.execute(prefectureId)
 
+  def getPrefectures: Future[List[Prefecture]] = this.getPrefecturesInteractor.execute
+
   def getPrefectures(prefectureIdList: List[Int]): Future[List[Prefecture]] = this.getPrefecturesInteractor.execute(prefectureIdList)
+
+  def getAttribute(attributeId: Int): Future[Attribute] = this.getAttribute.execute(attributeId)
+
+  def getAttributes(attributeIdList: List[Int]): Future[List[Attribute]] = this.getAttributesInteractor.execute(attributeIdList)
+
 }

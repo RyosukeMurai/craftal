@@ -8,4 +8,5 @@ case class EventDescriptor(id: Int,
                            description: String,
                            status: EventStatus,
                            schedule: EventScheduleDescriptor,
-                           eyecatchPhoto: PhotoDescriptor)
+                           eyecatchPhoto: PhotoDescriptor,
+                           homePageUrl: Option[String])

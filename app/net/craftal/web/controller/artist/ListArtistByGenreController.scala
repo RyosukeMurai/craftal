@@ -23,7 +23,7 @@ class ListArtistByGenreController @Inject()(controllerComponents: ControllerComp
   def view(genreId: Int): Action[AnyContent] = actionWithNavigation.async { implicit request: NavigationContext[AnyContent] =>
     SearchArtistForm.form.bindFromRequest(request.queryString).fold(
       _ => Future.successful(BadRequest(presenter.present)),
-      data => getArtists.execute(genreId, Option(data.keyword)).map { response =>
+      data => getArtists.execute(genreId, data.keyword).map { response =>
         Ok(presenter.present(response))
       })
   }

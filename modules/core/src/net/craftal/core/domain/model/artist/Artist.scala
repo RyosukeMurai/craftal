@@ -7,18 +7,26 @@ case class Artist(id: Int,
                   var email: String,
                   var genreId: Int,
                   var prefectureId: Int,
-                  photos: List[ArtistPhoto] = List()) extends Entity[Artist] {
+                  var aboutInquiry: String,
+                  var homePageUrl: String,
+                  var shopPageUrl: String,
+                  var twitterUrl: String,
+                  var facebookUrl: String,
+                  var instagramUrl: String,
+                  var selfIntroduction: String,
+                  photos: List[ArtistPhoto] = List(),
+                  attributes: List[ArtistAttribute] = List()) extends Entity[Artist] {
 
   def iconPhotoId: Int = {
     if (this.photos.isEmpty) {
-      throw new IllegalAccessException(s"Artist ($this.name) doesn't have any photos.")
+      throw new IllegalAccessException(s"Member ($this.name) doesn't have any photos.")
     }
     this.photos.sortWith(_.positionNo < _.positionNo).head.photoId
   }
 
   def coverPhotoId: Int = {
     if (this.photos.isEmpty) {
-      throw new IllegalAccessException(s"Artist ($this.name) doesn't have any photos.")
+      throw new IllegalAccessException(s"Member ($this.name) doesn't have any photos.")
     }
     this.photos
       .filter(p => p.photoId != this.iconPhotoId)

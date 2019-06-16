@@ -12,11 +12,11 @@ import play.api.mvc.{AnyContent, Request}
 
 object EventCalendarDataMapper extends DataMapper {
 
-  def transform(eventCollection: List[Event],
-                photoCollection: List[Photo],
-                prefectureCollection: List[Prefecture])
+  def transform(events: List[Event],
+                photos: List[Photo],
+                prefectures: List[Prefecture])
                (implicit request: Request[AnyContent], messages: Messages): EventCalendar =
-    EventCalendar(eventCollection
+    EventCalendar(events
       .flatMap(e => e.schedule.map(s => (s, e)))
       .groupBy(_._1.startTime)
       .map(e => DateTimeTranslator.translate(e._1, "MM月dd日") ->
@@ -27,12 +27,18 @@ object EventCalendarDataMapper extends DataMapper {
             r._2.description,
             r._2.status,
             EventScheduleDescriptor(
-              prefectureCollection.find(_.id == r._1.prefectureId).get.name,
+              prefectures.find(_.id == r._1.prefectureId).get.name,
               EventLocationTranslator.translate(r._2.location),
               DateTimeTranslator.translate(r._1.startTime, r._1.endTime),
-              r._1.venue
+              r._1.venue,
+              r._1.address,
+              r._1.postalCode,
+              r._1.howToAccess,
+              r._1.venueUrl,
+              r._1.venueRemarks
             ),
-            PhotoDescriptorDataMapper.transform(photoCollection.find(_.id == r._2.mainPhotoId).get)
+            PhotoDescriptorDataMapper.transform(photos.find(_.id == r._2.mainPhotoId).get),
+            r._2.homePageUrl
           )
         )
       )

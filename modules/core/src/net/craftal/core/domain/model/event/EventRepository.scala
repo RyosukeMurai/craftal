@@ -14,6 +14,8 @@ trait EventRepository {
 
   def findEventsByTerm(termStart: DateTime, termEnd: Option[DateTime], keyword: Option[String]): Future[List[Event]]
 
+  def findEventsByArtistId(artistId: Int): Future[List[Event]]
+
   def findAll(): Future[List[Event]]
 
   def createEvent(title: String,

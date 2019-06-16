@@ -9,12 +9,14 @@ object SignUpForm {
     mapping(
       "name" -> nonEmptyText,
       "email" -> email,
-      "password" -> nonEmptyText
+      "password" -> nonEmptyText,
+      "prefectureId" -> number,
     )(Data.apply)(Data.unapply)
   )
 
   case class Data(name: String,
                   email: String,
-                  password: String)
+                  password: String,
+                  prefectureId: Int)
 
 }

@@ -1,14 +1,16 @@
 @import controllers.AssetsFinder
+@import net.craftal.web.controller.NavigationContext
 @import org.webjars.play.WebJarsUtil
 @import play.api.i18n.Messages
-@import play.api.mvc.RequestHeader
+@(event: net.craftal.web.model.event.EventDetail)(implicit request: NavigationContext[_], messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
 
-@(event: net.craftal.web.model.event.EventDetail)(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
-
-@net.craftal.web.view.html.main(event.title) {
+@net.craftal.web.view.layout.html.public(event.title) {
     <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
         <div class="col-md-6 px-0">
             <h1 class="display-4 font-italic">@event.title</h1>
+            <img class="card-img-right flex-auto d-none d-lg-block"
+            alt="@event.eyecatchPhoto.name"
+            src="@event.eyecatchPhoto.url">
         </div>
     </div>
 
@@ -18,7 +20,23 @@
                 <div class="blog-post">
                     <span class="blog-post-meta">@s.prefecture</span>
                     <span class="blog-post-meta">@s.location</span>
-                    <span class="blog-post-meta">募集中</span>
+                    <div class="mb-1 text-muted">@s.schedule</div>
+                    <div class="mb-1 text-muted">@s.venue</div>
+                    <div class="mb-1 text-muted">@s.postalCode</div>
+                    <div class="mb-1 text-muted">@s.address</div>
+                    <div class="mb-1 text-muted">@s.howToAccess</div>
+                    <div class="mb-1 text-muted">@s.venueUrl</div>
+                    <div class="mb-1 text-muted">@s.venueRemarks</div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @for(a <- event.attributes) {
+        <div class="row mb-2">
+            <div class="col-md-12 blog-main">
+                <div class="blog-post">
+                    <span class="blog-post-meta">@a.name</span>
                 </div>
             </div>
         </div>
@@ -26,10 +44,20 @@
 
     <div class="row mb-2">
         <div class="col-md-12 blog-main">
-            <h3 class="pb-3 mb-4 font-italic border-bottom">
-                どんなイベント？
-            </h3>
+            <h3 class="pb-3 mb-4 font-italic border-bottom">どんなイベント？</h3>
             <p>@event.description</p>
+            @if(event.homePageUrl.isDefined) {
+                <a href="@event.homePageUrl" target="_blank">公式サイト</a>
+            }
+            @if(event.facebookUrl.isDefined) {
+                <a href="@event.facebookUrl" target="_blank">Facebook</a>
+            }
+            @if(event.instagramUrl.isDefined) {
+                <a href="@event.instagramUrl" target="_blank">Instagram</a>
+            }
+            @if(event.twitterUrl.isDefined) {
+                <a href="@event.twitterUrl" target="_blank">Twitter</a>
+            }
         </div>
     </div>
 

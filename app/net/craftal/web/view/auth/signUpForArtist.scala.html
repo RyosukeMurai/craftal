@@ -1,0 +1,33 @@
+@import net.craftal.web.model.form.auth.SignUpForm.Data
+@import org.webjars.play.WebJarsUtil
+@import net.craftal.web.model.auth.SignUpForArtist
+@(signUpForm: Form[Data], viewModel:SignUpForArtist)(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+
+@implicitFieldConstructor = @{
+    b3.vertical.fieldConstructor()
+}
+
+@net.craftal.web.view.html.main(messages("sign.up.title")) {
+    <fieldset class="col-md-6 col-md-offset-3">
+        <legend>@messages("sign.up.account")</legend>
+        @helper.form(action = net.craftal.web.controller.auth.routes.SignUpForArtistController.submit()) {
+            @helper.CSRF.formField
+            @b3.text(signUpForm("name"), '_hiddenLabel -> messages("full.name"), 'placeholder -> messages("full.name"), 'class -> "form-control input-lg")
+            @b3.text(signUpForm("email"), '_hiddenLabel -> messages("email"), 'placeholder -> messages("email"), 'class -> "form-control input-lg")
+            @b3.select(signUpForm("prefectureId"), viewModel.prefectures)
+            @b3.select(signUpForm("genreId"), viewModel.genres)
+            @passwordStrength(signUpForm("password"), '_hiddenLabel -> messages("password"), 'placeholder -> messages("password"), 'class -> "form-control input-lg")
+            <div class="form-group">
+                <div>
+                    <button id="submit" type="submit" value="submit" class="btn btn-lg btn-primary btn-block">@messages("sign.up")</button>
+                </div>
+            </div>
+            <div class="sign-in-now">
+                <p>@messages("already.a.member") <a href="@net.craftal.web.controller.auth.routes.SignUpForArtistController.view">@messages("sign.in.now")</a></p>
+            </div>
+            <div class="sign-in-now">
+                <p>@messages("already.a.member") <a href="@net.craftal.web.controller.auth.routes.SignInController.view">@messages("sign.in.now")</a></p>
+            </div>
+        }
+    </fieldset>
+}

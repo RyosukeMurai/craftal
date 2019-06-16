@@ -1,0 +1,13 @@
+
+
+@import net.craftal.web.model.common.table.FormDefinition
+@import org.webjars.play.WebJarsUtil
+@(
+definition: FormDefinition[_]
+)(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+
+@net.craftal.web.view.layout.html.mypage(messages("craftal.mypage.event.create.title")) {
+
+    @net.craftal.web.view.helper.html.baseForm(definition)
+}
+

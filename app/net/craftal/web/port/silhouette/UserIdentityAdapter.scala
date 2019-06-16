@@ -9,7 +9,7 @@ class UserIdentityAdapter(user: User, identity: Identity, role: Role)
     user.id,
     Option(user.email),
     Option(user.name),
-    Option(role.code),
+    Option(role.code.toString),
     identity.activated
   ) {
 }

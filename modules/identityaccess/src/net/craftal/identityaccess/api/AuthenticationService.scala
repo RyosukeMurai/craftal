@@ -5,6 +5,7 @@ import java.util.UUID
 import javax.inject.Inject
 import net.craftal.identityaccess.domain.model.identity.PasswordIdentity
 import net.craftal.identityaccess.domain.model.role.Role
+import net.craftal.identityaccess.domain.model.role.RoleCode.RoleCode
 import net.craftal.identityaccess.domain.model.user.User
 import net.craftal.identityaccess.usecase._
 
@@ -18,7 +19,8 @@ class AuthenticationService @Inject()(activate: Activate,
                                       getPasswordIdentity: GetPasswordIdentity,
                                       getUserRole: GetUserRole,
                                       isActivated: IsActivated,
-                                      register: Register)
+                                      register: Register,
+                                      assumeRole: AssumeRole)
                                      (implicit ex: ExecutionContext) {
 
   def activate(token: UUID): Future[Boolean] = this.activate.execute(token)
@@ -46,4 +48,8 @@ class AuthenticationService @Inject()(activate: Activate,
 
   def register(email: String, hasher: String, password: String, name: Option[String] = None): Future[Int] =
     this.register.execute(email, hasher, password, name)
+
+  def assumeRole(userId: Int, role: Role): Future[Boolean] = this.assumeRole.execute(userId, role)
+
+  def assumeRole(userId: Int, roleCode: RoleCode): Future[Boolean] = this.assumeRole.execute(userId, roleCode)
 }

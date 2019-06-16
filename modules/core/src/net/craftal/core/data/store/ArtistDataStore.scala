@@ -22,7 +22,8 @@ class ArtistDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implic
       u <- Tables.User if u.id === id
       a <- Tables.Artist if u.id === a.userId
       p <- Tables.ArtistPhoto if u.id === p.artistId
-    } yield (u, a, p)
+      at <- Tables.ArtistAttribute if u.id === at.artistId
+    } yield (u, a, p, at)
 
     dbConfig.db
       .run(query.to[List].result.map(ArtistEntityDataMapper.transformCollection(_).head))
@@ -35,7 +36,8 @@ class ArtistDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implic
       } yield a.artistId).exists
       a <- Tables.Artist if u.id === a.userId
       p <- Tables.ArtistPhoto if u.id === p.artistId
-    } yield (u, a, p)
+      at <- Tables.ArtistAttribute if u.id === at.artistId
+    } yield (u, a, p, at)
     dbConfig
       .db
       .run(
@@ -48,7 +50,8 @@ class ArtistDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implic
       u <- Tables.User
       a <- Tables.Artist if u.id === a.userId && a.genreId === genreId
       p <- Tables.ArtistPhoto if u.id === p.artistId
-    } yield (u, a, p)
+      at <- Tables.ArtistAttribute if u.id === at.artistId
+    } yield (u, a, p, at)
 
     dbConfig
       .db
@@ -62,7 +65,8 @@ class ArtistDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implic
       u <- Tables.User
       a <- Tables.Artist if u.id === a.userId
       p <- Tables.ArtistPhoto if u.id === p.artistId
-    } yield (u, a, p)
+      at <- Tables.ArtistAttribute if u.id === at.artistId
+    } yield (u, a, p, at)
 
     dbConfig
       .db
@@ -76,7 +80,8 @@ class ArtistDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implic
       u <- Tables.User
       a <- Tables.Artist if u.id === a.userId
       p <- Tables.ArtistPhoto if u.id === p.artistId
-    } yield (u, a, p)
+      at <- Tables.ArtistAttribute if u.id === at.artistId
+    } yield (u, a, p, at)
 
     dbConfig
       .db

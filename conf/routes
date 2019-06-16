@@ -33,6 +33,10 @@ GET         /signUp                         net.craftal.web.controller.auth.Sign
 
 POST        /signUp                         net.craftal.web.controller.auth.SignUpController.submit
 
+GET         /signUp/artist                  net.craftal.web.controller.auth.SignUpForArtistController.view
+
+POST        /signUp/artist                  net.craftal.web.controller.auth.SignUpForArtistController.submit
+
 GET         /signIn                         net.craftal.web.controller.auth.SignInController.view
 
 POST        /signIn                         net.craftal.web.controller.auth.SignInController.submit
@@ -60,6 +64,25 @@ GET         /manage/events                  net.craftal.web.controller.manage.Li
 GET         /manage/events/create           net.craftal.web.controller.manage.CreateEventController.view
 
 POST        /manage/events/create           net.craftal.web.controller.manage.CreateEventController.submit
+
+# Mypage
+GET         /mypage                         net.craftal.web.controller.mypage.IndexController.view
+
+GET         /mypage/events                  net.craftal.web.controller.mypage.ListEventController.view(page: Int ?= 1)
+
+GET         /mypage/events/apply            net.craftal.web.controller.mypage.ApplyEventController.view
+
+POST        /mypage/events/apply            net.craftal.web.controller.mypage.ApplyEventController.submit
+
+GET         /mypage/profile/edit            net.craftal.web.controller.mypage.EditProfileController.view
+
+PATCH       /mypage/profile/edit            net.craftal.web.controller.mypage.EditProfileController.submit
+
+GET         /mypage/profile/artist/edit     net.craftal.web.controller.mypage.EditArtistProfileController.view
+
+PATCH       /mypage/profile/artist/edit     net.craftal.web.controller.mypage.EditArtistProfileController.submit
+
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                   controllers.Assets.versioned(file)

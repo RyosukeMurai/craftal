@@ -59,7 +59,10 @@
                                 <div class="mb-1 text-muted">@event.schedule.venue</div>
                                 <div class="mb-1 text-muted">@event.schedule.prefecture</div>
                                 <p class="card-text mb-auto">@event.description</p>
-                                <a href="@net.craftal.web.controller.event.routes.DetailEventController.view(event.id.toString)">詳細を見る</a>
+                                <a target="_blank" href="@net.craftal.web.controller.event.routes.DetailEventController.view(event.id.toString)">詳細を見る</a>
+                                @if(event.homePageUrl.isDefined) {
+                                    <a href="@event.homePageUrl">ホームページはこちら</a>
+                                }
                             </div>
                             <img class="card-img-right flex-auto d-none d-lg-block"
                                 alt="@event.eyecatchPhoto.name"
