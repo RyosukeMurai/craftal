@@ -49,5 +49,16 @@ class MemberDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implic
         query.to[List].result.map(MemberEntityDataMapper.transformCollection)
       )
   }
+
+  override def updateMemberProfile(memberId: Int,
+                                   name: Option[String],
+                                   prefectureId: Option[Int]): Future[Member] = {
+
+    for {
+      u <- this.findMember(memberId)
+      _ <- dbConfig.db.run(Tables.User.filter(_.id === memberId).map(_.name).update(name.getOrElse(u.name)))
+      u <- this.findMember(memberId)
+    } yield u
+  }
 }
 

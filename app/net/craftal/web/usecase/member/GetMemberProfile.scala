@@ -1,4 +1,4 @@
-package net.craftal.web.usecase.profile
+package net.craftal.web.usecase.member
 
 import javax.inject._
 import net.craftal.common.usecase.Interactor
@@ -9,8 +9,8 @@ import play.api.mvc.{AnyContent, Request}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class GetProfile @Inject()(domainService: DomainService)
-                          (implicit executionContext: ExecutionContext) extends Interactor {
+class GetMemberProfile @Inject()(domainService: DomainService)
+                                (implicit executionContext: ExecutionContext) extends Interactor {
 
   def execute(memberId: Int)
              (implicit request: Request[AnyContent], messages: Messages): Future[Member] =

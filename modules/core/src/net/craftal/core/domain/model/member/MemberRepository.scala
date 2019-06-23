@@ -9,4 +9,8 @@ trait MemberRepository {
   def findMembersByKeyword(keyword: Option[String]): Future[List[Member]]
 
   def findAll(): Future[List[Member]]
+
+  def updateMemberProfile(memberId: Int,
+                          name: Option[String],
+                          prefectureId: Option[Int]): Future[Member]
 }

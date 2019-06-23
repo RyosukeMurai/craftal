@@ -6,8 +6,8 @@ import javax.inject._
 import net.craftal.web.model.form.mypage.EditArtistProfileForm
 import net.craftal.web.port.silhouette.DefaultEnv
 import net.craftal.web.presenter.mypage.ArtistProfileEditViewPresenter
+import net.craftal.web.usecase.artist.GetArtistProfile
 import net.craftal.web.usecase.event.CreateEvent
-import net.craftal.web.usecase.profile.GetArtistProfile
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.Messages
 import play.api.mvc._

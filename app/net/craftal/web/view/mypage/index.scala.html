@@ -2,7 +2,8 @@
 @import org.webjars.play.WebJarsUtil
 @import play.api.i18n.Messages
 @import play.api.mvc.RequestHeader
-@()(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+@import net.craftal.web.model.mypage.Mypage
+@(model:Mypage)(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
 
 @net.craftal.web.view.layout.html.mypage(messages("craftal.mypage.event.list.title")) {
 
@@ -21,28 +22,18 @@
     <div class="row mb-2">
         <div class="col-md-6">
             <h3 class="pb-3 mb-4 font-italic border-bottom">フォローした作家</h3>
+            @model.artists.map { artist =>
             <div class="card flex-md-row mb-4 shadow-sm h-md-250">
                 <div class="card-body d-flex flex-column align-items-start">
-                    <h3 class="mb-0">Ryosuke Murai</h3>
-                    <div class="mb-1 text-muted">SF作家</div>
-                    <p class="card-text mb-auto">素敵なSF作家です</p>
-                    <a href="@net.craftal.web.controller.event.routes.DetailEventController.view("1")">詳細を見る</a>
+                    <h3 class="mb-0">@artist.name</h3>
+                    <p class="card-text mb-auto">@artist.email</p>
+                    <p class="card-text mb-auto">@artist.prefecture</p>
+                    <a href="@net.craftal.web.controller.artist.routes.DetailArtistController.view(artist.id.toString)">
+                        詳細を見る
+                    </a>
                 </div>
-                <img class="card-img-right flex-auto d-none d-lg-block"
-                alt=""
-                src="/images/69cdc14d-5eb0-11e9-bf2a-0242ac140003">
             </div>
-            <div class="card flex-md-row mb-4 shadow-sm h-md-250">
-                <div class="card-body d-flex flex-column align-items-start">
-                    <h3 class="mb-0">Ryosuke Murai</h3>
-                    <div class="mb-1 text-muted">SF作家</div>
-                    <p class="card-text mb-auto">素敵なSF作家です</p>
-                    <a href="@net.craftal.web.controller.event.routes.DetailEventController.view("1")">詳細を見る</a>
-                </div>
-                <img class="card-img-right flex-auto d-none d-lg-block"
-                alt=""
-                src="/images/69cdc14d-5eb0-11e9-bf2a-0242ac140003">
-            </div>
+            }
         </div>
         <div class="col-md-6">
             <h3 class="pb-3 mb-4 font-italic border-bottom">フォローしたイベント</h3>

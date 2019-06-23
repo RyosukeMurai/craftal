@@ -14,7 +14,7 @@ import net.craftal.core.usecase.artist._
 import net.craftal.core.usecase.attribute.{GetAttribute, GetAttributes}
 import net.craftal.core.usecase.event._
 import net.craftal.core.usecase.genre._
-import net.craftal.core.usecase.member.GetMember
+import net.craftal.core.usecase.member.{GetFollowingArtists, GetMember, UpdateMemberProfile}
 import net.craftal.core.usecase.photo._
 import net.craftal.core.usecase.prefecture.{GetPrefecture, GetPrefectures}
 import org.joda.time.DateTime
@@ -23,10 +23,12 @@ import scala.concurrent.{ExecutionContext, Future}
 
 //TODO(RyosukeMurai): Separate API
 class DomainService @Inject()(getMember: GetMember,
+                              updateMemberProfile: UpdateMemberProfile,
                               getArtist: GetArtist,
                               getArtists: GetArtists,
                               getArtistsOfGenre: GetArtistsOfGenre,
                               getArtistsParticipatingInEvent: GetArtistsParticipatingInEvent,
+                              getFollowingArtists: GetFollowingArtists,
                               getEvent: GetEvent,
                               getEventsInteractor: GetEvents,
                               getEventsForArtistParticipating: GetEventsForArtistParticipating,
@@ -44,10 +46,22 @@ class DomainService @Inject()(getMember: GetMember,
 
   def getMember(memberId: Int): Future[Member] = this.getMember.execute(memberId)
 
+  def updateMemberProfile(memberId: Int,
+                          name: Option[String],
+                          prefectureId: Option[Int]): Future[Member] =
+    this.updateMemberProfile.execute(
+      memberId,
+      name,
+      prefectureId
+    )
+
   def getArtist(artistId: Int): Future[Artist] = this.getArtist.execute(artistId)
 
   def getArtists(keyword: Option[String]): Future[List[Artist]] =
     this.getArtists.execute(keyword)
+
+  def getFollowingArtists(followerId: Int): Future[List[Artist]] =
+    this.getFollowingArtists(followerId)
 
   def getArtistsOfGenre(genreId: Int, keyword: Option[String]): Future[List[Artist]] =
     this.getArtistsOfGenre.execute(genreId, keyword)

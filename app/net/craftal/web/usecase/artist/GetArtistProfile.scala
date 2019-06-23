@@ -1,4 +1,4 @@
-package net.craftal.web.usecase.profile
+package net.craftal.web.usecase.artist
 
 import javax.inject._
 import net.craftal.common.usecase.Interactor

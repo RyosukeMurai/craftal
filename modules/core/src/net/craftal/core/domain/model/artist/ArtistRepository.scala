@@ -12,5 +12,7 @@ trait ArtistRepository {
 
   def findArtistsByGenreId(genreId: Int, keyword: Option[String]): Future[List[Artist]]
 
+  def findArtistsByFollowerId(followerId: Int): Future[List[Artist]]
+
   def findAll(): Future[List[Artist]]
 }

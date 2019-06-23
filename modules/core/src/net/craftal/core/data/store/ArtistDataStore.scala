@@ -60,6 +60,22 @@ class ArtistDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implic
       )
   }
 
+  override def findArtistsByFollowerId(followerId: Int): Future[List[Artist]] = {
+    val query = for {
+      u <- Tables.User if (for {
+        f <- Tables.ArtistFollower if u.id === f.artistId && f.followerId === followerId
+      } yield f.artistId).exists
+      a <- Tables.Artist if u.id === a.userId
+      p <- Tables.ArtistPhoto if u.id === p.artistId
+      at <- Tables.ArtistAttribute if u.id === at.artistId
+    } yield (u, a, p, at)
+    dbConfig
+      .db
+      .run(
+        query.to[List].result.map(ArtistEntityDataMapper.transformCollection)
+      )
+  }
+
   override def findArtistsByKeyword(keyword: Option[String]): Future[List[Artist]] = {
     val query = for {
       u <- Tables.User
