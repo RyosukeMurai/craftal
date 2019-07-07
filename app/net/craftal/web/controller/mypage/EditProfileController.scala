@@ -8,7 +8,6 @@ import net.craftal.web.port.silhouette.DefaultEnv
 import net.craftal.web.presenter.mypage.ProfileEditViewPresenter
 import net.craftal.web.usecase.member.{GetMemberProfile, UpdateMemberProfile}
 import net.craftal.web.usecase.prefecture.GetPrefectures
-import net.craftal.web.usecase.profile.UpdateMemberProfile
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.Messages
 import play.api.mvc._

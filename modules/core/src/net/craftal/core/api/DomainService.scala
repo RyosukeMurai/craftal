@@ -14,7 +14,7 @@ import net.craftal.core.usecase.artist._
 import net.craftal.core.usecase.attribute.{GetAttribute, GetAttributes}
 import net.craftal.core.usecase.event._
 import net.craftal.core.usecase.genre._
-import net.craftal.core.usecase.member.{GetFollowingArtists, GetMember, UpdateMemberProfile}
+import net.craftal.core.usecase.member.{GetFollowingArtists, GetFollowingEvents, GetMember, UpdateMemberProfile}
 import net.craftal.core.usecase.photo._
 import net.craftal.core.usecase.prefecture.{GetPrefecture, GetPrefectures}
 import org.joda.time.DateTime
@@ -32,6 +32,7 @@ class DomainService @Inject()(getMember: GetMember,
                               getEvent: GetEvent,
                               getEventsInteractor: GetEvents,
                               getEventsForArtistParticipating: GetEventsForArtistParticipating,
+                              getFollowingEvents: GetFollowingEvents,
                               createEvent: CreateEvent,
                               countNumberOfEventsInteractor: CountNumberOfEvents,
                               getGenreInteractor: GetGenre,
@@ -61,7 +62,7 @@ class DomainService @Inject()(getMember: GetMember,
     this.getArtists.execute(keyword)
 
   def getFollowingArtists(followerId: Int): Future[List[Artist]] =
-    this.getFollowingArtists(followerId)
+    this.getFollowingArtists.execute(followerId)
 
   def getArtistsOfGenre(genreId: Int, keyword: Option[String]): Future[List[Artist]] =
     this.getArtistsOfGenre.execute(genreId, keyword)
@@ -79,6 +80,9 @@ class DomainService @Inject()(getMember: GetMember,
     this.getEventsInteractor.execute(termStart, termEnd, keyword)
 
   def getEventsForArtistParticipating(artistId: Int): Future[List[Event]] = this.getEventsForArtistParticipating.execute(artistId)
+
+  def getFollowingEvents(followerId: Int): Future[List[Event]] =
+    this.getFollowingEvents.execute(followerId)
 
   def createEvent(title: String,
                   description: String,

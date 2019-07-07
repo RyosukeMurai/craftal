@@ -16,6 +16,8 @@ trait EventRepository {
 
   def findEventsByArtistId(artistId: Int): Future[List[Event]]
 
+  def findEventsByFollowerId(followerId: Int): Future[List[Event]]
+
   def findAll(): Future[List[Event]]
 
   def createEvent(title: String,

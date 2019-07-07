@@ -59,6 +59,22 @@ class EventDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)
       )
   }
 
+  override def findEventsByFollowerId(followerId: Int): Future[List[Event]] = {
+    val query = for {
+      e <- Tables.Event if (for {
+        f <- Tables.EventFollower if e.id === f.eventId && f.followerId === followerId
+      } yield f.eventId).exists
+      s <- Tables.EventSchedule if e.id === s.eventId
+      p <- Tables.EventPhoto if e.id === p.eventId
+      a <- Tables.EventAttribute if e.id === a.eventId
+    } yield (e, s, p, a)
+    dbConfig
+      .db
+      .run(
+        query.to[List].result.map(EventEntityDataMapper.transformCollection)
+      )
+  }
+
   override def findEventsByKeyword(keyword: String): Future[List[Event]] = {
     val query = for {
       e <- this.keywordQuery(Option(keyword))

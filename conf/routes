@@ -76,11 +76,11 @@ POST        /mypage/events/apply            net.craftal.web.controller.mypage.Ap
 
 GET         /mypage/profile/edit            net.craftal.web.controller.mypage.EditProfileController.view
 
-PATCH       /mypage/profile/edit            net.craftal.web.controller.mypage.EditProfileController.submit
+POST        /mypage/profile/edit            net.craftal.web.controller.mypage.EditProfileController.submit
 
 GET         /mypage/profile/artist/edit     net.craftal.web.controller.mypage.EditArtistProfileController.view
 
-PATCH       /mypage/profile/artist/edit     net.craftal.web.controller.mypage.EditArtistProfileController.submit
+POST        /mypage/profile/artist/edit     net.craftal.web.controller.mypage.EditArtistProfileController.submit
 
 
 
