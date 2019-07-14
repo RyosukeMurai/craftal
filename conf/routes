@@ -37,6 +37,10 @@ GET         /signUp/artist                  net.craftal.web.controller.auth.Sign
 
 POST        /signUp/artist                  net.craftal.web.controller.auth.SignUpForArtistController.submit
 
+GET         /signUp/eventer                  net.craftal.web.controller.auth.SignUpForEventerController.view
+
+POST        /signUp/eventer                  net.craftal.web.controller.auth.SignUpForEventerController.submit
+
 GET         /signIn                         net.craftal.web.controller.auth.SignInController.view
 
 POST        /signIn                         net.craftal.web.controller.auth.SignInController.submit

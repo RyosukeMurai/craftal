@@ -6,6 +6,7 @@ import net.craftal.core.domain.model.attribute.Attribute
 import net.craftal.core.domain.model.event.Event
 import net.craftal.core.domain.model.event.EventLocation.EventLocation
 import net.craftal.core.domain.model.event.EventStatus.EventStatus
+import net.craftal.core.domain.model.eventer.Eventer
 import net.craftal.core.domain.model.genre.Genre
 import net.craftal.core.domain.model.member.Member
 import net.craftal.core.domain.model.photo.Photo
@@ -13,6 +14,7 @@ import net.craftal.core.domain.model.prefecture.Prefecture
 import net.craftal.core.usecase.artist._
 import net.craftal.core.usecase.attribute.{GetAttribute, GetAttributes}
 import net.craftal.core.usecase.event._
+import net.craftal.core.usecase.eventer.RegisterEventer
 import net.craftal.core.usecase.genre._
 import net.craftal.core.usecase.member.{GetFollowingArtists, GetFollowingEvents, GetMember, UpdateMemberProfile}
 import net.craftal.core.usecase.photo._
@@ -24,6 +26,8 @@ import scala.concurrent.{ExecutionContext, Future}
 //TODO(RyosukeMurai): Separate API
 class DomainService @Inject()(getMember: GetMember,
                               updateMemberProfile: UpdateMemberProfile,
+                              registerArtist: RegisterArtist,
+                              registerEventer: RegisterEventer,
                               getArtist: GetArtist,
                               getArtists: GetArtists,
                               getArtistsOfGenre: GetArtistsOfGenre,
@@ -54,6 +58,17 @@ class DomainService @Inject()(getMember: GetMember,
       memberId,
       name,
       prefectureId
+    )
+
+  def registerEventer(userId: Int): Future[Eventer] =
+    this.registerEventer.execute(
+      userId = userId
+    )
+
+  def registerArtist(userId: Int, genreId: Int): Future[Artist] =
+    this.registerArtist.execute(
+      userId = userId,
+      genreId = genreId
     )
 
   def getArtist(artistId: Int): Future[Artist] = this.getArtist.execute(artistId)

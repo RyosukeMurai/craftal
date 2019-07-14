@@ -15,4 +15,6 @@ trait ArtistRepository {
   def findArtistsByFollowerId(followerId: Int): Future[List[Artist]]
 
   def findAll(): Future[List[Artist]]
+
+  def createArtist(userId: Int, genreId: Int): Future[Artist]
 }

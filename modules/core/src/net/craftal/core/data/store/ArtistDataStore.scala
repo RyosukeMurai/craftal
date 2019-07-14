@@ -105,5 +105,12 @@ class ArtistDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implic
         query.to[List].result.map(ArtistEntityDataMapper.transformCollection)
       )
   }
+
+  override def createArtist(userId: Int, genreId: Int): Future[Artist] = {
+    for {
+      _ <- dbConfig.db.run(Tables.Artist.map(a => (a.userId, a.genreId)) += (userId, genreId))
+      a <- this.findArtist(userId)
+    } yield a
+  }
 }
 

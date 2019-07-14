@@ -5,6 +5,7 @@ import net.craftal.core.data.store._
 import net.craftal.core.domain.model.artist.ArtistRepository
 import net.craftal.core.domain.model.attribute.AttributeRepository
 import net.craftal.core.domain.model.event.EventRepository
+import net.craftal.core.domain.model.eventer.EventerRepository
 import net.craftal.core.domain.model.genre.GenreRepository
 import net.craftal.core.domain.model.member.MemberRepository
 import net.craftal.core.domain.model.photo.PhotoRepository
@@ -37,6 +38,8 @@ class DataModule extends AbstractModule {
     bind(classOf[PrefectureRepository]).to(classOf[PrefectureDataStore])
 
     bind(classOf[AttributeRepository]).to(classOf[AttributeDataStore])
+
+    bind(classOf[EventerRepository]).to(classOf[EventerDataStore])
   }
 
 }

@@ -4,6 +4,7 @@ import javax.inject.Inject
 import net.craftal.common.usecase.Interactor
 import net.craftal.identityaccess.api.AuthenticationService
 import net.craftal.identityaccess.domain.model.role.RoleCode
+import net.craftal.identityaccess.domain.model.user.User
 import net.craftal.web.port.silhouette.SilhouetteServiceFacade
 import notification.NotificationService
 import play.api.i18n.Messages
@@ -22,10 +23,9 @@ class Register @Inject()(authenticationService: AuthenticationService,
               password: String,
               roleCode: String,
               verificationExpiration: FiniteDuration = 5 minutes)
-             (implicit request: Request[AnyContent], messages: Messages): Future[Boolean] = {
+             (implicit request: Request[AnyContent], messages: Messages): Future[User] = {
     this.authenticationService.getUser(email).flatMap {
-      case Some(x) =>
-        this.notificationService.notifyAlreadySignedUp(email, Option(x.name))
+      case Some(x) => this.notificationService.notifyAlreadySignedUp(email, Option(x.name)).map(_ => x)
       case _ =>
         for {
           _ <- this.silhouetteServiceFacade.addPasswordAuthInfo(email, name, password) // register via silhouette
@@ -35,8 +35,8 @@ class Register @Inject()(authenticationService: AuthenticationService,
           }
           _ <- this.authenticationService.assumeRole(u.id, RoleCode.withName(roleCode))
           t <- this.authenticationService.createIdentityToken(email)
-          result <- this.notificationService.notifySignUp(u.email, Option(u.name), t)
-        } yield result
+          _ <- this.notificationService.notifySignUp(u.email, Option(u.name), t)
+        } yield u
     }
   }
 }
