@@ -10,7 +10,15 @@ object EventTableDataMapper extends DataMapper {
   def transform(eventCollection: List[Event])(implicit messages: Messages): Table[Event] =
     new Table(
       Seq(
-        ColumnDefinition("id", Messages("craftal.management.event.filed.id"), 1),
+        ColumnDefinition(
+          "id",
+          Messages("craftal.management.event.filed.id"),
+          1,
+          Option(
+            (event: Any) =>
+              net.craftal.web.controller.artist.routes.ListArtistByGenreController.view(1)
+          )
+        ),
         ColumnDefinition("title", Messages("craftal.management.event.filed.title"), 2),
         ColumnDefinition("description", Messages("craftal.management.event.filed.description"), 3)
       ),

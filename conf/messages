@@ -140,6 +140,7 @@ craftal.management.event.filed.description = 概要
 
 craftal.management.event.list.title = イベント一覧
 craftal.management.event.create.title = イベント作成
+craftal.management.event.edit.title = イベント編集
 
 craftal.management.event.message.create.success = イベントを作成しました
 

@@ -152,4 +152,14 @@ class EventDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)
     } yield event
     dbConfig.db.run(command)
   }
+
+  override def updateEvent(eventId: Int,
+                           title: Option[String],
+                           description: Option[String]): Future[Event] = {
+    for {
+      e <- this.findEvent(eventId)
+      _ <- dbConfig.db.run(Tables.Event.filter(_.id === eventId).map(_.title).update(title.getOrElse(e.title)))
+      e <- this.findEvent(eventId)
+    } yield e
+  }
 }

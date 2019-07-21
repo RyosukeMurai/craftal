@@ -12,7 +12,13 @@
     @for(r <- table.rows) {
         <tr>
         @for(c <- r.cells) {
-            <td>@c.value</td>
+            @c.call.map { n =>
+                <td>
+                    <a href="@n">@c.value</a>
+                </td>
+            }.getOrElse {
+                <td>@c.value</td>
+            }
         }
         </tr>
     }

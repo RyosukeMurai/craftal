@@ -17,7 +17,6 @@ class ProfileEditViewPresenter @Inject()(implicit webJarsUtil: WebJarsUtil,
   def present(form: Form[EditProfileForm.Data],
               prefectures: List[Prefecture])
              (implicit request: Request[AnyContent], messages: Messages): HtmlFormat.Appendable = {
-    print(form)
     net.craftal.web.view.mypage.profile.html.edit(
       new EditProfileFormDefinition(form, prefectures)
     )

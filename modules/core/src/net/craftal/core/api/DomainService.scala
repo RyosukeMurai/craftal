@@ -38,6 +38,7 @@ class DomainService @Inject()(getMember: GetMember,
                               getEventsForArtistParticipating: GetEventsForArtistParticipating,
                               getFollowingEvents: GetFollowingEvents,
                               createEvent: CreateEvent,
+                              updateEvent: UpdateEvent,
                               countNumberOfEventsInteractor: CountNumberOfEvents,
                               getGenreInteractor: GetGenre,
                               getGenresInteractor: GetGenres,
@@ -108,6 +109,15 @@ class DomainService @Inject()(getMember: GetMember,
       description = description,
       status = status,
       location = location
+    )
+
+  def updateEvent(eventId: Int,
+                  title: Option[String],
+                  description: Option[String]): Future[Event] =
+    this.updateEvent.execute(
+      eventId = eventId,
+      title = title,
+      description = description
     )
 
   def countNumberOfEvents: Future[Int] = this.countNumberOfEventsInteractor.execute()

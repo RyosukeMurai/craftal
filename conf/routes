@@ -69,6 +69,11 @@ GET         /manage/events/create           net.craftal.web.controller.manage.Cr
 
 POST        /manage/events/create           net.craftal.web.controller.manage.CreateEventController.submit
 
+GET         /manage/events/edit             net.craftal.web.controller.manage.EditEventController.view
+
+POST        /manage/events/edit             net.craftal.web.controller.manage.EditEventController.submit
+
+
 # Mypage
 GET         /mypage                         net.craftal.web.controller.mypage.IndexController.view
 

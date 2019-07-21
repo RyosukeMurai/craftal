@@ -25,6 +25,10 @@ trait EventRepository {
                   status: EventStatus,
                   location: EventLocation): Future[Event]
 
+  def updateEvent(eventId: Int,
+                  title: Option[String],
+                  description: Option[String]): Future[Event]
+
   def countNumberOfEvents: Future[Int]
 
 }
