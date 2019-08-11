@@ -16,5 +16,5 @@ trait ArtistRepository {
 
   def findAll(): Future[List[Artist]]
 
-  def createArtist(userId: Int, genreId: Int): Future[Artist]
+  def createArtist(userId: Int, genreId: Int, prefectureId: Int): Future[Artist]
 }

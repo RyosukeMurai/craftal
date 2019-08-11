@@ -13,6 +13,9 @@
             case FieldType.select => {
                 @select(formDefinition.form(field.name), field.options.getOrElse(Seq()))
             }
+            case FieldType.file => {
+                @inputFile(formDefinition.form(field.name), '_label -> field.label)
+            }
         }
     }
     </fieldset>

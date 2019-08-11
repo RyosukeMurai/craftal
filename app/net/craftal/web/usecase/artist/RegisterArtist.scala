@@ -21,12 +21,13 @@ class RegisterArtist @Inject()(domainService: DomainService,
               name: String,
               password: String,
               genreId: Int,
+              prefectureId: Int,
               verificationExpiration: FiniteDuration = 5 minutes)
              (implicit request: Request[AnyContent], messages: Messages): Future[Artist] = {
     this.register
       .execute(email, name, password, RoleCode.artist.toString, verificationExpiration)
       .flatMap(u => {
-        this.domainService.registerArtist(userId = u.id, genreId = genreId)
+        this.domainService.registerArtist(userId = u.id, genreId = genreId, prefectureId = prefectureId)
       })
   }
 }

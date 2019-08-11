@@ -66,10 +66,11 @@ class DomainService @Inject()(getMember: GetMember,
       userId = userId
     )
 
-  def registerArtist(userId: Int, genreId: Int): Future[Artist] =
+  def registerArtist(userId: Int, genreId: Int, prefectureId: Int): Future[Artist] =
     this.registerArtist.execute(
       userId = userId,
-      genreId = genreId
+      genreId = genreId,
+      prefectureId = prefectureId
     )
 
   def getArtist(artistId: Int): Future[Artist] = this.getArtist.execute(artistId)

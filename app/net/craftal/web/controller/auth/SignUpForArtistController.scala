@@ -38,7 +38,7 @@ class SignUpForArtistController @Inject()(components: ControllerComponents,
         .map(response => BadRequest(presenter.present(form, response._1, response._2))),
       data =>
         this.registerArtist.execute(
-          data.email, data.name, data.password, data.genreId
+          data.email, data.name, data.password, data.genreId, data.prefectureId
         ).map(_ =>
           Redirect(net.craftal.web.controller.auth.routes.SignInController.view())
             .flashing("info" -> Messages("sign.up.email.sent", data.email))

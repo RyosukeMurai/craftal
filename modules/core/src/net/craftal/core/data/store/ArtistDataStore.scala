@@ -106,9 +106,35 @@ class ArtistDataStore @Inject()(dbConfigProvider: DatabaseConfigProvider)(implic
       )
   }
 
-  override def createArtist(userId: Int, genreId: Int): Future[Artist] = {
+  override def createArtist(userId: Int, genreId: Int, prefectureId: Int): Future[Artist] = {
     for {
-      _ <- dbConfig.db.run(Tables.Artist.map(a => (a.userId, a.genreId)) += (userId, genreId))
+      _ <- dbConfig.db.run(
+        Tables.Artist.map(
+          a => (
+            a.userId,
+            a.genreId,
+            a.prefectureId,
+            a.selfIntroduction,
+            a.aboutInquiry,
+            a.homePageUrl,
+            a.shopPageUrl,
+            a.twitterUrl,
+            a.instagramUrl,
+            a.facebookUrl
+          )
+        ) += (
+          userId,
+          genreId,
+          prefectureId,
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        )
+      )
       a <- this.findArtist(userId)
     } yield a
   }
