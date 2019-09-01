@@ -54,10 +54,16 @@ object EventEntityDataMapper {
       ))
     )
 
+
   def transformCollection(eventRows: List[(Tables.EventRow, Tables.EventScheduleRow, Tables.EventPhotoRow, Tables.EventAttributeRow)]): List[Event] =
     eventRows
       .groupBy(_._1.id)
-      .map(m => this.transform(m._2.head._1, m._2.map(_._2), m._2.map(_._3), m._2.map(_._4)))
+      .map(m => this.transform(
+        m._2.head._1,
+        m._2.map(_._2).filter(_.eventId == m._1).groupBy(_.id).map(_._2.head).toList,
+        m._2.map(_._3).filter(_.eventId == m._1).groupBy(_.id).map(_._2.head).toList,
+        m._2.map(_._4).filter(_.eventId == m._1).groupBy(_.id).map(_._2.head).toList
+      ))
       .toList
 
 }

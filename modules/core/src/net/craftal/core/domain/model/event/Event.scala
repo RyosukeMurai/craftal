@@ -23,4 +23,11 @@ case class Event(id: Int,
     }
     this.photos.sortWith(_.positionNo < _.positionNo).head.photoId
   }
+
+  def subPhotoIdList: Seq[Int] = {
+    if (this.photos.isEmpty) {
+      throw new IllegalAccessException(s"Event ($this.title) doesn't have any photos.")
+    }
+    this.photos.filter(_.positionNo > 1).map(_.photoId)
+  }
 }

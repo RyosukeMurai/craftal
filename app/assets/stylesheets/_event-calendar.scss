@@ -1,0 +1,41 @@
+.event-calendar {
+  .jumbotron {
+    background: url('/assets/images/event-calendar/top@2x.jpg') no-repeat center center fixed;
+    background-size: cover;
+  }
+
+  .text-shadow {
+    text-shadow: 1px 1px #aeaeae;
+  }
+
+  .nav-tabs {
+    height: $default-height;
+    margin-top: -$default-height;
+
+    a {
+      color: $white;
+    }
+  }
+
+  .tab-button-event,
+  .tab-item-event {
+    background-color: $gold;
+  }
+
+  .date {
+    border-bottom: 1px solid $gold;
+  }
+
+  .event-card {
+    border-bottom: 1px dotted $gold;
+  }
+
+  .event-title {
+    color: $gold;
+    font-weight: bold;
+  }
+
+  .decoration-text {
+    color: $gold;
+  }
+}

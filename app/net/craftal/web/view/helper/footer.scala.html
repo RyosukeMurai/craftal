@@ -1,11 +1,8 @@
 @import play.api.i18n.Messages
 @(navigationCollection: Seq[net.craftal.web.model.common.Navigation])(implicit messages: Messages)
-<nav class="navbar navbar-expand-lg navbar-light bg-white">
+<footer class="bg-dark">
     <div class="container">
         <a class="navbar-brand" href="#">
-            <p>
-                <small>@messages("craftal.public.common.nav.title")</small>
-            </p>
             <img src="/assets/images/event-calendar/logo@@2x.png" alt="CLAFTAL.">
         </a>
         <ul class="navbar-nav ml-auto">
@@ -16,4 +13,4 @@
             }
         </ul>
     </div>
-</nav>
+</footer>

@@ -5,85 +5,179 @@
 @(event: net.craftal.web.model.event.EventDetail)(implicit request: NavigationContext[_], messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
 
 @net.craftal.web.view.layout.html.public(event.title) {
-    <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
-        <div class="col-md-6 px-0">
-            <h1 class="display-4 font-italic">@event.title</h1>
-            <img class="card-img-right flex-auto d-none d-lg-block"
-            alt="@event.eyecatchPhoto.name"
-            src="@event.eyecatchPhoto.url">
-        </div>
-    </div>
-
-    @for(s <- event.schedule) {
-        <div class="row mb-2">
-            <div class="col-md-12 blog-main">
-                <div class="blog-post">
-                    <span class="blog-post-meta">@s.prefecture</span>
-                    <span class="blog-post-meta">@s.location</span>
-                    <div class="mb-1 text-muted">@s.schedule</div>
-                    <div class="mb-1 text-muted">@s.venue</div>
-                    <div class="mb-1 text-muted">@s.postalCode</div>
-                    <div class="mb-1 text-muted">@s.address</div>
-                    <div class="mb-1 text-muted">@s.howToAccess</div>
-                    <div class="mb-1 text-muted">@s.venueUrl</div>
-                    <div class="mb-1 text-muted">@s.venueRemarks</div>
+    <div class="event-detail pb-4">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col p-0">
+                    <img class="eyecatch" alt="@event.eyecatchPhoto.name" src="@event.eyecatchPhoto.url">
                 </div>
             </div>
         </div>
-    }
 
-    @for(a <- event.attributes) {
-        <div class="row mb-2">
-            <div class="col-md-12 blog-main">
-                <div class="blog-post">
-                    <span class="blog-post-meta">@a.name</span>
-                </div>
-            </div>
-        </div>
-    }
-
-    <div class="row mb-2">
-        <div class="col-md-12 blog-main">
-            <h3 class="pb-3 mb-4 font-italic border-bottom">どんなイベント？</h3>
-            <p>@event.description</p>
-            @if(event.homePageUrl.isDefined) {
-                <a href="@event.homePageUrl" target="_blank">公式サイト</a>
-            }
-            @if(event.facebookUrl.isDefined) {
-                <a href="@event.facebookUrl" target="_blank">Facebook</a>
-            }
-            @if(event.instagramUrl.isDefined) {
-                <a href="@event.instagramUrl" target="_blank">Instagram</a>
-            }
-            @if(event.twitterUrl.isDefined) {
-                <a href="@event.twitterUrl" target="_blank">Twitter</a>
-            }
-        </div>
-    </div>
-
-    <div class="row mb-2">
-        <div class="col-md-12 blog-main">
-            <h3 class="pb-3 mb-4 font-italic border-bottom">
-                参加予定作家
-            </h3>
-        </div>
-        <div class="col-md-12">
-            <div class="row mb-2">
-            @for(artist <- event.artists) {
-                <div class="col-md-6">
-                    <div class="card flex-md-row mb-4 shadow-sm h-md-250">
-                        <div class="card-body d-flex flex-column align-items-start">
-                            <strong class="d-inline-block mb-2 text-primary">工作</strong>
-                            <h3 class="mb-0">
-                                <a class="text-dark" href="#">@artist.name</a>
+        <div class="container-fluid bg-light">
+            <div class="row">
+                <div class="container">
+                    <div class="row py-5">
+                        <div class="col-md-6 border-md-right border-white">
+                            <h3 class="m-0 font-weight-bold">
+                            @event.title
                             </h3>
-                            <a href="/artists/@artist.id">詳細を見る</a>
+                            <p class="m-0">
+                            @for(s <- event.schedule) {
+                                <span class="mb-1 small font-weight-bold">@s.schedule</span>
+                            }
+                            </p>
+                            <p class="small mt-2">
+                            @event.description
+                            </p>
                         </div>
-                        <img class="card-img-right flex-auto d-none d-lg-block" src="https://via.placeholder.com/200x250"
-                        alt="Card image cap">
+                        <div class="col-md-6">
+                            <div class="row mb-2">
+                                <div class="col-6">
+                                @for(s <- event.schedule) {
+                                    <p class="small m-0 pb-1 color-gold font-weight-bold">@s.prefecture</p>
+                                    <p class="small m-0 pb-1 color-gold font-weight-bold">@s.location</p>
+                                    @if(event.homePageUrl.isDefined) {
+                                        <p class="small m-0 pb-1 small m-0">
+                                            <a href="@event.homePageUrl" target="_blank" class="color-gold">
+                                                @event.homePageUrl
+                                            </a>
+                                        </p>
+                                    }
+                                }
+                                    <p class="small m-0 pb-1 font-weight-bold">
+                                        @messages("craftal.public.event-detail.organization")
+                                    </p>
+                                    <p class="small m-0 pb-2 font-weight-bold">
+                                        @messages("craftal.public.event-detail.contact")
+                                    </p>
+                                    <p class="small m-0">
+                                        @if(event.facebookUrl.isDefined) {
+                                            <a href="@event.facebookUrl" target="_blank" class="mr-1">
+                                                <i class="icon ion-logo-facebook"></i>
+                                            </a>
+                                        }
+                                        @if(event.instagramUrl.isDefined) {
+                                            <a href="@event.instagramUrl" target="_blank" class="mr-1">
+                                                <i class="icon ion-logo-instagram"></i>
+                                            </a>
+                                        }
+                                        @if(event.twitterUrl.isDefined) {
+                                            <a href="@event.twitterUrl" target="_blank" class="mr-1">
+                                                <i class="icon ion-logo-twitter"></i>
+                                            </a>
+                                        }
+                                    </p>
+                                </div>
+                                <div class="col-6 d-flex justify-content-center align-items-center">
+                                    <p class="want-to-go flex-column d-flex justify-content-center align-items-center">
+                                        <span class="small color-gold mb-1">
+                                        @messages("craftal.public.event-detail.want-to-go")
+                                        </span>
+                                        <a class="rounded-circle d-flex justify-content-center align-items-center">
+                                            20
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            }
+            </div>
+        </div>
+
+        <div class="container-fluid bg-white">
+            <div class="row">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <h3 class="text-center py-4 font-weight-bold">
+                            @messages("craftal.public.event-detail.what-kind-of-event")
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="image-gallery">
+                            @for(p <- event.subPhotos) {
+                                <img class="pr-1 pb-1" alt="@p.name" src="@p.url">
+                                }
+                            </div>
+                            <div class="my-1">
+                            @for(a <- event.attributes) {
+                                <i class="border border-right rounded p-1 small">@a.name</i>
+                            }
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h3 class="font-weight-bold">
+                            @messages("craftal.public.event-detail.main-catch")
+                            </h3>
+                            <p></p>
+                            <h3 class="font-weight-bold">
+                            @messages("craftal.public.event-detail.remarks")
+                            </h3>
+                            <p></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h3 class="text-center py-4 font-weight-bold">
+                            @messages("craftal.public.event-detail.participating-artists")
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col artist-gallery">
+                        @for(artist <- event.artists) {
+                            <a href="@net.craftal.web.controller.artist.routes.DetailArtistController.view(artist.id.toString)"
+                                class="p-1">
+                                <img class="rounded-circle"
+                                    src="@artist.artistPhoto.url"
+                                    alt="@artist.artistPhoto.name">
+                            </a>
+                            <!--
+                            <div class="col-md-6">
+                                <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+                                    <div class="card-body d-flex flex-column align-items-start">
+                                        <strong class="d-inline-block mb-2 text-primary">工作</strong>
+                                        <h3 class="mb-0">
+                                            <a class="text-dark" href="#">@artist.name</a>
+                                        </h3>
+                                    </div>
+
+                                </div>
+                            </div>
+                            -->
+                        }
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h3 class="text-center py-4 font-weight-bold">
+                            @messages("craftal.public.event-detail.venue-access")
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="border bg-light p-2">
+                            @for(s <- event.schedule) {
+                                <p class="lead">@s.venue</p>
+                                <p class="lead">@s.address</p>
+                                <p>@messages("craftal.public.event-detail.access")</p>
+                                <p class="small m-0">@s.howToAccess</p>
+                                <p>@messages("craftal.public.event-detail.venue-url")</p>
+                                <a href="@s.venueUrl">
+                                @s.venueUrl
+                                </a>
+                                <p>@messages("craftal.public.event-detail.remarks")</p>
+                                <p>@s.venueRemarks</p>
+                            }
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

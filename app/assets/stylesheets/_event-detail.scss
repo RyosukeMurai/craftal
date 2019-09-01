@@ -1,0 +1,73 @@
+.event-detail {
+  .eyecatch {
+    height: 256px;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+
+    img {
+      width: 33.3%;
+      @media only screen and (min-width: 768px) {
+        width: 16.6%;
+      }
+    }
+
+    img:first-child {
+      height: auto;
+      width: 100%;
+    }
+  }
+
+  .artist-gallery {
+    display: flex;
+    flex-wrap: wrap;
+
+    img {
+      height: 44px;
+      width: 44px;
+    }
+  }
+
+  h3 {
+    font-size: 110%;
+    letter-spacing: 2px;
+  }
+
+  .small {
+    font-size: 70%;
+  }
+
+  .color-gold {
+    color: $gold;
+  }
+
+  .icon {
+    font-size: 200%;
+  }
+
+  .want-to-go {
+    span {
+      &:before {
+        content: '＼';
+      }
+
+      &:after {
+        content: '／';
+      }
+    }
+
+    a {
+      color: white;
+      background-color: $gold;
+      display: flex;
+      height: 64px;
+      width: 64px;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}

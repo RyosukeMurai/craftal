@@ -19,7 +19,7 @@ object EventCalendarDataMapper extends DataMapper {
     EventCalendar(events
       .flatMap(e => e.schedule.map(s => (s, e)))
       .groupBy(_._1.startTime)
-      .map(e => DateTimeTranslator.translate(e._1, "MM月dd日") ->
+      .map(e => DateTimeTranslator.translate(e._1, "M/d") ->
         e._2.map(r =>
           EventDescriptor(
             r._2.id,

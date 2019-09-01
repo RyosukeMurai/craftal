@@ -40,7 +40,7 @@ object EventDetailDataMapper extends DataMapper {
         )
       ).toList,
       PhotoDescriptorDataMapper.transform(photos.find(_.id == event.mainPhotoId).get),
-      photos.filter(_.id != event.mainPhotoId).map(PhotoDescriptorDataMapper.transform),
+      photos.filter(p => event.subPhotoIdList.contains(p.id)).map(PhotoDescriptorDataMapper.transform),
       artists.map { a =>
         ArtistDescriptor(
           a.id,

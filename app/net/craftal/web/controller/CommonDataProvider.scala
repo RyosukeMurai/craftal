@@ -16,10 +16,6 @@ class CommonDataProvider @Inject()(langs: Langs, messagesApi: MessagesApi) {
       Navigation(
         messagesApi("craftal.public.common.nav.event.list-event-calendar")(lang),
         net.craftal.web.controller.event.routes.ListEventCalendarController.view()
-      ),
-      Navigation(
-        messagesApi("craftal.public.common.nav.artist.summary-artist")(lang),
-        net.craftal.web.controller.artist.routes.SummaryArtistController.view()
       )
     )
   }

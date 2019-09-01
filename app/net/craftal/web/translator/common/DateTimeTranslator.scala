@@ -9,7 +9,7 @@ object DateTimeTranslator extends Translator {
 
   def translate(termStart: DateTime, termEnd: DateTime)
                (implicit request: Request[AnyContent], messages: Messages): String =
-    s"${termStart.toString("HH:mm")} ~ ${termEnd.toString("HH:mm")}"
+    s"${termStart.toString("yyyy年M月d日（E）HH:mm")} - ${termEnd.toString("HH:mm")}"
 
   def translate(dateTime: DateTime, pattern: String): String = dateTime.toString(pattern)
 }
