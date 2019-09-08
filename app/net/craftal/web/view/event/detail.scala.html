@@ -17,7 +17,7 @@
         <div class="container-fluid bg-light">
             <div class="row">
                 <div class="container">
-                    <div class="row py-5">
+                    <div class="row pt-5 pb-4">
                         <div class="col-md-6 border-md-right border-white">
                             <h3 class="m-0 font-weight-bold">
                             @event.title
@@ -54,27 +54,28 @@
                                     <p class="small m-0">
                                         @if(event.facebookUrl.isDefined) {
                                             <a href="@event.facebookUrl" target="_blank" class="mr-1">
-                                                <i class="icon ion-logo-facebook"></i>
+                                                <i class="icon ion-logo-facebook color-gold"></i>
                                             </a>
                                         }
                                         @if(event.instagramUrl.isDefined) {
                                             <a href="@event.instagramUrl" target="_blank" class="mr-1">
-                                                <i class="icon ion-logo-instagram"></i>
+                                                <i class="icon ion-logo-instagram color-gold"></i>
                                             </a>
                                         }
                                         @if(event.twitterUrl.isDefined) {
                                             <a href="@event.twitterUrl" target="_blank" class="mr-1">
-                                                <i class="icon ion-logo-twitter"></i>
+                                                <i class="icon ion-logo-twitter color-gold"></i>
                                             </a>
                                         }
                                     </p>
                                 </div>
-                                <div class="col-6 d-flex justify-content-center align-items-center">
-                                    <p class="want-to-go flex-column d-flex justify-content-center align-items-center">
+                                <div class="col-6 d-flex justify-content-end align-items-center">
+                                    <p class="want-to-go flex-column d-flex justify-content-center align-items-center flex-column">
                                         <span class="small color-gold mb-1">
                                         @messages("craftal.public.event-detail.want-to-go")
                                         </span>
-                                        <a class="rounded-circle d-flex justify-content-center align-items-center">
+                                        <a class="rounded-circle d-flex justify-content-center align-items-center flex-column">
+                                            <i class="icon ion-md-walk"></i>
                                             20
                                         </a>
                                     </p>
@@ -91,7 +92,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col">
-                            <h3 class="text-center py-4 font-weight-bold">
+                            <h3 class="text-center pt-5 pb-4 font-weight-bold">
                             @messages("craftal.public.event-detail.what-kind-of-event")
                             </h3>
                         </div>
@@ -103,26 +104,42 @@
                                 <img class="pr-1 pb-1" alt="@p.name" src="@p.url">
                                 }
                             </div>
-                            <div class="my-1">
+                            <div class="my-4">
                             @for(a <- event.attributes) {
-                                <i class="border border-right rounded p-1 small">@a.name</i>
+                                <i class="border border-right rounded p-1 small color-gold border-gold">@a.name</i>
                             }
+                            </div>
+                            <div class="my-4">
+                                <ul class="d-flex p-0">
+                                    <li class="border border-right mr-2 large-attribute d-flex flex-column justify-content-center align-items-center text-center">
+                                        <img src="/assets/images/event-detail/car@@2x.png" />
+                                        <span class="x-small pt-1">ケータリングカー出店可</span>
+                                    </li>
+                                    <li class="border border-right mr-2 large-attribute d-flex flex-column justify-content-center align-items-center text-center">
+                                        <img src="/assets/images/event-detail/tento@@2x.png" />
+                                        <span class="x-small pt-1">テント貸し出しあり</span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <h3 class="font-weight-bold">
                             @messages("craftal.public.event-detail.main-catch")
                             </h3>
-                            <p></p>
-                            <h3 class="font-weight-bold">
+                            <p class="small mt-2">
+                            @event.description
+                            </p>
+                            <h3 class="font-weight-bold mt-5">
                             @messages("craftal.public.event-detail.remarks")
                             </h3>
-                            <p></p>
+                            <p class="small mt-2">
+                            @event.description
+                            </p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <h3 class="text-center py-4 font-weight-bold">
+                            <h3 class="text-center pt-5 pb-4 font-weight-bold">
                             @messages("craftal.public.event-detail.participating-artists")
                             </h3>
                         </div>
@@ -154,25 +171,39 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <h3 class="text-center py-4 font-weight-bold">
+                            <h3 class="text-center pt-5 pb-4 font-weight-bold">
                             @messages("craftal.public.event-detail.venue-access")
                             </h3>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <div class="border bg-light p-2">
+                            <div class="row border bg-light py-5 px-3">
                             @for(s <- event.schedule) {
-                                <p class="lead">@s.venue</p>
-                                <p class="lead">@s.address</p>
-                                <p>@messages("craftal.public.event-detail.access")</p>
-                                <p class="small m-0">@s.howToAccess</p>
-                                <p>@messages("craftal.public.event-detail.venue-url")</p>
-                                <a href="@s.venueUrl">
-                                @s.venueUrl
-                                </a>
-                                <p>@messages("craftal.public.event-detail.remarks")</p>
-                                <p>@s.venueRemarks</p>
+                                <div class="col-md-6">
+                                    <h3 class="font-weight-bold mb-1">@s.venue</h3>
+
+                                    <p class="small font-weight-bold">
+                                        <span>@messages("craftal.public.event-detail.postal-code-mark") @s.postalCode</span>
+                                        <span>@s.address</span>
+                                    </p>
+                                    <h4 class="font-weight-bold mt-4">
+                                    @messages("craftal.public.event-detail.access")
+                                    </h4>
+                                    <p class="small pre">@s.howToAccess</p>
+                                    <h4 class="font-weight-bold mt-4 mb-0">
+                                    @messages("craftal.public.event-detail.venue-url")
+                                    </h4>
+                                    <a class="small color-gold" href="@s.venueUrl">
+                                    @s.venueUrl
+                                    </a>
+                                    <h4 class="font-weight-bold mt-4">
+                                    @messages("craftal.public.event-detail.remarks")</h4>
+                                    <p class="small pre">@s.venueRemarks</p>
+                                </div>
+                                <div class="col-md-6 border border-light">
+                                @net.craftal.web.view.helper.html.map()
+                                </div>
                             }
                             </div>
                         </div>

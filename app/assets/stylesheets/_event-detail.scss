@@ -11,9 +11,11 @@
 
     img {
       width: 33.3%;
+      /*
       @media only screen and (min-width: 768px) {
         width: 16.6%;
       }
+      */
     }
 
     img:first-child {
@@ -32,21 +34,8 @@
     }
   }
 
-  h3 {
-    font-size: 110%;
-    letter-spacing: 2px;
-  }
-
-  .small {
-    font-size: 70%;
-  }
-
-  .color-gold {
-    color: $gold;
-  }
-
   .icon {
-    font-size: 200%;
+    font-size: 1.25rem;
   }
 
   .want-to-go {
@@ -60,7 +49,7 @@
       }
     }
 
-    a {
+    a, a:hover, a:active {
       color: white;
       background-color: $gold;
       display: flex;
@@ -68,6 +57,25 @@
       width: 64px;
       justify-content: center;
       align-items: center;
+    }
+  }
+
+  .col-md-6, .col {
+    padding-right: 30px;
+    padding-left: 30px;
+  }
+
+  .pre {
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+  }
+
+  .large-attribute {
+    width : 72px;
+    height: 72px;
+    img {
+      width: 32px;
+      height: auto;
     }
   }
 }

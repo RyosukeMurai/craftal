@@ -11,11 +11,13 @@ class CommonDataProvider @Inject()(langs: Langs, messagesApi: MessagesApi) {
     Seq(
       Navigation(
         messagesApi("craftal.public.common.nav.auth.sign-in")(lang),
-        net.craftal.web.controller.auth.routes.SignInController.view()
+        net.craftal.web.controller.auth.routes.SignInController.view(),
+        Option("log-in")
       ),
       Navigation(
-        messagesApi("craftal.public.common.nav.event.list-event-calendar")(lang),
-        net.craftal.web.controller.event.routes.ListEventCalendarController.view()
+        messagesApi("craftal.public.common.nav.menu")(lang),
+        net.craftal.web.controller.event.routes.ListEventCalendarController.view(),
+        Option("menu")
       )
     )
   }

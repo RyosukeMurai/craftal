@@ -1,3 +1,30 @@
- * {
-   font-family: ‘Noto Sans JP’, sans-serif;
- }
+*, pre, body {
+  font-family: YuGothic, 'Yu Gothic', 'Noto Sans JP', sans-serif;
+  font-style: normal;
+}
+
+ul, ol, li {
+  list-style: none;
+}
+
+html {
+  font-size: 16px;
+}
+
+h3 {
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+}
+
+h4 {
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+}
+
+.small {
+  font-size: 0.7rem;
+}
+
+.x-small {
+  font-size: 0.6rem;
+}

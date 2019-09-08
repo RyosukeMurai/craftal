@@ -1,17 +1,18 @@
 @import play.api.i18n.Messages
 @(navigationCollection: Seq[net.craftal.web.model.common.Navigation])(implicit messages: Messages)
-<nav class="navbar navbar-expand-lg navbar-light bg-white">
-    <div class="container">
-        <a class="navbar-brand" href="#">
-            <p>
-                <small>@messages("craftal.public.common.nav.title")</small>
-            </p>
-            <img src="/assets/images/event-calendar/logo@@2x.png" alt="CLAFTAL.">
+<nav class="public-navigation navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container d-flex align-items-center">
+        <a class="navbar-brand m-0" href="#">
+            <img class="logo" src="/assets/images/event-calendar/logo@@2x.png" alt="CLAFTAL.">
         </a>
         <ul class="navbar-nav ml-auto">
             @for(navigation <- navigationCollection) {
                 <li class="nav-item">
-                    <a class="nav-link" href="@navigation.action">@navigation.name</a>
+                    <a class="nav-link d-flex justify-content-center align-items-center flex-column"
+                    href="@navigation.action">
+                        <i class="icon ion-md-@navigation.icon"></i>
+                        <span class="small">@navigation.name</span>
+                    </a>
                 </li>
             }
         </ul>

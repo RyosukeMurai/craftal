@@ -17,5 +17,15 @@
 
 /* Large Devices, Wide Screens */
 @media only screen and (min-width : 1200px) {
+  .container {
+    max-width: 960px;
+  }
+}
 
+.color-gold {
+  color: $gold;
+}
+
+.border-gold {
+  border-color: $gold !important;
 }

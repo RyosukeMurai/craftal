@@ -110,10 +110,12 @@ email.activate.account.txt.text = Please follow the link to confirm and activate
 # Public Common
 craftal.public.common.form.button.search = 検索
 craftal.public.common.form.search-keyword = フリーワード検索
-craftal.public.common.nav.title = クラフトイベント・作家とつながる CRAFTAL
-craftal.public.common.nav.auth.sign-in = ログイン
+craftal.public.common.nav.title = クラフトイベント・作家とつながる  CRAFTAL
+craftal.public.common.nav.auth.sign-in = 会員ログイン
+craftal.public.common.nav.menu = メニュー
 craftal.public.common.nav.event.list-event-calendar = イベント
 craftal.public.common.nav.artist.summary-artist = 作家
+craftal.public.common.footer.copyright = copyright© 2019 CRAFTAL
 
 # Public Event Calendar
 craftal.public.event-calendar.title = クラフトイベント・作家とつながる検索コミュニティサイト
@@ -129,6 +131,7 @@ craftal.public.event-detail.participating-artists = 参加予定作家
 craftal.public.event-detail.venue-access = 会場アクセス
 craftal.public.event-detail.venue-url = 会場URL
 craftal.public.event-detail.access = アクセス
+craftal.public.event-detail.postal-code-mark = 〒
 craftal.public.event-detail.organization = 主催
 craftal.public.event-detail.contact = お問い合わせ
 
