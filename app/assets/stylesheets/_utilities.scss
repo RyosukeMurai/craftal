@@ -26,6 +26,10 @@
   color: $gold;
 }
 
-.border-gold {
+.bg-gold {
+  background-color: $gold !important;
+}
+
+.border-color-gold {
   border-color: $gold !important;
 }

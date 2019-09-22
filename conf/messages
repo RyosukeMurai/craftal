@@ -118,7 +118,7 @@ craftal.public.common.nav.artist.summary-artist = 作家
 craftal.public.common.footer.copyright = copyright© 2019 CRAFTAL
 
 # Public Event Calendar
-craftal.public.event-calendar.title = クラフトイベント・作家とつながる検索コミュニティサイト
+craftal.public.event-calendar.title = クラフトイベント・作家とつながる\n検索コミュニティサイト
 craftal.public.event-calendar.nav.event = イベントを探す
 craftal.public.event-calendar.nav.artist = 作家を探す
 

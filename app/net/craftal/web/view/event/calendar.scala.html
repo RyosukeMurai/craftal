@@ -9,47 +9,54 @@
 
 @net.craftal.web.view.layout.html.public("event") {
     <div class="event-calendar">
-        <div class="jumbotron text-center clearfix mb-0">
+        <div class="jumbotron text-center mb-0">
             <div class="container">
-                <div class="float-right">
-                    <p class="lead font-weight-bold text-white text-shadow">@messages("craftal.public.event-calendar.title")</p>
+                <div>
+                    <p class="m-0 font-weight-bold text-white text-left">@messages("craftal.public.event-calendar.title")</p>
                     <img src="/assets/images/event-calendar/title@@2x.png" alt="CLAFTAL.">
                 </div>
             </div>
         </div>
 
-        <ul class="nav nav-tabs justify-content-center">
-            <li class="nav-item tab-button-event">
-                <a class="nav-link" href="@net.craftal.web.controller.event.routes.ListEventCalendarController.view()">
-                @messages("craftal.public.event-calendar.nav.event")
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="@net.craftal.web.controller.artist.routes.SummaryArtistController.view()">
-                @messages("craftal.public.event-calendar.nav.artist")
-                </a>
-            </li>
-        </ul>
+        <div class="container">
+            <ul class="nav nav-tabs border-0">
+                <li class="nav-item flex-grow-1 nav-item-enable d-flex align-items-stretch">
+                    <a class="nav-link flex-grow-1 border-0 p-0 small d-flex align-items-center justify-content-center"
+                    href="@net.craftal.web.controller.event.routes.ListEventCalendarController.view()">
+                    @messages("craftal.public.event-calendar.nav.event")
+                    </a>
+                </li>
+                <li class="nav-item flex-grow-1 d-flex align-items-stretch">
+                    <a class="nav-link flex-grow-1 border-0 p-0 small d-flex align-items-center justify-content-center"
+                    href="@net.craftal.web.controller.artist.routes.SummaryArtistController.view()">
+                    @messages("craftal.public.event-calendar.nav.artist")
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-        <div class="container-fluid tab-item-event">
+        <div class="container-fluid nav-content-enable">
             <div class="row">
-                <div class="col d-flex justify-content-center pt-5">
-                @helper.form(
-                    action = net.craftal.web.controller.event.routes.ListEventCalendarController.view,
-                    'class -> "form-inline mt-2 mt-md-0 pb-3 mb-4",
-                    'method -> "get"
-                ) {
-                    @helper.inputText(
-                        form("keyword"),
-                        'name -> "keyword",
-                        'class -> "form-control mr-sm-2",
-                        'placeholder -> "Search",
-                        '_label -> None
-                    )
-                    <button class="btn btn-primary my-2 my-sm-0" type="submit">
-                    @messages("craftal.public.common.form.button.search")
-                    </button>
-                }
+                <div class="col d-flex justify-content-center py-5">
+                    <div class="container">
+                    @helper.form(
+                        action = net.craftal.web.controller.event.routes.ListEventCalendarController.view,
+                        'class -> "small d-flex align-items-center justify-content-center flex-column",
+                        'method -> "get"
+                    ) {
+                        @helper.inputCheckboxGroup(
+                            form("genre"),
+                            options = calendar.map(_.genreSearchConditions).getOrElse(Seq()),
+                            'class -> "small",
+                            '_label -> None,
+                            '_showConstraints -> false
+                        )
+
+                        <button class="p-0 m-0 btn rounded-0 small bg-white" type="submit">
+                        @messages("craftal.public.common.form.button.search")
+                        </button>
+                    }
+                    </div>
                 </div>
             </div>
         </div>
@@ -59,7 +66,7 @@
             @c.events.keys.map { date: String =>
                 <div class="row">
                     <div class="col">
-                        <h6 class="decoration-text mt-5 pb-2 font-italic date">
+                        <h6 class="color-gold mt-5 pb-3 mb-3 border-color-gold border-bottom">
                             @date
                         </h6>
                     </div>
@@ -68,17 +75,33 @@
                 @e.map { event =>
                     <div class="row">
                         <div class="col">
-                            <div class="event-card mt-4 pb-4">
-                                <h6 class="event-title">@event.title</h6>
-                                <div class="clearfix">
-                                    <img class="float-left mr-2" alt="@event.eyecatchPhoto.name" src="@event.eyecatchPhoto.url">
-                                    <p class="decoration-text">@event.schedule.location ／ @event.schedule.prefecture</p>
-                                    <p class="text-muted">@event.schedule.schedule</p>
-                                    <p class="text-muted">@event.schedule.venue</p>
-                                    <small>@event.description</small>
-                                    <div class="float-right">
-                                        <a target="_blank" class="btn btn-primary" href="@net.craftal.web.controller.event.routes.DetailEventController.view(event.id.toString)">
-                                            詳細を見る</a>
+                            <div class="event-card my-2 pb-4">
+                                <div class="d-flex justify-content-start align-items-center mb-2">
+                                    <p class="like flex-column d-flex justify-content-center align-items-center flex-column mb-0 mr-2">
+                                        <a class="rounded-circle bg-gold d-flex justify-content-center align-items-center flex-column text-white small">
+                                            20
+                                            <i class="icon ion-md-heart"></i>
+                                        </a>
+                                    </p>
+                                    <h6 class="color-gold font-weight-bold mb-0">@event.title</h6>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img class="" alt="@event.eyecatchPhoto.name" src="@event.eyecatchPhoto.url">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <p class="small m-0 pb-1 color-gold font-weight-bold">@event.schedule.prefecture ／ @event.schedule.location</p>
+                                        <p class="small m-0 pb-1">
+                                            <i class="icon ion-md-time mr-1"></i>@event.schedule.schedule
+                                        </p>
+                                        <p class="small m-0 pb-1">
+                                            <i class="icon ion-md-pin mr-1"></i>@event.schedule.venue
+                                        </p>
+                                        <p class="small m-0 mb-2 mt-2">@event.description</p>
+                                        <div class="float-right">
+                                            <a class="btn small bg-gold rounded-0 text-white" href="@net.craftal.web.controller.event.routes.DetailEventController.view(event.id.toString)">
+                                                詳細を見る</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

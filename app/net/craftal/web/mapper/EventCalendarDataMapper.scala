@@ -1,6 +1,7 @@
 package net.craftal.web.mapper
 
 import net.craftal.core.domain.model.event.Event
+import net.craftal.core.domain.model.genre.Genre
 import net.craftal.core.domain.model.photo.Photo
 import net.craftal.core.domain.model.prefecture.Prefecture
 import net.craftal.web.model.event.{EventCalendar, EventDescriptor, EventScheduleDescriptor}
@@ -14,7 +15,8 @@ object EventCalendarDataMapper extends DataMapper {
 
   def transform(events: List[Event],
                 photos: List[Photo],
-                prefectures: List[Prefecture])
+                prefectures: List[Prefecture],
+                genres: List[Genre])
                (implicit request: Request[AnyContent], messages: Messages): EventCalendar =
     EventCalendar(events
       .flatMap(e => e.schedule.map(s => (s, e)))
@@ -41,6 +43,7 @@ object EventCalendarDataMapper extends DataMapper {
             r._2.homePageUrl
           )
         )
-      )
+      ),
+      genres.map(g => g.id.toString -> g.name)
     )
 }
