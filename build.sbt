@@ -18,7 +18,8 @@ lazy val commonSettings = Seq(
     "com.typesafe.play" %% "play-slick-evolutions" % "3.0.1",
     "com.typesafe.slick" %% "slick-codegen" % "3.2.1",
     "mysql" % "mysql-connector-java" % "5.1.34"
-  )
+  ),
+  libraryDependencies += "com.bowlingx" %% "play-webpack" % "0.1.19"
 )
 
 lazy val root = (project in file("."))
@@ -58,6 +59,7 @@ libraryDependencies ++= Seq(
   "org.webjars" %% "webjars-play" % "2.6.3",
   "org.webjars" % "bootstrap" % "4.1.3" exclude("org.webjars", "jquery"),
   "org.webjars" % "jquery" % "3.2.1",
+  "org.webjars" % "vue" % "2.6.10",
   "net.codingwell" %% "scala-guice" % "4.1.0",
   "com.iheart" %% "ficus" % "1.4.3",
   "com.typesafe.play" %% "play-mailer" % "6.0.1",
@@ -68,3 +70,7 @@ libraryDependencies ++= Seq(
   ehcache,
   filters
 )
+
+TwirlKeys.templateImports += "com.bowlingx.webpack.WebpackManifest"
+webpackManifest := file("frontend/webpack-assets.json").some.filter(_.exists).toSeq
+webpackAssetPrefix := Some("/frontend/dist")
